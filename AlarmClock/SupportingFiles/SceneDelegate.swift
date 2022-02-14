@@ -17,7 +17,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             return
         }
         let window = UIWindow(windowScene: windowScene)
-        let navigationController = ClockNavigationController(rootViewController: WorldClockViewController())
+        let navigationController = ClockTabBarController()
         window.rootViewController = navigationController
         self.window = window
         window.makeKeyAndVisible()
@@ -41,7 +41,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     func sceneDidEnterBackground(_ scene: UIScene) {
         CoreDataManager.sharedWorldClock.save()
-        CoreDataManager.sharedAlarms.save()
+        //CoreDataManager.sharedAlarms.save()
     }
 
 

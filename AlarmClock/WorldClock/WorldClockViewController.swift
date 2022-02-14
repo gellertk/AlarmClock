@@ -22,6 +22,23 @@ class WorldClockViewController: UIViewController {
         super.viewDidLoad()
         title = "Мировые часы"
         setupView()
+        fillWorldClocks()
+    }
+    
+    private func fillWorldClocks() {
+        if UserDefaults.isFirstLaunch() {
+            createDefaultWorldClocks()
+        } else {
+            worldClocks = CoreDataManager.sharedWorldClock.fetchWorldClocks()
+        }
+    }
+    
+    private func createDefaultWorldClocks() {
+        for city in Constants.firstLaunchWorldClocksCities {
+            let worldClock = CoreDataManager.sharedWorldClock.createWorldClock(city)
+            worldClocks.insert(worldClock, at: 0)
+            worldClockView.worldClockTableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
+        }
     }
     
     @objc private func didTapEditButton() {
@@ -61,7 +78,12 @@ extension WorldClockViewController: UITableViewDelegate, UITableViewDataSource {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: Constants.cellId, for: indexPath) as? WorldClockTableViewCell else {
             return UITableViewCell()
         }
+        cell.setupData(worldClocks[indexPath.row])
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 80
     }
     
 }

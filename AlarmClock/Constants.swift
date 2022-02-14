@@ -11,5 +11,11 @@ class Constants {
     
     static let buttonColor = UIColor.systemOrange
     static let cellId = "cellId"
+    static let firstLaunchWorldClocksCities = [
+       "Москва",
+       "Калининград",
+       "Омск",
+       "Екатеринбург"
+      ]
     
 }

@@ -11,7 +11,7 @@ import CoreData
 class CoreDataManager {
     
     static let sharedWorldClock = CoreDataManager(modelName: "WorldClock")
-    static let sharedAlarms = CoreDataManager(modelName: "Alarm")
+    //static let sharedAlarms = CoreDataManager(modelName: "Alarm")
     
     let persistentContainer: NSPersistentContainer
     var viewContext: NSManagedObjectContext {
@@ -23,7 +23,7 @@ class CoreDataManager {
     }
     
     func load() {
-        persistentContainer.loadPersistentStores { descriptiom, error in
+        persistentContainer.loadPersistentStores { _ , error in
             if let error = error {
                 fatalError(error.localizedDescription)
             }
@@ -44,10 +44,10 @@ class CoreDataManager {
 
 extension CoreDataManager {
     
-    func createWorldClock() -> WorldClock {
+    func createWorldClock(_ city: String) -> WorldClock {
         let newClock = WorldClock(context: viewContext)
         newClock.dateAdded = Date()
-        newClock.city = ""
+        newClock.city = city
         save()
         return newClock
     }

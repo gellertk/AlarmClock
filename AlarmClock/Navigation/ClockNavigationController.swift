@@ -38,10 +38,6 @@ class ClockNavigationController: UINavigationController, UINavigationBarDelegate
                                                                  action: #selector(didTapAddButton)), animated: false)
     }
     
-//    override var preferredStatusBarStyle: UIStatusBarStyle {
-//        return .lightContent
-//    }
-    
     @objc private func didTapAddButton() {
         
     }

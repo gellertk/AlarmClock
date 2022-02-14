@@ -2,13 +2,12 @@
 //  WorldClock+CoreDataProperties.swift
 //  AlarmClock
 //
-//  Created by Кирилл  Геллерт on 09.02.2022.
+//  Created by Кирилл  Геллерт on 14.02.2022.
 //
 //
 
 import Foundation
 import CoreData
-
 
 extension WorldClock {
 

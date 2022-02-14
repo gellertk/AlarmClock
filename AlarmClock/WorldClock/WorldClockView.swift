@@ -15,6 +15,7 @@ class WorldClockView: UIView {
         tableView.layer.cornerRadius = 10
         tableView.backgroundColor = .black
         tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.separatorColor = UIColor(white: 1, alpha: 0.4)
         return tableView
     }()
 
