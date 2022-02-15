@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import TimeZonePicker
 
 class WorldClockViewController: UIViewController {
     
@@ -17,6 +18,10 @@ class WorldClockViewController: UIViewController {
         view.worldClockTableView.dataSource = self
         return view
     }()
+    
+//    private lazy var timeZonePicker: TimeZonePickerViewController = {
+//        return TimeZonePickerViewController.getVC(withDelegate: self)
+//    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -42,10 +47,6 @@ class WorldClockViewController: UIViewController {
     }
     
     @objc private func didTapEditButton() {
-        
-    }
-    
-    @objc private func didTapAddButton() {
         
     }
     
@@ -84,6 +85,27 @@ extension WorldClockViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 80
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            
+        }
+    }
+    
+}
+
+extension WorldClockViewController: TimeZonePickerDelegate {
+    
+    func timeZonePicker(_ timeZonePicker: TimeZonePickerViewController, didSelectTimeZone timeZone: TimeZone) {
+//        timeZoneName.text = timeZone.identifier
+//        timeZoneOffset.text = timeZone.abbreviation()
+        timeZonePicker.dismiss(animated: true, completion: nil)
+    }
+    
+    @objc func didTapAddButton() {
+        let timeZonePicker = TimeZonePickerViewController.getVC(withDelegate: self)
+        present(timeZonePicker, animated: true)
     }
     
 }

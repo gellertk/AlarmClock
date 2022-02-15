@@ -12,7 +12,7 @@ class WorldClockTableViewCell: UITableViewCell {
     private lazy var currentDayLabel: UILabel = {
         let label = UILabel()
         label.text = "Сегодня, + 0 Ч"
-        label.font = UIFont.systemFont(ofSize: 14, weight: .medium)
+        label.font = UIFont.systemFont(ofSize: 14, weight: .regular)
         label.textColor = .lightGray
         return label
     }()
@@ -56,7 +56,7 @@ class WorldClockTableViewCell: UITableViewCell {
             timeLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -20),
             timeLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
             
-            currentDayLabel.bottomAnchor.constraint(equalTo: timeLabel.centerYAnchor),
+            currentDayLabel.bottomAnchor.constraint(equalTo: timeLabel.centerYAnchor, constant: -5),
             currentDayLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
             
             cityLabel.topAnchor.constraint(equalTo: timeLabel.centerYAnchor),
@@ -65,7 +65,7 @@ class WorldClockTableViewCell: UITableViewCell {
     }
     
     public func setupData(_ worldClock: WorldClock) {
-        currentDayLabel.text = "Сегодня, +0 Ч"
+        //currentDayLabel.text = "Сегодня, +0 Ч"
         cityLabel.text = worldClock.city
         timeLabel.text = worldClock.time
     }

@@ -37,6 +37,7 @@ class ClockTabBarController: UITabBarController {
             "Секундомер",
             "Таймер"
         ]
+        
         let images = [
             UIImage(systemName: "globe") ?? UIImage(),
             UIImage(systemName: "alarm.fill") ?? UIImage(),

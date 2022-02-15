@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ClockNavigationController: UINavigationController, UINavigationBarDelegate {
+class ClockNavigationController: UINavigationController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,19 +28,19 @@ class ClockNavigationController: UINavigationController, UINavigationBarDelegate
         navigationBar.isTranslucent = false
         navigationBar.tintColor = Constants.buttonColor
         navigationBar.barStyle = .black
-        navigationBar.topItem?.leftBarButtonItem = UIBarButtonItem(title: "Править",
-                                                                   style: .plain,
-                                                                   target: nil,
-                                                                   action: #selector(didTapEditButton))
+        navigationBar.topItem?.setLeftBarButton(UIBarButtonItem(title: "Править",
+                                                                style: .plain,
+                                                                target: nil,
+                                                                action: #selector(didTapEditButton)), animated: false)
         navigationBar.topItem?.setRightBarButton(UIBarButtonItem(image: UIImage(systemName: "plus"),
                                                                  style: .plain,
                                                                  target: nil,
-                                                                 action: #selector(didTapAddButton)), animated: false)
+                                                                 action: #selector(WorldClockViewController.didTapAddButton)), animated: false)
     }
     
-    @objc private func didTapAddButton() {
-        
-    }
+    //    @objc private func didTapAddButton() {
+    //
+    //    }
     
     @objc private func didTapEditButton() {
         
