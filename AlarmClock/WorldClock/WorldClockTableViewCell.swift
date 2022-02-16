@@ -32,7 +32,7 @@ class WorldClockTableViewCell: UITableViewCell {
     }()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: Constants.cellId)
+        super.init(style: style, reuseIdentifier: Constants.worldClockCellId)
         selectionStyle = .none
         setupView()
     }
@@ -65,7 +65,6 @@ class WorldClockTableViewCell: UITableViewCell {
     }
     
     public func setupData(_ worldClock: WorldClock) {
-        //currentDayLabel.text = "Сегодня, +0 Ч"
         cityLabel.text = worldClock.city
         timeLabel.text = worldClock.time
     }

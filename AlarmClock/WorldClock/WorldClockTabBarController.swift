@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ClockTabBarController: UITabBarController {
+class WorldClockTabBarController: UITabBarController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,8 +21,8 @@ class ClockTabBarController: UITabBarController {
     private func setup() {
         
         setViewControllers([
-            ClockNavigationController(rootViewController: WorldClockViewController()),
-            ClockNavigationController(rootViewController: AlarmClockViewController()),
+            UINavigationController(rootViewController: WorldClockViewController()),
+            UINavigationController(rootViewController: AlarmClockViewController()),
             StopWatchViewController(),
             TimerViewController()
         ], animated: true)

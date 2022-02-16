@@ -17,7 +17,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             return
         }
         let window = UIWindow(windowScene: windowScene)
-        let navigationController = ClockTabBarController()
+        let navigationController = WorldClockTabBarController()
         window.rootViewController = navigationController
         self.window = window
         window.makeKeyAndVisible()

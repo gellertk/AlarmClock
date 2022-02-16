@@ -6,7 +6,7 @@
 //
 
 import UIKit
-import TimeZonePicker
+import ContactsUI
 
 class WorldClockViewController: UIViewController {
     
@@ -19,15 +19,28 @@ class WorldClockViewController: UIViewController {
         return view
     }()
     
-//    private lazy var timeZonePicker: TimeZonePickerViewController = {
-//        return TimeZonePickerViewController.getVC(withDelegate: self)
-//    }()
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Мировые часы"
         setupView()
+        setupNavigationController()
         fillWorldClocks()
+    }
+    
+    private func setupNavigationController() {
+        navigationController?.navigationBar.prefersLargeTitles = true
+        navigationController?.navigationBar.largeTitleTextAttributes = [.foregroundColor: UIColor.white]
+        navigationController?.navigationBar.isTranslucent = false
+        navigationController?.navigationBar.tintColor = Constants.buttonColor
+        navigationController?.navigationBar.barStyle = .black
+        navigationController?.navigationBar.topItem?.setLeftBarButton(UIBarButtonItem(title: "Править",
+                                                                style: .plain,
+                                                                target: self,
+                                                                action: #selector(didTapEditButton)), animated: false)
+        navigationController?.navigationBar.topItem?.setRightBarButton(UIBarButtonItem(image: UIImage(systemName: "plus"),
+                                                                 style: .plain,
+                                                                 target: self,
+                                                                 action: #selector(didTapAddButton)), animated: false)
     }
     
     private func fillWorldClocks() {
@@ -48,6 +61,10 @@ class WorldClockViewController: UIViewController {
     
     @objc private func didTapEditButton() {
         
+    }
+    
+    @objc public func didTapAddButton(_ sender: UIBarButtonItem) {
+        present(TimeZoneViewController(), animated: true, completion: nil)
     }
     
     private func setupView() {
@@ -76,7 +93,7 @@ extension WorldClockViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: Constants.cellId, for: indexPath) as? WorldClockTableViewCell else {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: Constants.worldClockCellId, for: indexPath) as? WorldClockTableViewCell else {
             return UITableViewCell()
         }
         cell.setupData(worldClocks[indexPath.row])
@@ -91,21 +108,6 @@ extension WorldClockViewController: UITableViewDelegate, UITableViewDataSource {
         if editingStyle == .delete {
             
         }
-    }
-    
-}
-
-extension WorldClockViewController: TimeZonePickerDelegate {
-    
-    func timeZonePicker(_ timeZonePicker: TimeZonePickerViewController, didSelectTimeZone timeZone: TimeZone) {
-//        timeZoneName.text = timeZone.identifier
-//        timeZoneOffset.text = timeZone.abbreviation()
-        timeZonePicker.dismiss(animated: true, completion: nil)
-    }
-    
-    @objc func didTapAddButton() {
-        let timeZonePicker = TimeZonePickerViewController.getVC(withDelegate: self)
-        present(timeZonePicker, animated: true)
     }
     
 }
