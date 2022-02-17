@@ -32,7 +32,7 @@ class WorldClockTableViewCell: UITableViewCell {
     }()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: Constants.worldClockCellId)
+        super.init(style: style, reuseIdentifier: Constant.worldClockCellId)
         selectionStyle = .none
         setupView()
     }

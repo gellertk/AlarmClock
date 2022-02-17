@@ -17,7 +17,7 @@ class TimeZoneTableViewCell: UITableViewCell {
     }()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: Constants.timeZoneCellId)
+        super.init(style: style, reuseIdentifier: Constant.timeZoneCellId)
         setupView()
     }
     
@@ -26,7 +26,7 @@ class TimeZoneTableViewCell: UITableViewCell {
     }
     
     private func setupView() {
-        backgroundColor = .black.withAlphaComponent(0.97)
+        backgroundColor = Constant.timeZoneTableViewColor
         addSubview(titleTextLabel)
         setupConstraints()
     }

@@ -31,23 +31,18 @@ class WorldClockTabBarController: UITabBarController {
             return
         }
         
-        let titles = [
-            "Мировые часы",
-            "Будильник",
-            "Секундомер",
-            "Таймер"
+        let titlesAndImages: [String: UIImage] = [
+            "Мировые часы": UIImage(systemName: "globe") ?? UIImage(),
+            "Будильник": UIImage(systemName: "alarm.fill") ?? UIImage(),
+            "Секундомер": UIImage(systemName: "stopwatch.fill") ?? UIImage(),
+            "Таймер": UIImage(systemName: "timer") ?? UIImage()
         ]
         
-        let images = [
-            UIImage(systemName: "globe") ?? UIImage(),
-            UIImage(systemName: "alarm.fill") ?? UIImage(),
-            UIImage(systemName: "stopwatch.fill") ?? UIImage(),
-            UIImage(systemName: "timer") ?? UIImage()
-        ]
-        
-        for index in titles.indices {
-            items[index].title = titles[index]
-            items[index].image = images[index]
+        var index = 0
+        for titleAndImageKey in titlesAndImages.keys {
+            items[index].title = titleAndImageKey
+            items[index].image = titlesAndImages[titleAndImageKey]
+            index += 1
         }
         tabBar.unselectedItemTintColor = .gray
         tabBar.tintColor = .systemOrange
@@ -56,6 +51,5 @@ class WorldClockTabBarController: UITabBarController {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-   
 
 }

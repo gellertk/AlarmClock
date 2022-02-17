@@ -11,7 +11,7 @@ class WorldClockView: UIView {
     
     public lazy var worldClockTableView: UITableView = {
         let tableView = UITableView()
-        tableView.register(WorldClockTableViewCell.self, forCellReuseIdentifier: Constants.worldClockCellId)
+        tableView.register(WorldClockTableViewCell.self, forCellReuseIdentifier: Constant.worldClockCellId)
         tableView.backgroundColor = .black
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.separatorColor = UIColor(white: 1, alpha: 0.35)

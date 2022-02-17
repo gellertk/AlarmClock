@@ -9,10 +9,10 @@ import UIKit
 
 class TimeZoneView: UIView {
     
-    private lazy var timeZoneTableView: UITableView = {
+     public lazy var timeZoneTableView: UITableView = {
         let tableView = UITableView()
-        tableView.backgroundColor = .black.withAlphaComponent(0.97)
-        tableView.register(TimeZoneTableViewCell.self, forCellReuseIdentifier: Constants.timeZoneCellId)
+        tableView.backgroundColor = Constant.timeZoneTableViewColor
+        tableView.register(TimeZoneTableViewCell.self, forCellReuseIdentifier: Constant.timeZoneCellId)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.dataSource = self
         tableView.delegate = self
@@ -52,7 +52,7 @@ extension TimeZoneView: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: Constants.timeZoneCellId,
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.timeZoneCellId,
                                                        for: indexPath) as? TimeZoneTableViewCell else {
             return UITableViewCell()
         }
@@ -62,3 +62,5 @@ extension TimeZoneView: UITableViewDelegate, UITableViewDataSource {
     }
     
 }
+
+

@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import ContactsUI
 
 class WorldClockViewController: UIViewController {
     
@@ -31,7 +30,7 @@ class WorldClockViewController: UIViewController {
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationController?.navigationBar.largeTitleTextAttributes = [.foregroundColor: UIColor.white]
         navigationController?.navigationBar.isTranslucent = false
-        navigationController?.navigationBar.tintColor = Constants.buttonColor
+        navigationController?.navigationBar.tintColor = Constant.buttonColor
         navigationController?.navigationBar.barStyle = .black
         navigationController?.navigationBar.topItem?.setLeftBarButton(UIBarButtonItem(title: "Править",
                                                                 style: .plain,
@@ -52,7 +51,7 @@ class WorldClockViewController: UIViewController {
     }
     
     private func createDefaultWorldClocks() {
-        for city in Constants.firstLaunchWorldClocksCities {
+        for city in Constant.firstLaunchWorldClocksCities {
             let worldClock = CoreDataManager.sharedWorldClock.createWorldClock(city)
             worldClocks.insert(worldClock, at: 0)
             worldClockView.worldClockTableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
@@ -64,7 +63,7 @@ class WorldClockViewController: UIViewController {
     }
     
     @objc public func didTapAddButton(_ sender: UIBarButtonItem) {
-        present(TimeZoneViewController(), animated: true, completion: nil)
+        present(TimeZoneViewController(), animated: true)
     }
     
     private func setupView() {
@@ -93,7 +92,7 @@ extension WorldClockViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: Constants.worldClockCellId, for: indexPath) as? WorldClockTableViewCell else {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.worldClockCellId, for: indexPath) as? WorldClockTableViewCell else {
             return UITableViewCell()
         }
         cell.setupData(worldClocks[indexPath.row])

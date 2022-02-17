@@ -7,7 +7,7 @@
 
 import UIKit
 
-class Constants {
+class Constant {
     
     static let buttonColor = UIColor.systemOrange
     static let worldClockCellId = "worldClockCellId"
@@ -18,5 +18,6 @@ class Constants {
        "Омск",
        "Екатеринбург"
       ]
+    static let timeZoneTableViewColor = UIColor.black.withAlphaComponent(0.93)
     
 }
