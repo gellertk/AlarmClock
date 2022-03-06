@@ -15,6 +15,7 @@ class CoreDataManager {
     
     let persistentContainer: NSPersistentContainer
     var viewContext: NSManagedObjectContext {
+        
         return persistentContainer.viewContext
     }
     
@@ -49,6 +50,7 @@ extension CoreDataManager {
         newClock.dateAdded = Date()
         newClock.city = city
         save()
+        
         return newClock
     }
 
@@ -56,6 +58,7 @@ extension CoreDataManager {
         let request: NSFetchRequest<WorldClock> = WorldClock.fetchRequest()
         let sortDescriptor = NSSortDescriptor(keyPath: \WorldClock.dateAdded, ascending: false)
         request.sortDescriptors = [sortDescriptor]
+        
         return (try? viewContext.fetch(request)) ?? []
     }
 

@@ -19,7 +19,6 @@ class AlarmClockViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
-        title = "Будильник"
     }
     
     override func viewWillAppear(_ animated: Bool) {

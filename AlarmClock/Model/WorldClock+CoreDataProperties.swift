@@ -12,6 +12,7 @@ import CoreData
 extension WorldClock {
 
     @nonobjc public class func fetchRequest() -> NSFetchRequest<WorldClock> {
+        
         return NSFetchRequest<WorldClock>(entityName: "WorldClock")
     }
 

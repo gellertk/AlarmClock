@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SnapKit
 
 class TimeZoneTableViewCell: UITableViewCell {
     
@@ -13,11 +14,12 @@ class TimeZoneTableViewCell: UITableViewCell {
         let label = UILabel()
         label.textColor = .white
         label.translatesAutoresizingMaskIntoConstraints = false
+        
         return label
     }()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: Constant.timeZoneCellId)
+        super.init(style: style, reuseIdentifier: Constants.timeZoneCellId)
         setupView()
     }
     
@@ -26,16 +28,16 @@ class TimeZoneTableViewCell: UITableViewCell {
     }
     
     private func setupView() {
-        backgroundColor = Constant.timeZoneTableViewColor
-        addSubview(titleTextLabel)
+        backgroundColor = Constants.timeZoneTableViewColor
+        contentView.addSubview(titleTextLabel)
         setupConstraints()
     }
     
     private func setupConstraints() {
-        NSLayoutConstraint.activate([
-            titleTextLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
-            titleTextLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10)
-        ])
+        titleTextLabel.snp.makeConstraints {
+            $0.centerY.equalToSuperview()
+            $0.leading.equalToSuperview().offset(10)
+        }
     }
     
     public func setupData(city: String) {

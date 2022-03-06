@@ -27,25 +27,24 @@ class WorldClockTabBarController: UITabBarController {
             TimerViewController()
         ], animated: true)
         
-        guard let items = tabBar.items else {
-            return
+        if let items = tabBar.items {
+            
+            let titlesAndImages: KeyValuePairs = [
+                "Мировые часы": UIImage(systemName: "globe") ?? UIImage(),
+                "Будильник": UIImage(systemName: "alarm.fill") ?? UIImage(),
+                "Секундомер": UIImage(systemName: "stopwatch.fill") ?? UIImage(),
+                "Таймер": UIImage(systemName: "timer") ?? UIImage()
+            ]
+            
+            for index in titlesAndImages.indices {
+                items[index].title = titlesAndImages[index].key
+                items[index].image = titlesAndImages[index].value
+            }
+            
+            tabBar.unselectedItemTintColor = .gray
+            tabBar.tintColor = .systemOrange
         }
         
-        let titlesAndImages: [String: UIImage] = [
-            "Мировые часы": UIImage(systemName: "globe") ?? UIImage(),
-            "Будильник": UIImage(systemName: "alarm.fill") ?? UIImage(),
-            "Секундомер": UIImage(systemName: "stopwatch.fill") ?? UIImage(),
-            "Таймер": UIImage(systemName: "timer") ?? UIImage()
-        ]
-        
-        var index = 0
-        for titleAndImageKey in titlesAndImages.keys {
-            items[index].title = titleAndImageKey
-            items[index].image = titlesAndImages[titleAndImageKey]
-            index += 1
-        }
-        tabBar.unselectedItemTintColor = .gray
-        tabBar.tintColor = .systemOrange
     }
     
     required init?(coder: NSCoder) {

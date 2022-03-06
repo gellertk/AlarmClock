@@ -20,8 +20,9 @@
 		CB0C193927B121AC0074976D /* AlarmClockView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB0C193827B121AC0074976D /* AlarmClockView.swift */; };
 		CB0C193D27B121C90074976D /* StopWatchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB0C193C27B121C90074976D /* StopWatchView.swift */; };
 		CB0C194027B121DF0074976D /* TimerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB0C193F27B121DF0074976D /* TimerView.swift */; };
-		CB0C194327B156340074976D /* Constant.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB0C194227B156340074976D /* Constant.swift */; };
+		CB0C194327B156340074976D /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB0C194227B156340074976D /* Constants.swift */; };
 		CB0CC82627B3DA51002C1FEA /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB0CC82527B3DA50002C1FEA /* CoreDataManager.swift */; };
+		CB6076A627D4FB43008333A8 /* LapTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB6076A527D4FB43008333A8 /* LapTableViewCell.swift */; };
 		CB7ABE4A27B3FFA800CD04B1 /* WorldClockTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB7ABE4927B3FFA800CD04B1 /* WorldClockTableViewCell.swift */; };
 		CBAACF3227B272D200A35A7F /* WorldClockTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBAACF3127B272D200A35A7F /* WorldClockTabBarController.swift */; };
 		CBC7772127B4FF860072EE40 /* UserDefaultsExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBC7772027B4FF860072EE40 /* UserDefaultsExtensions.swift */; };
@@ -31,9 +32,13 @@
 		CBF6CE0327BD610B00843FBA /* TimeZoneViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBF6CE0227BD610B00843FBA /* TimeZoneViewController.swift */; };
 		CBF6CE0527BD612F00843FBA /* TimeZoneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBF6CE0427BD612F00843FBA /* TimeZoneView.swift */; };
 		CBF6CE0727BD63EE00843FBA /* TimeZoneTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBF6CE0627BD63EE00843FBA /* TimeZoneTableViewCell.swift */; };
+		E89254EF71FFA46623AE25A1 /* Pods_AlarmClock.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A58B681C33DFFE0BC1AFD14F /* Pods_AlarmClock.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		323D17ABB3AA5FC1C847FD54 /* Pods-AlarmClock.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AlarmClock.debug.xcconfig"; path = "Target Support Files/Pods-AlarmClock/Pods-AlarmClock.debug.xcconfig"; sourceTree = "<group>"; };
+		4D2A706CD810AFDC493A092B /* Pods-AlarmClock.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AlarmClock.release.xcconfig"; path = "Target Support Files/Pods-AlarmClock/Pods-AlarmClock.release.xcconfig"; sourceTree = "<group>"; };
+		A58B681C33DFFE0BC1AFD14F /* Pods_AlarmClock.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AlarmClock.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CB0C191527B119430074976D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CB0C191727B119430074976D /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		CB0C191927B119430074976D /* WorldClockViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorldClockViewController.swift; sourceTree = "<group>"; };
@@ -48,8 +53,9 @@
 		CB0C193827B121AC0074976D /* AlarmClockView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmClockView.swift; sourceTree = "<group>"; };
 		CB0C193C27B121C90074976D /* StopWatchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StopWatchView.swift; sourceTree = "<group>"; };
 		CB0C193F27B121DF0074976D /* TimerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerView.swift; sourceTree = "<group>"; };
-		CB0C194227B156340074976D /* Constant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constant.swift; sourceTree = "<group>"; };
+		CB0C194227B156340074976D /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		CB0CC82527B3DA50002C1FEA /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
+		CB6076A527D4FB43008333A8 /* LapTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LapTableViewCell.swift; sourceTree = "<group>"; };
 		CB7ABE4927B3FFA800CD04B1 /* WorldClockTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorldClockTableViewCell.swift; sourceTree = "<group>"; };
 		CBAACF3127B272D200A35A7F /* WorldClockTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorldClockTabBarController.swift; sourceTree = "<group>"; };
 		CBC7772027B4FF860072EE40 /* UserDefaultsExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsExtensions.swift; sourceTree = "<group>"; };
@@ -67,24 +73,35 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E89254EF71FFA46623AE25A1 /* Pods_AlarmClock.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2B145B30E82BB1BA7BBB6F27 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				A58B681C33DFFE0BC1AFD14F /* Pods_AlarmClock.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		CB0C190927B119430074976D = {
 			isa = PBXGroup;
 			children = (
 				CB0C191427B119430074976D /* AlarmClock */,
 				CBD3FB0227BE9FD200F718E3 /* AlarmClock.app */,
+				D87FCE21335403B6CDFDCDBA /* Pods */,
+				2B145B30E82BB1BA7BBB6F27 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
 		CB0C191427B119430074976D /* AlarmClock */ = {
 			isa = PBXGroup;
 			children = (
-				CB0C194227B156340074976D /* Constant.swift */,
+				CB0C194227B156340074976D /* Constants.swift */,
 				CBC7771F27B4FF5C0072EE40 /* Extensions */,
 				CB0CC82F27B3F955002C1FEA /* Model */,
 				CBF6CE0127BD60D700843FBA /* TimeZone */,
@@ -115,8 +132,8 @@
 			children = (
 				CBAACF3127B272D200A35A7F /* WorldClockTabBarController.swift */,
 				CB0C191927B119430074976D /* WorldClockViewController.swift */,
-				CB7ABE4927B3FFA800CD04B1 /* WorldClockTableViewCell.swift */,
 				CB0C193527B121900074976D /* WorldClockView.swift */,
+				CB7ABE4927B3FFA800CD04B1 /* WorldClockTableViewCell.swift */,
 			);
 			path = WorldClock;
 			sourceTree = "<group>";
@@ -135,6 +152,7 @@
 			children = (
 				CB0C192F27B120AD0074976D /* StopWatchViewController.swift */,
 				CB0C193C27B121C90074976D /* StopWatchView.swift */,
+				CB6076A527D4FB43008333A8 /* LapTableViewCell.swift */,
 			);
 			path = StopWatch;
 			sourceTree = "<group>";
@@ -177,6 +195,15 @@
 			path = TimeZone;
 			sourceTree = "<group>";
 		};
+		D87FCE21335403B6CDFDCDBA /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				323D17ABB3AA5FC1C847FD54 /* Pods-AlarmClock.debug.xcconfig */,
+				4D2A706CD810AFDC493A092B /* Pods-AlarmClock.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -184,9 +211,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = CB0C192927B119470074976D /* Build configuration list for PBXNativeTarget "AlarmClock" */;
 			buildPhases = (
+				F8ACE519CA3716DAD113534B /* [CP] Check Pods Manifest.lock */,
 				CB0C190E27B119430074976D /* Sources */,
 				CB0C190F27B119430074976D /* Frameworks */,
 				CB0C191027B119430074976D /* Resources */,
+				20ECB58F83A91C9E41583DFA /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -242,6 +271,48 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		20ECB58F83A91C9E41583DFA /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-AlarmClock/Pods-AlarmClock-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-AlarmClock/Pods-AlarmClock-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-AlarmClock/Pods-AlarmClock-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		F8ACE519CA3716DAD113534B /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-AlarmClock-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		CB0C190E27B119430074976D /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -249,6 +320,7 @@
 			files = (
 				CB0C192E27B1203B0074976D /* AlarmClockViewController.swift in Sources */,
 				CBC7772327B503F60072EE40 /* DateExtensions.swift in Sources */,
+				CB6076A627D4FB43008333A8 /* LapTableViewCell.swift in Sources */,
 				CBAACF3227B272D200A35A7F /* WorldClockTabBarController.swift in Sources */,
 				CB0C192027B119430074976D /* WorldClock.xcdatamodeld in Sources */,
 				CB0CC82627B3DA51002C1FEA /* CoreDataManager.swift in Sources */,
@@ -268,7 +340,7 @@
 				CB0C191827B119430074976D /* SceneDelegate.swift in Sources */,
 				CB0C193927B121AC0074976D /* AlarmClockView.swift in Sources */,
 				CBF6CE0527BD612F00843FBA /* TimeZoneView.swift in Sources */,
-				CB0C194327B156340074976D /* Constant.swift in Sources */,
+				CB0C194327B156340074976D /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -404,6 +476,7 @@
 		};
 		CB0C192A27B119470074976D /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 323D17ABB3AA5FC1C847FD54 /* Pods-AlarmClock.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -431,6 +504,7 @@
 		};
 		CB0C192B27B119470074976D /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 4D2A706CD810AFDC493A092B /* Pods-AlarmClock.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;

@@ -6,20 +6,28 @@
 //
 
 import UIKit
+import SnapKit
 
 class StopWatchViewController: UIViewController {
+    
+    private var stopWatchView: UIView = {
+        
+       return StopWatchView()
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        setupView()
     }
     
-    init() {
-        super.init(nibName: nil, bundle: nil)
+    private func setupView() {
+        view.addSubview(stopWatchView)
+        setupConstraints()
     }
     
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+    private func setupConstraints() {
+        stopWatchView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
     }
-
 }

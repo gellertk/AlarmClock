@@ -15,11 +15,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = (scene as? UIWindowScene) else {
             return
         }
-        let window = UIWindow(windowScene: windowScene)
-        let navigationController = WorldClockTabBarController()
-        window.rootViewController = navigationController
-        self.window = window
-        window.makeKeyAndVisible()
+        self.window = UIWindow(windowScene: windowScene)
+        self.window?.rootViewController = WorldClockTabBarController()
+        self.window?.makeKeyAndVisible()
     }
 
     func sceneDidEnterBackground(_ scene: UIScene) {

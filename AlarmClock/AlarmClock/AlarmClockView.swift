@@ -9,8 +9,9 @@ import UIKit
 
 class AlarmClockView: UIView {
 
-    init() {
-        super.init(frame: CGRect.zero)
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+
     }
     
     required init?(coder: NSCoder) {

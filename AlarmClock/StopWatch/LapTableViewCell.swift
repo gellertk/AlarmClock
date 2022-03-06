@@ -6,18 +6,41 @@
 //
 
 import UIKit
+import SnapKit
 
 class LapTableViewCell: UITableViewCell {
 
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: Constants.timeZoneCellId)
+        setupView()
     }
-
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    private lazy var titleTextLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = .white
+        
+        return label
+    }()
+    
+    private func setupView() {
+        backgroundColor = Constants.timeZoneTableViewColor
+        contentView.addSubview(titleTextLabel)
+        setupConstraints()
+    }
+    
+    private func setupConstraints() {
+//        NSLayoutConstraint.activate([
+//            titleTextLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
+//            titleTextLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10)
+//        ])
+    }
+    
+    public func setupData(city: String) {
+        titleTextLabel.text = city
     }
 
 }

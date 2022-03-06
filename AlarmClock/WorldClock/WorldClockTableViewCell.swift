@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SnapKit
 
 class WorldClockTableViewCell: UITableViewCell {
         
@@ -14,6 +15,7 @@ class WorldClockTableViewCell: UITableViewCell {
         label.text = "Сегодня, + 0 Ч"
         label.font = UIFont.systemFont(ofSize: 14, weight: .regular)
         label.textColor = .lightGray
+        
         return label
     }()
     
@@ -21,6 +23,7 @@ class WorldClockTableViewCell: UITableViewCell {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 22, weight: .medium)
         label.textColor = .white
+        
         return label
     }()
     
@@ -28,11 +31,12 @@ class WorldClockTableViewCell: UITableViewCell {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 55, weight: .light)
         label.textColor = .white
+        
         return label
     }()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: Constant.worldClockCellId)
+        super.init(style: style, reuseIdentifier: Constants.worldClockCellId)
         selectionStyle = .none
         setupView()
     }
@@ -43,25 +47,29 @@ class WorldClockTableViewCell: UITableViewCell {
 
     private func setupView() {
         backgroundColor = .black
-        [currentDayLabel, cityLabel, timeLabel].forEach { view in
-            view.translatesAutoresizingMaskIntoConstraints = false
-            addSubview(view)
+        [currentDayLabel, cityLabel, timeLabel].forEach {
+            contentView.addSubview($0)
         }
         setupConstraints()
     }
     
     private func setupConstraints() {
-        NSLayoutConstraint.activate([
-            timeLabel.topAnchor.constraint(equalTo: topAnchor, constant: 20),
-            timeLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -20),
-            timeLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
-            
-            currentDayLabel.bottomAnchor.constraint(equalTo: timeLabel.centerYAnchor, constant: -5),
-            currentDayLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
-            
-            cityLabel.topAnchor.constraint(equalTo: timeLabel.centerYAnchor),
-            cityLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20)
-        ])
+
+        timeLabel.snp.makeConstraints {
+            $0.top.equalToSuperview().offset(20)
+            $0.bottom.trailing.equalToSuperview().offset(-20)
+        }
+        
+        currentDayLabel.snp.makeConstraints {
+            $0.top.equalTo(timeLabel).offset(-3)
+            $0.leading.equalToSuperview().offset(20)
+        }
+        
+        cityLabel.snp.makeConstraints {
+            $0.bottom.equalTo(timeLabel).offset(3)
+            $0.leading.equalTo(currentDayLabel)
+        }
+        
     }
     
     public func setupData(_ worldClock: WorldClock) {

@@ -15,6 +15,7 @@ extension UserDefaults {
             UserDefaults.standard.set(true, forKey: hasBeenLaunchedBeforeFlag)
             UserDefaults.standard.synchronize()
         }
+        
         return isFirstLaunch
     }
 }

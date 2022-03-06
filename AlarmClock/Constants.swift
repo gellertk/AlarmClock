@@ -20,5 +20,6 @@ class Constants {
       ]
     static let timeZoneTableViewColor = UIColor.black.withAlphaComponent(0.93)
     static let timerStartTime = "00:00,00"
+    static let tableSeparatorLineColor = UIColor(white: 1, alpha: 0.35)
     
 }

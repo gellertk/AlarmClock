@@ -6,15 +6,16 @@
 //
 
 import UIKit
+import SnapKit
 
 class WorldClockView: UIView {
     
     public lazy var worldClockTableView: UITableView = {
         let tableView = UITableView()
-        tableView.register(WorldClockTableViewCell.self, forCellReuseIdentifier: Constant.worldClockCellId)
+        tableView.register(WorldClockTableViewCell.self, forCellReuseIdentifier: Constants.worldClockCellId)
         tableView.backgroundColor = .black
-        tableView.translatesAutoresizingMaskIntoConstraints = false
-        tableView.separatorColor = UIColor(white: 1, alpha: 0.35)
+        tableView.separatorColor = Constants.tableSeparatorLineColor
+        
         return tableView
     }()
 
@@ -29,12 +30,9 @@ class WorldClockView: UIView {
     }
     
     private func setupConstraints() {
-        NSLayoutConstraint.activate([
-            worldClockTableView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
-            worldClockTableView.bottomAnchor.constraint(equalTo: bottomAnchor),
-            worldClockTableView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            worldClockTableView.leadingAnchor.constraint(equalTo: leadingAnchor)
-        ])
+        worldClockTableView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
     }
     
     required init?(coder: NSCoder) {

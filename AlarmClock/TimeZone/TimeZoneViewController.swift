@@ -6,12 +6,14 @@
 //
 
 import UIKit
+import SnapKit
 
 class TimeZoneViewController: UIViewController {
     
     private lazy var timeZoneView: UIView = {
         let view = TimeZoneView()
         view.timeZoneTableView.tableHeaderView = searchController.searchBar
+        
         return view
     }()
     
@@ -22,6 +24,7 @@ class TimeZoneViewController: UIViewController {
         searchController.searchBar.setShowsCancelButton(true, animated: false)
         searchController.searchBar.isTranslucent = false
         searchController.delegate = self
+        
         return searchController
     }()
     
@@ -40,12 +43,9 @@ class TimeZoneViewController: UIViewController {
     }
     
     private func setupConstraints() {
-        NSLayoutConstraint.activate([
-            timeZoneView.topAnchor.constraint(equalTo: view.topAnchor),
-            timeZoneView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            timeZoneView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            timeZoneView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-        ])
+        timeZoneView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
     }
     
     @objc private func didTapCancelButton() {
