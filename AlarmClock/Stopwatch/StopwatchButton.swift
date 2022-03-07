@@ -8,7 +8,7 @@
 import UIKit
 import SnapKit
 
-class StopWatchButton: UIButton {
+class StopwatchButton: UIButton {
     
 //    private lazy var backgroundCircleView: UIView = {
 //        let view = UIView(frame: CGRect(x: 0,

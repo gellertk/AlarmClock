@@ -8,11 +8,11 @@
 import UIKit
 import SnapKit
 
-class StopWatchViewController: UIViewController {
+class StopwatchViewController: UIViewController {
     
     private var stopWatchView: UIView = {
         
-       return StopWatchView()
+       return StopwatchView()
     }()
 
     override func viewDidLoad() {

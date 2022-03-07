@@ -23,7 +23,7 @@ class WorldClockTabBarController: UITabBarController {
         setViewControllers([
             UINavigationController(rootViewController: WorldClockViewController()),
             UINavigationController(rootViewController: AlarmClockViewController()),
-            StopWatchViewController(),
+            StopwatchViewController(),
             TimerViewController()
         ], animated: true)
         

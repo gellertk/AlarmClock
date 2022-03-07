@@ -7,11 +7,27 @@
 
 import UIKit
 import SnapKit
+import CloudKit
 
-class StopWatchView: UIView {
+protocol StopwatchViewDelegate: AnyObject {
+    //func stopTimer()
+    func updateTimer()
+    //func
+}
+
+class StopwatchView: UIView {
     
-    private var timer: Timer?
-    private var isTimerRunnig: Bool = false
+    private lazy var stopwatch = Stopwatch(delegate: self)
+    
+    private static var formatter: DateComponentsFormatter = {
+        let formatter = DateComponentsFormatter()
+        formatter.unitsStyle = .positional // Use the appropriate positioning for the current locale
+        formatter.allowedUnits = [ .hour, .minute, .second, .nanosecond] // Units to display in the formatted string
+        formatter.zeroFormattingBehavior = [ .pad ] // Pad with zeroes where appropriate for the locale
+        formatter.allowsFractionalUnits = true
+        
+        return formatter
+    }()
     
     private var timeLabel: UILabel = {
         let label = UILabel()
@@ -22,39 +38,40 @@ class StopWatchView: UIView {
         return label
     }()
     
-    private var lapAndResetButton: UIButton = {
-        let button = StopWatchButton(title: "Круг",
+    private var resetAndLapButton: UIButton = {
+        let button = StopwatchButton(title: "Круг",
                                      backgroundColor: UIColor(white: 0.4, alpha: 0.6))
+        button.addTarget(self, action: #selector(resetTimer), for: .touchUpInside)
         
         return button
     }()
     
     //TODO: Code doubled
-    private lazy var lapBackgroundCircleView: UIView = {
+    private lazy var lapBackgroundView: UIView = {
         let view = UIView(frame: CGRect(x: 0,
                                         y: 0,
                                         width: Constants.stopWatchBackgroundCircleWidthHeight,
                                         height: Constants.stopWatchBackgroundCircleWidthHeight))
         view.layer.cornerRadius = view.frame.width / 2
         view.backgroundColor = UIColor(white: 0.4, alpha: 0.6)
-
+        
         return view
     }()
     
     //TODO: Code doubled
-    private lazy var startStopBackgroundCircleView: UIView = {
+    private lazy var startStopBackgroundView: UIView = {
         let view = UIView(frame: CGRect(x: 0,
                                         y: 0,
                                         width: Constants.stopWatchBackgroundCircleWidthHeight,
                                         height: Constants.stopWatchBackgroundCircleWidthHeight))
         view.layer.cornerRadius = view.frame.width / 2
         view.backgroundColor = .green
-
+        
         return view
     }()
     
     private var startAndStopButton: UIButton = {
-        let button = StopWatchButton(title: "Старт",
+        let button = StopwatchButton(title: "Старт",
                                      backgroundColor: .green)
         button.addTarget(self, action: #selector(didTapStartAndStopButton), for: .touchUpInside)
         
@@ -83,24 +100,19 @@ class StopWatchView: UIView {
     }
     
     private func setupView() {
-        
         [timeLabel,
-         lapAndResetButton,
+         resetAndLapButton,
          startAndStopButton,
          lapsTableView,
-         lapBackgroundCircleView,
-         startStopBackgroundCircleView].forEach {
+         lapBackgroundView,
+         startStopBackgroundView].forEach {
             
             
             addSubview($0)
         }
-        sendSubviewToBack(lapBackgroundCircleView)
-        sendSubviewToBack(startStopBackgroundCircleView)
+        sendSubviewToBack(lapBackgroundView)
+        sendSubviewToBack(startStopBackgroundView)
         setupConstraints()
-    }
-    
-    private func setupTimer() {
-        
     }
     
     private func setupConstraints() {
@@ -109,101 +121,97 @@ class StopWatchView: UIView {
             $0.centerX.equalToSuperview()
         }
         
-        lapAndResetButton.snp.makeConstraints {
+        resetAndLapButton.snp.makeConstraints {
             $0.centerY.equalToSuperview()
             $0.leading.equalToSuperview().offset(20)
             $0.width.height.equalTo(Constants.stopWatchButtonWidthHeight)
         }
         
-        lapBackgroundCircleView.snp.makeConstraints {
-            $0.center.equalTo(lapAndResetButton)
+        lapBackgroundView.snp.makeConstraints {
+            $0.center.equalTo(resetAndLapButton)
             $0.width.height.equalTo(Constants.stopWatchBackgroundCircleWidthHeight)
         }
         
-        startStopBackgroundCircleView.snp.makeConstraints {
+        startStopBackgroundView.snp.makeConstraints {
             $0.center.equalTo(startAndStopButton)
             $0.width.height.equalTo(Constants.stopWatchBackgroundCircleWidthHeight)
         }
         
         startAndStopButton.snp.makeConstraints {
-            $0.centerY.equalTo(lapAndResetButton)
+            $0.centerY.equalTo(resetAndLapButton)
             $0.trailing.equalToSuperview().offset(-20)
             $0.width.height.equalTo(Constants.stopWatchButtonWidthHeight)
         }
         
         lapsTableView.snp.makeConstraints {
-            $0.top.equalTo(lapAndResetButton.snp.bottom).offset(10)
-            $0.leading.equalTo(lapAndResetButton)
+            $0.top.equalTo(resetAndLapButton.snp.bottom).offset(10)
+            $0.leading.equalTo(resetAndLapButton)
             $0.trailing.equalTo(startAndStopButton)
             $0.bottomMargin.equalToSuperview()
         }
     }
     
     @objc func didTapStartAndStopButton() {
-        if isTimerRunnig {
-            stopTimer()
+        if stopwatch.isRunning {
+            stopwatch.stop()
+            startAndStopButton.setTitle("Старт", for: .normal)
+            startAndStopButton.backgroundColor = .green
+            startStopBackgroundView.backgroundColor = .green
+            resetAndLapButton.setTitle("Сброс", for: .normal)
         } else {
-            startTimer()
+            stopwatch.start()
+            startAndStopButton.setTitle("Стоп", for: .normal)
+            startAndStopButton.backgroundColor = .red
+            startStopBackgroundView.backgroundColor = .red
+            resetAndLapButton.setTitle("Круг", for: .normal)
         }
     }
     
-    @objc func updateTimerLabel() {
-        setTimeLabel(value: Int)
+//    @objc func updateTimerLabel() {
+//        timeLabel.text = elapsedTimeStr(timeInterval: stopwatch.elapsedTime)
+//        //setTimeLabel(value: Int)
+//    }
+    
+    private func elapsedTimeStr(timeInterval: TimeInterval) -> String {
+        return timeInterval.stringFromTimeInterval()
     }
     
-    func startTimer() {
-        timer = Timer.scheduledTimer(timeInterval: 0.001,
-                                     target: self,
-                                     selector: #selector(updateTimerLabel),
-                                     userInfo: nil,
-                                     repeats: true)
-        startAndStopButton.setTitle("Стоп", for: .normal)
-        isTimerRunnig.toggle()
-    }
-    
-    func stopTimer() {
-        timeLabel.text = timer?.timeInterval.formatted()
-        startAndStopButton.setTitle("Старт", for: .normal)
-        isTimerRunnig.toggle()
-    }
-    
-    func resetTimer() {
+    @objc func resetTimer() {
         timeLabel.text = Constants.timerStartTime
-        timer?.invalidate()
-        timer = nil
+        stopwatch.reset()
     }
     
-    func addLapTimeToTable() {
+    //func addLapTimeToTable() {
         //timeLabel.text = timer?.timeInterval.formatted()
-    }
+    //}
     
-    func setTimeLabel(_ value: Int) {
-        let time = secondsToHoursMinutesSeconds(value)
-        let timeString = makeTimeString(hour: time.0, min: time.1, sec: time.2)
-        timeLabel.text = timeString
-    }
-    
-    func secondsToHoursMinutesSeconds(_ ms: Int) -> (Int, Int, Int) {
-        let hour = ms / 3600
-        let min = (ms % 3600) / 60
-        let sec = (ms % 3600) % 60
-        //let milSec = ()
-        return (hour, min, sec)
-    }
-    
-    func makeTimeString(hour: Int, min: Int, sec: Int) -> String {
-        var timeString = ""
-        timeString += String(format: "%02d", hour)
-        timeString += ":"
-        timeString += String(format: "%02d", min)
-        timeString += ":"
-        timeString += String(format: "%02d", sec)
-        return timeString
-    }
+    //    func setTimeLabel(_ value: Int) {
+    //        let time = secondsToHoursMinutesSeconds(value)
+    //        let timeString = makeTimeString(hour: time.0, min: time.1, sec: time.2)
+    //        timeLabel.text = timeString
+    //    }
+    //
+    //    func secondsToHoursMinutesSeconds(_ ms: Int) -> (Int, Int, Int) {
+    //        let hour = ms / 3600
+    //        let min = (ms % 3600) / 60
+    //        let sec = (ms % 3600) % 60
+    //        //let milSec = ()
+    //        return (hour, min, sec)
+    //    }
+    //
+    //    func makeTimeString(hour: Int, min: Int, sec: Int) -> String {
+    //        var timeString = ""
+    //        timeString += String(format: "%02d", hour)
+    //        timeString += ":"
+    //        timeString += String(format: "%02d", min)
+    //        timeString += ":"
+    //        timeString += String(format: "%02d", sec)
+    //        return timeString
+    //    }
     
 }
 
-extension StopWatchView: UITableViewDelegate, UITableViewDataSource {
+extension StopwatchView: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
@@ -223,6 +231,14 @@ extension StopWatchView: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         
         return Constants.stopWatchheightForRow
+    }
+    
+}
+
+extension StopwatchView: StopwatchViewDelegate {
+    
+    func updateTimer() {
+        timeLabel.text = elapsedTimeStr(timeInterval: stopwatch.elapsedTime)
     }
     
 }

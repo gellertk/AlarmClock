@@ -9,46 +9,54 @@ import Foundation
 
 class Stopwatch {
     
+    public weak var stopwatchViewDelegate: StopwatchViewDelegate?
+    
     private var startTime: Date?
     private var accumulatedTime: TimeInterval = 0
-    private var timer: Timer?
+    private weak var timer: Timer?
     
-    var isRunning = false {
-        didSet {
-            if self.isRunning {
-                self.start()
-            } else {
-                self.stop()
-            }
-        }
-    }
+    public var isRunning = false
+    
     private(set) var elapsedTime: TimeInterval = 0
     
-    let id = UUID()
-    
-    private func start() -> Void {
-        timer?.cancel()
-    timer = Timer.publish(every: 0.5, on: .main, in: .common).autoconnect().sink { _ in
-            elapsedTime = getElapsedTime()
-        }
-    startTime = Date()
+    init(delegate: StopwatchViewDelegate) {
+        stopwatchViewDelegate = delegate
     }
     
-    private func stop() -> Void {
-    timer?.cancel()
+    public func start() {
+        timer = Timer.scheduledTimer(timeInterval: 0.001,
+                                     target: self,
+                                     selector: #selector(didTimeChange),
+                                     userInfo: nil,
+                                     repeats: true)
+        startTime = Date()
+        isRunning = true
+    }
+    
+    public func stop() {
+        //timer?.cancel()
         timer = nil
-    accumulatedTime = getElapsedTime()
+        accumulatedTime = getElapsedTime()
         startTime = nil
+        isRunning = false
     }
     
-    func reset() -> Void {
+    public func reset() {
+        timer?.invalidate()
+        timer = nil
         accumulatedTime = 0
         elapsedTime = 0
         startTime = nil
         isRunning = false
     }
     
+    @objc func didTimeChange() {
+        elapsedTime = getElapsedTime()
+        stopwatchViewDelegate?.updateTimer()
+    }
+    
     private func getElapsedTime() -> TimeInterval {
         return -(startTime?.timeIntervalSinceNow ?? 0) + accumulatedTime
     }
+    
 }
