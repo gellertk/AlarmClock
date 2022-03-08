@@ -111,7 +111,6 @@
 			children = (
 				CB0C194227B156340074976D /* Constants.swift */,
 				CBC7771F27B4FF5C0072EE40 /* Extensions */,
-				CB0CC82F27B3F955002C1FEA /* Model */,
 				CBF6CE0127BD60D700843FBA /* TimeZone */,
 				CB0C193727B121980074976D /* WorldClock */,
 				CB0C193A27B121B00074976D /* AlarmClock */,
@@ -138,6 +137,7 @@
 		CB0C193727B121980074976D /* WorldClock */ = {
 			isa = PBXGroup;
 			children = (
+				CB0CC82F27B3F955002C1FEA /* Model */,
 				CBAACF3127B272D200A35A7F /* WorldClockTabBarController.swift */,
 				CB0C191927B119430074976D /* WorldClockViewController.swift */,
 				CB0C193527B121900074976D /* WorldClockView.swift */,

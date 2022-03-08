@@ -13,7 +13,7 @@ class LapTableViewCell: UITableViewCell {
     private var lapLabel: UILabel = {
         let label = UILabel()
         label.textColor = .white
-        label.font = UIFont.systemFont(ofSize: Constants.stopWatchFontSize)
+        label.font = UIFont.systemFont(ofSize: Constants.stopwatchFontSize)
         
         return label
     }()
@@ -21,7 +21,7 @@ class LapTableViewCell: UITableViewCell {
     private var timeLapLabel: UILabel = {
         let label = UILabel()
         label.textColor = .white
-        label.font = UIFont.systemFont(ofSize: Constants.stopWatchFontSize)
+        label.font = UIFont.systemFont(ofSize: Constants.stopwatchFontSize)
         
         return label
     }()
@@ -40,6 +40,7 @@ class LapTableViewCell: UITableViewCell {
         separatorInset = .zero
         backgroundColor = Constants.timeZoneTableViewColor
         [lapLabel, timeLapLabel].forEach {
+            
             contentView.addSubview($0)
         }
         setupConstraints()
@@ -55,10 +56,9 @@ class LapTableViewCell: UITableViewCell {
         }
     }
     
-    public func setupData() {
-        lapLabel.text = "Круг 1"
-        timeLapLabel.text = "00:00,00"
-        //titleTextLabel.text = city
+    public func setupData(lap: String, time: String) {
+        lapLabel.text = "Круг \(lap)"
+        timeLapLabel.text = time
     }
 
 }

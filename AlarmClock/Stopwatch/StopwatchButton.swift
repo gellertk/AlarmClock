@@ -10,44 +10,55 @@ import SnapKit
 
 class StopwatchButton: UIButton {
     
-//    private lazy var backgroundCircleView: UIView = {
-//        let view = UIView(frame: CGRect(x: 0,
-//                                        y: 0,
-//                                        width: Constants.stopWatchButtonHeight + 3,
-//                                        height: Constants.stopWatchButtonWidth + 3))
-//        view.layer.cornerRadius = view.frame.width / 2
-//        view.backgroundColor = .lightGray
-//
-//        return view
-//    }()
-    
-    convenience init(title: String,
-                     backgroundColor: UIColor) {
+    override init(frame: CGRect) {
         
-        self.init(frame: CGRect(x: 0,
-                                y: 0,
-                                width: Constants.stopWatchButtonWidthHeight,
-                                height: Constants.stopWatchButtonWidthHeight))
-        self.backgroundColor = backgroundColor
-        //isEnabled = false
-        setTitle(title, for: .normal)
-        titleLabel?.font = UIFont.systemFont(ofSize: Constants.stopWatchFontSize)
+        super.init(frame: CGRect(x: 0,
+                                 y: 0,
+                                 width: Constants.stopwatchButtonWidthHeight,
+                                 height: Constants.stopwatchButtonWidthHeight))
+        titleLabel?.font = UIFont.systemFont(ofSize: Constants.stopwatchFontSize)
         setupView()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     private func setupView() {
         layer.borderWidth = 2
         layer.borderColor = UIColor.black.cgColor
         layer.cornerRadius = frame.size.width / 2
-       // addSubview(backgroundCircleView)
     }
     
-//    private func setupConstraints() {
-//        backgroundCircleView.snp.makeConstraints {
-//            $0.center.equalToSuperview()
-//            $0.width.equalTo(Constants.stopWatchButtonHeight + 3)
-//            $0.height.equalTo(Constants.stopWatchButtonWidth + 3)
-//        }
-//    }
+    public func setupAsStartButton() {
+        setTitle("Старт", for: .normal)
+        setTitleColor(.green.withAlphaComponent(0.9), for: .normal)
+        backgroundColor = Constants.stopwatchStartButtonBackgroundColor
+    }
+    
+    public func setupAsStopButton() {
+        setTitle("Стоп", for: .normal)
+        setTitleColor(.systemRed, for: .normal)
+        backgroundColor = Constants.stopwatchStopButtonBackgroundColor
+    }
+    
+    public func setupAsLapEnabledButton() {
+        setTitle("Круг", for: .normal)
+        setTitleColor(.white, for: .normal)
+        backgroundColor = Constants.stopwatchLapButtonEnabledBackgroundColor
+        isEnabled = true
+    }
+    
+    public func setupAsLapDisabledButton() {
+        setTitle("Круг", for: .normal)
+        setTitleColor(.white.withAlphaComponent(0.7), for: .normal)
+        backgroundColor = Constants.stopwatchLapButtonDisabledBackgroundColor
+        isEnabled = false
+    }
+    
+    public func setupAsResetButton() {
+        setTitle("Сброс", for: .normal)
+        backgroundColor = Constants.stopwatchLapButtonEnabledBackgroundColor
+    }
     
 }
