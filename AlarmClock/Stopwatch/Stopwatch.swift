@@ -9,22 +9,20 @@ import Foundation
 import CloudKit
 
 class Stopwatch {
-    
+
     public weak var stopwatchViewDelegate: StopwatchViewDelegate?
     
+    public var elapsedTime: TimeInterval = 0
     public var isRunning = false
-    public var currentTime: String {
-        return elapsedTime.stringFromTimeInterval()
-    }
     
     private var timer: Timer?
-    
+    private var timerId: String
     private var startTime: Date?
     private var accumulatedTime: TimeInterval = 0
-    private var elapsedTime: TimeInterval = 0
-
-    init(delegate: StopwatchViewDelegate) {
+   
+    init(delegate: StopwatchViewDelegate, id: String) {
         stopwatchViewDelegate = delegate
+        self.timerId = id
     }
     
     public func start() {
@@ -58,7 +56,14 @@ class Stopwatch {
     
     @objc func didTimeChange() {
         elapsedTime = getElapsedTime()
-        stopwatchViewDelegate?.updateTimer()
+        switch timerId {
+        case Constants.mainStopwatchId:
+            stopwatchViewDelegate?.updateMainTimer()
+        case Constants.cellStopwatchId:
+            stopwatchViewDelegate?.updateCellTimer()
+        default:
+            break
+        }
     }
     
     private func getElapsedTime() -> TimeInterval {

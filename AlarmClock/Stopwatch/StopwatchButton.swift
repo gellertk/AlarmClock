@@ -25,9 +25,14 @@ class StopwatchButton: UIButton {
     }
     
     private func setupView() {
+        addTarget(self, action: #selector(didPushButton), for: .touchDown)
         layer.borderWidth = 2
         layer.borderColor = UIColor.black.cgColor
         layer.cornerRadius = frame.size.width / 2
+    }
+    
+    @objc func didPushButton() {
+        backgroundColor = backgroundColor?.withAlphaComponent(0.3)
     }
     
     public func setupAsStartButton() {

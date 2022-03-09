@@ -9,15 +9,16 @@ import UIKit
 import SnapKit
 
 protocol StopwatchViewDelegate: AnyObject {
-    func updateTimer()
+    func updateMainTimer()
+    func updateCellTimer()
 }
 
 class StopwatchView: UIView {
     
-    private var lapTimes: [String] = []
+    private var lapTimes: [TimeInterval] = []
     
-    private lazy var mainStopwatch = Stopwatch(delegate: self)
-    private lazy var cellStopwatch = Stopwatch(delegate: self)
+    private lazy var mainStopwatch = Stopwatch(delegate: self, id: Constants.mainStopwatchId)
+    private lazy var cellStopwatch = Stopwatch(delegate: self, id: Constants.cellStopwatchId)
     
     private var timeLabel: UILabel = {
         let label = UILabel()
@@ -64,9 +65,16 @@ class StopwatchView: UIView {
     private var startAndStopButton: StopwatchButton = {
         let button = StopwatchButton()
         button.addTarget(self, action: #selector(didTapStartAndStopButton), for: .touchUpInside)
+        button.addTarget(self, action: #selector(didPushButton(sender:)), for: .touchDown)
         
         return button
     }()
+    
+    @objc func didPushButton(sender: UIButton) {
+        sender.backgroundColor = sender.backgroundColor?.withAlphaComponent(0.05)
+        startAndStopBackgroundView.layer.borderColor = sender.backgroundColor?.withAlphaComponent(0.05).cgColor
+        //startAndStopBackgroundView.backgroundColor = sender.backgroundColor?.withAlphaComponent(0.005)
+    }
     
     private lazy var lapsTableView: UITableView = {
         let tableView = UITableView()
@@ -174,17 +182,21 @@ class StopwatchView: UIView {
     
     private func stopTimer() {
         mainStopwatch.stop()
+        cellStopwatch.stop()
     }
     
     private func resetTimer() {
         timeLabel.text = Constants.timerStartTime
         mainStopwatch.reset()
+        cellStopwatch.reset()
         lapTimes.removeAll()
         lapsTableView.reloadData()
     }
     
     private func addLap() {
-        lapTimes.insert(mainStopwatch.currentTime, at: 0)
+        cellStopwatch.reset()
+        cellStopwatch.start()
+        lapTimes.insert(0, at: 0)
         lapsTableView.reloadData()
     }
     
@@ -241,7 +253,7 @@ extension StopwatchView: UITableViewDelegate, UITableViewDataSource {
             
             return UITableViewCell()
         }
-        cell.setupData(lap: String(lapTimes.count - (indexPath.row)), time: lapTimes[indexPath.row])
+        cell.setupData(lap: String(lapTimes.count - (indexPath.row)), time: lapTimes[indexPath.row].convertToString())
         
         return cell
     }
@@ -255,8 +267,12 @@ extension StopwatchView: UITableViewDelegate, UITableViewDataSource {
 
 extension StopwatchView: StopwatchViewDelegate {
     
-    func updateTimer() {
-        timeLabel.text = mainStopwatch.currentTime
+    func updateMainTimer() {
+        timeLabel.text = mainStopwatch.elapsedTime.convertToString()
     }
     
+    func updateCellTimer() {
+        lapTimes[0] = cellStopwatch.elapsedTime
+        lapsTableView.reloadRows(at: [IndexPath(row: 0, section: 0)], with: .none)
+    }
 }

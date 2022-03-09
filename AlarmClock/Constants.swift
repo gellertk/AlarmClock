@@ -33,5 +33,6 @@ class Constants {
     static let stopwatchLapButtonEnabledBackgroundColor = UIColor.lightGray.withAlphaComponent(0.4)
     static let stopwatchStartButtonBackgroundColor = UIColor.systemGreen.withAlphaComponent(0.3)
     static let stopwatchStopButtonBackgroundColor = UIColor.systemRed.withAlphaComponent(0.3)
-
+    static let mainStopwatchId = "mainStopwatchId"
+    static let cellStopwatchId = "cellStopwatchId"
 }
