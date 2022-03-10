@@ -8,7 +8,16 @@
 import UIKit
 import SnapKit
 
-class LapTableViewCell: UITableViewCell {
+protocol LapsTableViewCellDelegate: AnyObject {
+    func updateTimer()
+    
+}
+
+class LapsTableViewCell: UITableViewCell {
+    
+    private weak var stopwatchViewDelegate: StopwatchViewDelegate?
+    
+    //public lazy var stopwatch = Stopwatch(delegate: self)
     
     private var lapLabel: UILabel = {
         let label = UILabel()
@@ -18,14 +27,14 @@ class LapTableViewCell: UITableViewCell {
         return label
     }()
     
-    private var timeLapLabel: UILabel = {
+    private var timeLabel: UILabel = {
         let label = UILabel()
         label.textColor = .white
         label.font = UIFont.systemFont(ofSize: Constants.stopwatchFontSize)
         
         return label
     }()
-
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: Constants.timeZoneCellId)
         setupView()
@@ -39,7 +48,7 @@ class LapTableViewCell: UITableViewCell {
         isUserInteractionEnabled = false
         separatorInset = .zero
         backgroundColor = Constants.timeZoneTableViewColor
-        [lapLabel, timeLapLabel].forEach {
+        [lapLabel, timeLabel].forEach {
             
             contentView.addSubview($0)
         }
@@ -51,14 +60,28 @@ class LapTableViewCell: UITableViewCell {
             $0.centerY.leading.equalToSuperview()
         }
         
-        timeLapLabel.snp.makeConstraints {
+        timeLabel.snp.makeConstraints {
             $0.centerY.trailing.equalToSuperview()
         }
     }
     
-    public func setupData(lap: String, time: String) {
+    public func setup(lap: String, time: String, currentRow: Int) {
         lapLabel.text = "Круг \(lap)"
-        timeLapLabel.text = time
+        //        stopwatch.reset()
+        //        if currentRow == 0 {
+        //            stopwatch.start()
+        //        } else {
+        //            timeLabel.text = time
+        //        }
+        timeLabel.text = time
     }
+    
+}
 
+extension LapsTableViewCell: LapsTableViewCellDelegate, StopwatchViewDelegate {
+    
+    func updateTimer() {
+        //timeLabel.text = stopwatch.elapsedTime.convertToString()
+    }
+    
 }
