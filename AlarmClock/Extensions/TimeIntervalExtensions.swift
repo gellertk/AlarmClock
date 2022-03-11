@@ -7,6 +7,7 @@
 
 import Foundation
 
+//TODO: fix rounding
 extension TimeInterval{
     
     func convertToString() -> String {

@@ -15,6 +15,12 @@ protocol StopwatchViewDelegate: AnyObject {
 class StopwatchView: UIView {
     
     private var lapTimes: [TimeInterval] = []
+    private var cellStopwatchElapsedTime: Double {
+        if lapTimes.count > 1 {
+            return stopwatch.elapsedTime - lapTimes.reduce(0, +)
+        }
+        return stopwatch.elapsedTime
+    }
     
     private lazy var stopwatch = Stopwatch(delegate: self)
     
@@ -171,9 +177,6 @@ class StopwatchView: UIView {
     
     private func startTimer() {
         stopwatch.start()
-        //        if let cell = lapsTableView.cellForRow(at: IndexPath(row: 0, section: 0)) as? LapsTableViewCell {
-        //            cell.stopwatch.start()
-        //        }
         if lapTimes.isEmpty {
             addLap()
         }
@@ -181,9 +184,7 @@ class StopwatchView: UIView {
     
     private func stopTimer() {
         stopwatch.stop()
-        //        if let cell = lapsTableView.cellForRow(at: IndexPath(row: 0, section: 0)) as? LapsTableViewCell {
-        //            cell.stopwatch.stop()
-        //        }
+        lapTimes[lapTimes.count - 1] = cellStopwatchElapsedTime
     }
     
     private func resetTimer() {
@@ -194,12 +195,10 @@ class StopwatchView: UIView {
     }
     
     private func addLap() {
-//        if let cell = lapsTableView.cellForRow(at: IndexPath(row: 0, section: 0)) as? LapsTableViewCell {
-//            lapTimes.append(cell.stopwatch.elapsedTime)
-//        } else {
-//            lapTimes.append(0.0)
-//        }
-        lapTimes.append(stopwatch.elapsedTime)
+        if !lapTimes.isEmpty {
+            lapTimes[lapTimes.count - 1] = cellStopwatchElapsedTime
+        }
+        lapTimes.append(0.0)
         lapsTableView.reloadData()
     }
     
@@ -241,7 +240,7 @@ class StopwatchView: UIView {
         lapAndResetButton.setupAsLapDisabledButton()
         lapAndResetBackgroundView.layer.borderColor = Constants.stopwatchLapButtonDisabledBackgroundColor.cgColor
     }
-    
+        
 }
 
 extension StopwatchView: UITableViewDelegate, UITableViewDataSource {
@@ -256,8 +255,7 @@ extension StopwatchView: UITableViewDelegate, UITableViewDataSource {
             
             return UITableViewCell()
         }
-        let lapNumber = String(lapTimes.count - (indexPath.row))
-        cell.setup(lap: lapNumber, time: lapTimes[indexPath.row].convertToString(), currentRow: indexPath.row)
+        cell.setup(lap: String(lapTimes.count - indexPath.row), time: lapTimes.reversed()[indexPath.row].convertToString())
         
         return cell
     }
@@ -274,9 +272,8 @@ extension StopwatchView: StopwatchViewDelegate, LapsTableViewCellDelegate {
     func updateTimer() {
         timeLabel.text = stopwatch.elapsedTime.convertToString()
         if let cell = lapsTableView.cellForRow(at: IndexPath(row: 0, section: 0)) as? LapsTableViewCell {
-            cell.setup(lap: String(lapTimes.count), time: stopwatch.elapsedTime.convertToString(), currentRow: 0)
+            cell.setup(lap: String(lapTimes.count), time: cellStopwatchElapsedTime.convertToString())
         }
-        lapTimes[lapTimes.count - 1] = stopwatch.elapsedTime
     }
     
 }

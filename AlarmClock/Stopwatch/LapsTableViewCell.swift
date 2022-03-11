@@ -10,7 +10,6 @@ import SnapKit
 
 protocol LapsTableViewCellDelegate: AnyObject {
     func updateTimer()
-    
 }
 
 class LapsTableViewCell: UITableViewCell {
@@ -65,23 +64,9 @@ class LapsTableViewCell: UITableViewCell {
         }
     }
     
-    public func setup(lap: String, time: String, currentRow: Int) {
+    public func setup(lap: String, time: String) {
         lapLabel.text = "Круг \(lap)"
-        //        stopwatch.reset()
-        //        if currentRow == 0 {
-        //            stopwatch.start()
-        //        } else {
-        //            timeLabel.text = time
-        //        }
         timeLabel.text = time
-    }
-    
-}
-
-extension LapsTableViewCell: LapsTableViewCellDelegate, StopwatchViewDelegate {
-    
-    func updateTimer() {
-        //timeLabel.text = stopwatch.elapsedTime.convertToString()
     }
     
 }
