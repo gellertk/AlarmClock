@@ -9,19 +9,20 @@ import Foundation
 
 class Stopwatch {
     
-    public typealias StopwatchDelegatesType = StopwatchViewDelegate & LapsTableViewCellDelegate
-
-    public weak var delegate: StopwatchDelegatesType?
+    public weak var stopwatchViewDelegate: StopwatchViewDelegate?
     
-    public var elapsedTime: TimeInterval = 0
+    public var roundedElapsedTime: TimeInterval {
+        elapsedTime.rounded(to: 2)
+    }
+    private var elapsedTime: TimeInterval = 0
     public var isRunning = false
     
     private var timer: Timer?
     private var startTime: Date?
     private var accumulatedTime: TimeInterval = 0
    
-    init(delegate: StopwatchDelegatesType) {
-        self.delegate = delegate
+    init(stopwatchViewDelegate: StopwatchViewDelegate) {
+        self.stopwatchViewDelegate = stopwatchViewDelegate
     }
     
     public func start() {
@@ -55,11 +56,11 @@ class Stopwatch {
     
     @objc func didTimeChange() {
         elapsedTime = getElapsedTime()
-        delegate?.updateTimer()
+        stopwatchViewDelegate?.updateTimer()
     }
     
     private func getElapsedTime() -> TimeInterval {
-        return -(startTime?.timeIntervalSinceNow ?? 0) + accumulatedTime
+        return (-(startTime?.timeIntervalSinceNow ?? 0) + accumulatedTime).rounded(to: 2)
     }
     
 }

@@ -17,18 +17,18 @@ class StopwatchView: UIView {
     private var lapTimes: [TimeInterval] = []
     private var cellStopwatchElapsedTime: Double {
         if lapTimes.count > 1 {
-            return stopwatch.elapsedTime - lapTimes.reduce(0, +)
+            return (stopwatch.roundedElapsedTime - lapTimes.reduce(0, +) + lapTimes[lapTimes.count - 1]).rounded(to: 2)
         }
-        return stopwatch.elapsedTime
+        return stopwatch.roundedElapsedTime
     }
     
-    private lazy var stopwatch = Stopwatch(delegate: self)
+    private lazy var stopwatch = Stopwatch(stopwatchViewDelegate: self)
     
     private var timeLabel: UILabel = {
         let label = UILabel()
         label.textColor = .white
         label.text = Constants.timerStartTime
-        label.font = UIFont.systemFont(ofSize: 90, weight: .thin)
+        label.font = UIFont.monospacedDigitSystemFont(ofSize: 88, weight: .thin)
         
         return label
     }()
@@ -240,7 +240,7 @@ class StopwatchView: UIView {
         lapAndResetButton.setupAsLapDisabledButton()
         lapAndResetBackgroundView.layer.borderColor = Constants.stopwatchLapButtonDisabledBackgroundColor.cgColor
     }
-        
+    
 }
 
 extension StopwatchView: UITableViewDelegate, UITableViewDataSource {
@@ -255,7 +255,8 @@ extension StopwatchView: UITableViewDelegate, UITableViewDataSource {
             
             return UITableViewCell()
         }
-        cell.setup(lap: String(lapTimes.count - indexPath.row), time: lapTimes.reversed()[indexPath.row].convertToString())
+        cell.setup(lap: String(lapTimes.count - indexPath.row),
+                   time: lapTimes.reversed()[indexPath.row].stringFromTimeInterval())
         
         return cell
     }
@@ -270,9 +271,13 @@ extension StopwatchView: UITableViewDelegate, UITableViewDataSource {
 extension StopwatchView: StopwatchViewDelegate, LapsTableViewCellDelegate {
     
     func updateTimer() {
-        timeLabel.text = stopwatch.elapsedTime.convertToString()
+        timeLabel.text = stopwatch.roundedElapsedTime.stringFromTimeInterval()
         if let cell = lapsTableView.cellForRow(at: IndexPath(row: 0, section: 0)) as? LapsTableViewCell {
-            cell.setup(lap: String(lapTimes.count), time: cellStopwatchElapsedTime.convertToString())
+//            var cellElapsedTime = cellStopwatchElapsedTime.minuteSecondMs
+//            if lapTimes.count > 1 {
+//                cellElapsedTime = (ceil(cellStopwatchElapsedTime * 100) / 100.0).minuteSecondMs
+//            }
+            cell.setup(lap: String(lapTimes.count), time: cellStopwatchElapsedTime.stringFromTimeInterval())
         }
     }
     

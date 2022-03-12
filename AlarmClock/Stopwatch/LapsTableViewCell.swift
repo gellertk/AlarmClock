@@ -29,7 +29,7 @@ class LapsTableViewCell: UITableViewCell {
     private var timeLabel: UILabel = {
         let label = UILabel()
         label.textColor = .white
-        label.font = UIFont.systemFont(ofSize: Constants.stopwatchFontSize)
+        label.font = UIFont.monospacedDigitSystemFont(ofSize: Constants.stopwatchFontSize, weight: .regular)
         
         return label
     }()

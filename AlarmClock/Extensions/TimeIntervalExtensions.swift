@@ -8,17 +8,26 @@
 import Foundation
 
 //TODO: fix rounding
-extension TimeInterval{
+extension TimeInterval {
     
-    func convertToString() -> String {
+    func stringFromTimeInterval() -> String {
         
         let time = NSInteger(self)
         
-        let ms = Int((self.truncatingRemainder(dividingBy: 1)) * 100)
-        let seconds = time % 60
+        let hours = (time / 3600)
         let minutes = (time / 60) % 60
+        let seconds = time % 60
+        let ms = Int(String(self).suffix(2)) ?? 0
         
-        return String(format: "%0.2d:%0.2d,%0.2d", minutes, seconds, ms)
+        if hours == 0 {
+            return String(format: "%0.2d:%0.2d,%0.2d", minutes, seconds, ms)
+        } else {
+            return String(format: "%0.2d:%0.2d,%0.2d", minutes, seconds, ms)
+        }
     }
     
+    func rounded(to place: Int) -> Double {
+        let divisor = pow(10.0, Double(place))
+        return (self * divisor).rounded() / divisor
+    }
 }
