@@ -34,50 +34,45 @@ class StopwatchView: UIView {
     }()
     
     private var lapAndResetButton: StopwatchButton = {
-        let button = StopwatchButton()
-        button.addTarget(self, action: #selector(didTapLapAndResetButton), for: .touchUpInside)
+        let button = StopwatchButton(type: .lapDisabled)
+//        button.addTarget(self, action: #selector(didTapLapAndResetButton), for: .touchUpInside)
+//        let button = UIButton()
         
         return button
     }()
     
-    //TODO: Code doubled make Stopwatch button as view with background view and button
-    private lazy var lapAndResetBackgroundView: UIView = {
-        let view = UIView(frame: CGRect(x: 0,
-                                        y: 0,
-                                        width: Constants.stopwatchBackgroundCircleWidthHeight,
-                                        height: Constants.stopwatchBackgroundCircleWidthHeight))
-        view.layer.cornerRadius = view.frame.width / 2
-        view.layer.borderWidth = 2
-        view.backgroundColor = backgroundColor
-        
-        return view
-    }()
+   
     
     //TODO: Code doubled make Stopwatch button as view with background view and button
-    private lazy var startAndStopBackgroundView: UIView = {
-        let view = UIView(frame: CGRect(x: 0,
-                                        y: 0,
-                                        width: Constants.stopwatchBackgroundCircleWidthHeight,
-                                        height: Constants.stopwatchBackgroundCircleWidthHeight))
-        view.layer.cornerRadius = view.frame.width / 2
-        view.layer.borderWidth = 2
-        view.backgroundColor = backgroundColor
-        
-        return view
-    }()
+//    private lazy var lapAndResetBackgroundView: UIView = {
+//        let view = UIView(frame: CGRect(x: 0,
+//                                        y: 0,
+//                                        width: Constants.stopwatchBackgroundCircleWidthHeight,
+//                                        height: Constants.stopwatchBackgroundCircleWidthHeight))
+//        view.layer.cornerRadius = view.frame.width / 2
+//        view.layer.borderWidth = 2
+//        view.backgroundColor = backgroundColor
+//
+//        return view
+//    }()
+    
+    //TODO: Code doubled make Stopwatch button as view with background view and button
+//    private lazy var startAndStopBackgroundView: UIView = {
+//        let view = UIView(frame: CGRect(x: 0,
+//                                        y: 0,
+//                                        width: Constants.stopwatchBackgroundCircleWidthHeight,
+//                                        height: Constants.stopwatchBackgroundCircleWidthHeight))
+//        view.layer.cornerRadius = view.frame.width / 2
+//        view.layer.borderWidth = 2
+//        view.backgroundColor = backgroundColor
+//
+//        return view
+//    }()
     
     private var startAndStopButton: StopwatchButton = {
-        let button = StopwatchButton()
-        button.addTarget(self, action: #selector(didTapStartAndStopButton), for: .touchUpInside)
-        button.addTarget(self, action: #selector(didPushButton(sender:)), for: .touchDown)
         
-        return button
+        return StopwatchButton(type: .start)
     }()
-    
-    @objc func didPushButton(sender: UIButton) {
-        sender.backgroundColor = sender.backgroundColor?.withAlphaComponent(0.05)
-        startAndStopBackgroundView.layer.borderColor = sender.backgroundColor?.withAlphaComponent(0.05).cgColor
-    }
     
     private lazy var lapsTableView: UITableView = {
         let tableView = UITableView()
@@ -101,21 +96,22 @@ class StopwatchView: UIView {
     }
     
     private func setupView() {
-        
-        setupButtons()
+        //setupButtons()
         
         [timeLabel,
          lapAndResetButton,
          startAndStopButton,
-         lapsTableView,
-         lapAndResetBackgroundView,
-         startAndStopBackgroundView].forEach {
+         lapsTableView,].forEach {
+         //lapAndResetBackgroundView,
+         //startAndStopBackgroundView].forEach {
             
             addSubview($0)
         }
         
-        sendSubviewToBack(lapAndResetBackgroundView)
-        sendSubviewToBack(startAndStopBackgroundView)
+        //sendSubviewToBack(lapAndResetBackgroundView)
+        //sendSubviewToBack(startAndStopBackgroundView)
+        //imageView.layer.insertSublayer(borderLayer, above: imageView.layer)
+        //lapAndResetButton.layer.insertSublayer(secondLayer, above: lapAndResetButton.layer)
         setupConstraints()
     }
     
@@ -130,23 +126,13 @@ class StopwatchView: UIView {
         lapAndResetButton.snp.makeConstraints {
             $0.centerY.equalToSuperview()
             $0.leading.equalToSuperview().offset(Constants.stopwatchBorderConstraint)
-            $0.width.height.equalTo(Constants.stopwatchButtonWidthHeight)
-        }
-        
-        lapAndResetBackgroundView.snp.makeConstraints {
-            $0.center.equalTo(lapAndResetButton)
-            $0.width.height.equalTo(Constants.stopwatchBackgroundCircleWidthHeight)
-        }
-        
-        startAndStopBackgroundView.snp.makeConstraints {
-            $0.center.equalTo(startAndStopButton)
-            $0.width.height.equalTo(Constants.stopwatchBackgroundCircleWidthHeight)
+            $0.width.height.equalTo(Constants.stopwatchButtonViewWidthHeight)
         }
         
         startAndStopButton.snp.makeConstraints {
             $0.centerY.equalTo(lapAndResetButton)
             $0.trailing.equalToSuperview().offset(-Constants.stopwatchBorderConstraint)
-            $0.width.height.equalTo(Constants.stopwatchButtonWidthHeight)
+            $0.width.height.equalTo(Constants.stopwatchButtonViewWidthHeight)
         }
         
         lapsTableView.snp.makeConstraints {
@@ -163,7 +149,7 @@ class StopwatchView: UIView {
         } else {
             startTimer()
         }
-        setupButtons()
+        //setupButtons()
     }
     
     @objc func didTapLapAndResetButton() {
@@ -172,7 +158,16 @@ class StopwatchView: UIView {
         } else {
             resetTimer()
         }
-        setupButtons()
+        //setupButtons()
+    }
+    
+//    @objc func didPushStartAndStopButton() {
+//        startAndStopButton.backgroundColor = startAndStopButton.backgroundColor?.withAlphaComponent(0.05)
+//        startAndStopBackgroundView.layer.borderColor = startAndStopButton.backgroundColor?.withAlphaComponent(0.05).cgColor
+//    }
+    
+    @objc func didCancelPushStartAndStopButton() {
+        //setupButtons()
     }
     
     private func startTimer() {
@@ -202,44 +197,44 @@ class StopwatchView: UIView {
         lapsTableView.reloadData()
     }
     
-    private func setupButtons() {
-        if lapTimes.isEmpty {
-            setupDisabledLapButton()
-            setupStartButton()
-            
-        } else if stopwatch.isRunning {
-            setupLapEnabledButton()
-            setupStopButton()
-            
-        } else {
-            setupResetButton()
-            setupStartButton()
-        }
-    }
+//    private func setupButtons() {
+//        if lapTimes.isEmpty {
+//            setupDisabledLapButton()
+//            setupStartButton()
+//
+//        } else if stopwatch.isRunning {
+//            setupLapEnabledButton()
+//            setupStopButton()
+//
+//        } else {
+//            setupResetButton()
+//            setupStartButton()
+//        }
+//    }
     
-    private func setupStartButton() {
-        startAndStopButton.setupAsStartButton()
-        startAndStopBackgroundView.layer.borderColor = Constants.stopwatchStartButtonBackgroundColor.cgColor
-    }
-    
-    private func setupStopButton() {
-        startAndStopButton.setupAsStopButton()
-        startAndStopBackgroundView.layer.borderColor = Constants.stopwatchStopButtonBackgroundColor.cgColor
-    }
-    
-    private func setupResetButton() {
-        lapAndResetButton.setupAsResetButton()
-    }
-    
-    private func setupLapEnabledButton() {
-        lapAndResetButton.setupAsLapEnabledButton()
-        lapAndResetBackgroundView.layer.borderColor = Constants.stopwatchLapButtonEnabledBackgroundColor.cgColor
-    }
-    
-    private func setupDisabledLapButton() {
-        lapAndResetButton.setupAsLapDisabledButton()
-        lapAndResetBackgroundView.layer.borderColor = Constants.stopwatchLapButtonDisabledBackgroundColor.cgColor
-    }
+//    private func setupStartButton() {
+//        startAndStopButton.setupAsStartButton()
+//        startAndStopBackgroundView.layer.borderColor = Constants.stopwatchStartButtonBackgroundColor.cgColor
+//    }
+//
+//    private func setupStopButton() {
+//        startAndStopButton.setupAsStopButton()
+//        startAndStopBackgroundView.layer.borderColor = Constants.stopwatchStopButtonBackgroundColor.cgColor
+//    }
+//
+//    private func setupResetButton() {
+//        lapAndResetButton.setupAsResetButton()
+//    }
+//
+//    private func setupLapEnabledButton() {
+//        lapAndResetButton.setupAsLapEnabledButton()
+//        //lapAndResetBackgroundView.layer.borderColor = Constants.stopwatchLapButtonEnabledBackgroundColor.cgColor
+//    }
+//
+//    private func setupDisabledLapButton() {
+//        lapAndResetButton.setupAsLapDisabledButton()
+//        //lapAndResetBackgroundView.layer.borderColor = Constants.stopwatchLapButtonDisabledBackgroundColor.cgColor
+//    }
     
 }
 
