@@ -33,45 +33,17 @@ class StopwatchView: UIView {
         return label
     }()
     
-    private var lapAndResetButton: StopwatchButton = {
-        let button = StopwatchButton(type: .lapDisabled)
+    private var lapAndResetButton: StopwatchButtonView = {
+        let button = StopwatchButtonView(type: .lapDisabled)
 //        button.addTarget(self, action: #selector(didTapLapAndResetButton), for: .touchUpInside)
 //        let button = UIButton()
         
         return button
     }()
     
-   
-    
-    //TODO: Code doubled make Stopwatch button as view with background view and button
-//    private lazy var lapAndResetBackgroundView: UIView = {
-//        let view = UIView(frame: CGRect(x: 0,
-//                                        y: 0,
-//                                        width: Constants.stopwatchBackgroundCircleWidthHeight,
-//                                        height: Constants.stopwatchBackgroundCircleWidthHeight))
-//        view.layer.cornerRadius = view.frame.width / 2
-//        view.layer.borderWidth = 2
-//        view.backgroundColor = backgroundColor
-//
-//        return view
-//    }()
-    
-    //TODO: Code doubled make Stopwatch button as view with background view and button
-//    private lazy var startAndStopBackgroundView: UIView = {
-//        let view = UIView(frame: CGRect(x: 0,
-//                                        y: 0,
-//                                        width: Constants.stopwatchBackgroundCircleWidthHeight,
-//                                        height: Constants.stopwatchBackgroundCircleWidthHeight))
-//        view.layer.cornerRadius = view.frame.width / 2
-//        view.layer.borderWidth = 2
-//        view.backgroundColor = backgroundColor
-//
-//        return view
-//    }()
-    
-    private var startAndStopButton: StopwatchButton = {
+    private var startAndStopButton: StopwatchButtonView = {
         
-        return StopwatchButton(type: .start)
+        return StopwatchButtonView(type: .start)
     }()
     
     private lazy var lapsTableView: UITableView = {
@@ -96,22 +68,13 @@ class StopwatchView: UIView {
     }
     
     private func setupView() {
-        //setupButtons()
-        
         [timeLabel,
          lapAndResetButton,
          startAndStopButton,
          lapsTableView,].forEach {
-         //lapAndResetBackgroundView,
-         //startAndStopBackgroundView].forEach {
             
             addSubview($0)
         }
-        
-        //sendSubviewToBack(lapAndResetBackgroundView)
-        //sendSubviewToBack(startAndStopBackgroundView)
-        //imageView.layer.insertSublayer(borderLayer, above: imageView.layer)
-        //lapAndResetButton.layer.insertSublayer(secondLayer, above: lapAndResetButton.layer)
         setupConstraints()
     }
     
@@ -140,6 +103,15 @@ class StopwatchView: UIView {
             $0.leading.equalTo(lapAndResetButton)
             $0.trailing.equalTo(startAndStopButton)
             $0.bottomMargin.equalToSuperview()
+        }
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        lapAndResetButton.snp.makeConstraints {
+            $0.centerY.equalToSuperview()
+            $0.leading.equalToSuperview().offset(Constants.stopwatchBorderConstraint)
+            $0.width.height.equalTo(Constants.stopwatchButtonViewWidthHeight)
         }
     }
     

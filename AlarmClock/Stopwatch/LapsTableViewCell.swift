@@ -15,9 +15,7 @@ protocol LapsTableViewCellDelegate: AnyObject {
 class LapsTableViewCell: UITableViewCell {
     
     private weak var stopwatchViewDelegate: StopwatchViewDelegate?
-    
-    //public lazy var stopwatch = Stopwatch(delegate: self)
-    
+        
     private var lapLabel: UILabel = {
         let label = UILabel()
         label.textColor = .white

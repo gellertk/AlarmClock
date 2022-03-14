@@ -25,7 +25,7 @@
 		CB6076A627D4FB43008333A8 /* LapsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB6076A527D4FB43008333A8 /* LapsTableViewCell.swift */; };
 		CB7ABE4A27B3FFA800CD04B1 /* WorldClockTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB7ABE4927B3FFA800CD04B1 /* WorldClockTableViewCell.swift */; };
 		CBA774D227D5F16F005CE96C /* TableViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBA774D127D5F16F005CE96C /* TableViewExtensions.swift */; };
-		CBA774D627D6043F005CE96C /* StopwatchButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBA774D527D6043F005CE96C /* StopwatchButton.swift */; };
+		CBA774D627D6043F005CE96C /* StopwatchButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBA774D527D6043F005CE96C /* StopwatchButtonView.swift */; };
 		CBA774D827D64A55005CE96C /* Stopwatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBA774D727D64A55005CE96C /* Stopwatch.swift */; };
 		CBA774DA27D6767B005CE96C /* TimeIntervalExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBA774D927D6767B005CE96C /* TimeIntervalExtensions.swift */; };
 		CBAACF3227B272D200A35A7F /* WorldClockTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBAACF3127B272D200A35A7F /* WorldClockTabBarController.swift */; };
@@ -62,7 +62,7 @@
 		CB6076A527D4FB43008333A8 /* LapsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LapsTableViewCell.swift; sourceTree = "<group>"; };
 		CB7ABE4927B3FFA800CD04B1 /* WorldClockTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorldClockTableViewCell.swift; sourceTree = "<group>"; };
 		CBA774D127D5F16F005CE96C /* TableViewExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewExtensions.swift; sourceTree = "<group>"; };
-		CBA774D527D6043F005CE96C /* StopwatchButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StopwatchButton.swift; sourceTree = "<group>"; };
+		CBA774D527D6043F005CE96C /* StopwatchButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StopwatchButtonView.swift; sourceTree = "<group>"; };
 		CBA774D727D64A55005CE96C /* Stopwatch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stopwatch.swift; sourceTree = "<group>"; };
 		CBA774D927D6767B005CE96C /* TimeIntervalExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeIntervalExtensions.swift; sourceTree = "<group>"; };
 		CBAACF3127B272D200A35A7F /* WorldClockTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorldClockTabBarController.swift; sourceTree = "<group>"; };
@@ -161,7 +161,7 @@
 				CB0C192F27B120AD0074976D /* StopwatchViewController.swift */,
 				CB0C193C27B121C90074976D /* StopwatchView.swift */,
 				CBA774D727D64A55005CE96C /* Stopwatch.swift */,
-				CBA774D527D6043F005CE96C /* StopwatchButton.swift */,
+				CBA774D527D6043F005CE96C /* StopwatchButtonView.swift */,
 				CB6076A527D4FB43008333A8 /* LapsTableViewCell.swift */,
 			);
 			path = Stopwatch;
@@ -333,7 +333,7 @@
 				CB0C192E27B1203B0074976D /* AlarmClockViewController.swift in Sources */,
 				CBA774D827D64A55005CE96C /* Stopwatch.swift in Sources */,
 				CBC7772327B503F60072EE40 /* DateExtensions.swift in Sources */,
-				CBA774D627D6043F005CE96C /* StopwatchButton.swift in Sources */,
+				CBA774D627D6043F005CE96C /* StopwatchButtonView.swift in Sources */,
 				CB6076A627D4FB43008333A8 /* LapsTableViewCell.swift in Sources */,
 				CBAACF3227B272D200A35A7F /* WorldClockTabBarController.swift in Sources */,
 				CB0C192027B119430074976D /* WorldClock.xcdatamodeld in Sources */,

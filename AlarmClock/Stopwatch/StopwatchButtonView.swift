@@ -16,9 +16,10 @@ enum StopwatchButtonType {
     case lapEnabled
 }
 
-class StopwatchButton: UIView {
+class StopwatchButtonView: UIView {
     
     private let type: StopwatchButtonType?
+    private var action: (() -> ())?
     
     private lazy var button: UIButton = {
         let button = UIButton(frame: CGRect(x: 0,
@@ -33,10 +34,7 @@ class StopwatchButton: UIView {
     
     init(type: StopwatchButtonType) {
         self.type = type
-        super.init(frame: CGRect(x: 0,
-                                 y: 0,
-                                 width: Constants.stopwatchButtonViewWidthHeight,
-                                 height: Constants.stopwatchButtonViewWidthHeight))
+        super.init()
         setupView()
     }
     
@@ -45,6 +43,7 @@ class StopwatchButton: UIView {
     }
     
     private func setupView() {
+        translatesAutoresizingMaskIntoConstraints = false
         layer.borderWidth = 2
         layer.cornerRadius = frame.size.width / 2
         addSubview(button)
@@ -67,7 +66,7 @@ class StopwatchButton: UIView {
             setupAsEnabledLapButton()
         case .reset:
             setupAsResetButton()
-        default:
+        case .none:
             break
         }
     }
@@ -87,13 +86,16 @@ class StopwatchButton: UIView {
     }
     
     @objc func didTap() {
+        print(1)
         //borderColor = UIColor.yellow.cgColor
         //secondLayer.frame = bounds
         //layer.insertSublayer(secondLayer, above: layer)
     }
     
     @objc func didPush() {
-        setupButtons()
+        //setupButtons()
+        //button.backgroundColor = button.backgroundColor?.withAlphaComponent(0.3)
+        //button.layer.borderColor = button.layer.borderColor.withAlp
     }
     
     @objc func didDragEnd() {
@@ -106,30 +108,42 @@ class StopwatchButton: UIView {
     private func setupAsStartButton() {
         button.setTitle("Старт", for: .normal)
         button.setTitleColor(Constants.stopwatchStartButtonTextColor, for: .normal)
-        backgroundColor = Constants.stopwatchStartButtonBackgroundColor
+        button.backgroundColor = Constants.stopwatchStartButtonBackgroundColor
+        layer.borderColor = Constants.stopwatchStartButtonBackgroundColor.cgColor
     }
     
     private func setupAsStopButton() {
         button.setTitle("Стоп", for: .normal)
         button.setTitleColor(.systemRed, for: .normal)
-        backgroundColor = Constants.stopwatchStopButtonBackgroundColor
+        //backgroundColor = Constants.stopwatchStopButtonBackgroundColor
     }
     
     private func setupAsDisabledLapButton() {
         button.setTitle("Круг", for: .normal)
         button.setTitleColor(.white.withAlphaComponent(0.6), for: .normal)
-        backgroundColor = Constants.resetAndLapButtonDisabledBackgroundColor
+        //backgroundColor = Constants.resetAndLapButtonDisabledBackgroundColor
     }
     
     private func setupAsEnabledLapButton() {
         button.setTitle("Круг", for: .normal)
         button.setTitleColor(.white, for: .normal)
-        backgroundColor = Constants.resetAndLapButtonEnabledBackgroundColor
+        //backgroundColor = Constants.resetAndLapButtonEnabledBackgroundColor
         layer.borderColor = Constants.resetAndLapButtonEnabledBackgroundColor.cgColor
     }
     
     private func setupAsResetButton() {
         button.setTitle("Сброс", for: .normal)
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        button.snp.removeConstraints()
+        button.snp.makeConstraints {
+            $0.center.equalToSuperview()
+            $0.width.equalTo(Constants.stopwatchButtonWidthHeight)
+            $0.height.equalTo(Constants.stopwatchButtonWidthHeight)
+        }
     }
 
 }

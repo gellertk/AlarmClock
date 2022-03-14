@@ -29,12 +29,10 @@ class Constants {
     static let stopwatchHeightForRow: CGFloat = 44
     static let stopwatchButtonWidthHeight: CGFloat = 80
     static let stopwatchFontSize: CGFloat = 16
-    static let stopwatchButtonViewWidthHeight: CGFloat = Constants.stopwatchButtonWidthHeight + 8
+    static let stopwatchButtonViewWidthHeight: CGFloat = Constants.stopwatchButtonWidthHeight + 0.5
     static let stopwatchBorderConstraint: CGFloat = 20
-    
-    static let lapButtonDisabledBackgroundColor: UIColor         = .lightGray.withAlphaComponent(0.17)
-    
-    static let resetAndLapButtonDisabledBackgroundColor: UIColor = .lightGray.withAlphaComponent(0.18)
+        
+    static let resetAndLapButtonDisabledBackgroundColor: UIColor = .lightGray.withAlphaComponent(0.13)
     static let resetAndLapButtonEnabledBackgroundColor: UIColor  = .lightGray.withAlphaComponent(0.4)
     
     static let stopwatchStartButtonBackgroundColor: UIColor      = .systemGreen.withAlphaComponent(0.3)
