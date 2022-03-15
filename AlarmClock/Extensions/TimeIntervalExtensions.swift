@@ -10,7 +10,7 @@ import Foundation
 //TODO: fix rounding
 extension TimeInterval {
     
-    func stringFromTimeInterval() -> String {
+    func convertToStopwatchString() -> String {
         
         let time = NSInteger(self)
         
@@ -25,9 +25,5 @@ extension TimeInterval {
             return String(format: "%0.2d:%0.2d,%0.2d", minutes, seconds, ms)
         }
     }
-    
-    func rounded(to place: Int) -> Double {
-        let divisor = pow(10.0, Double(place))
-        return (self * divisor).rounded() / divisor
-    }
+
 }

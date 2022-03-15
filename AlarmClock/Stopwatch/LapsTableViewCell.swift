@@ -9,17 +9,17 @@ import UIKit
 import SnapKit
 
 protocol LapsTableViewCellDelegate: AnyObject {
-    func updateTimer()
+    func updateStopwatch()
 }
 
 class LapsTableViewCell: UITableViewCell {
     
     private weak var stopwatchViewDelegate: StopwatchViewDelegate?
-        
+    
     private var lapLabel: UILabel = {
         let label = UILabel()
         label.textColor = .white
-        label.font = UIFont.systemFont(ofSize: Constants.stopwatchFontSize)
+        label.font = UIFont.systemFont(ofSize: Constants.circleButtonFontSize)
         
         return label
     }()
@@ -27,7 +27,7 @@ class LapsTableViewCell: UITableViewCell {
     private var timeLabel: UILabel = {
         let label = UILabel()
         label.textColor = .white
-        label.font = UIFont.monospacedDigitSystemFont(ofSize: Constants.stopwatchFontSize, weight: .regular)
+        label.font = UIFont.monospacedDigitSystemFont(ofSize: Constants.circleButtonFontSize, weight: .regular)
         
         return label
     }()
