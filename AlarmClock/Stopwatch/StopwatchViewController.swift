@@ -13,7 +13,7 @@ protocol StopwatchViewControllerDelegate: AnyObject {
     func stopStopwatch()
     func saveLap()
     func resetStopwatch()
-    func updateStopwatch()
+    func didTimeChange()
 }
 
 class StopwatchViewController: UIViewController {
@@ -21,14 +21,14 @@ class StopwatchViewController: UIViewController {
     private lazy var stopwatch = Stopwatch(stopwatchViewControllerDelegate: self)
     
     private var lapTimes: [TimeInterval] = []
-    private var cellStopwatchElapsedTime: Double {
+    private var elapsedLapTime: Double {
         if lapTimes.count > 1 {
             return (stopwatch.elapsedTime - lapTimes.reduce(0, +) + lapTimes[lapTimes.count - 1])
         }
         return stopwatch.elapsedTime
     }
     
-    private lazy var stopwatchView: UIView = {
+    private lazy var stopwatchView: StopwatchView = {
         let view = StopwatchView()
         view.stopwatchViewControllerDelegate = self
         
@@ -40,67 +40,88 @@ class StopwatchViewController: UIViewController {
         setupView()
     }
     
-    private func setupView() {
+    private func addLap() {
+        if !lapTimes.isEmpty {
+            lapTimes[lapTimes.count - 1] = elapsedLapTime
+        }
+        lapTimes.append(0.0)
+        stopwatchView.lapsTableView.reloadData()
+    }
+    
+}
+
+private extension StopwatchViewController {
+    
+    func setupView() {
         view.addSubview(stopwatchView)
+        setupDelegatesAndDataSources()
         setupConstraints()
     }
     
-    private func setupConstraints() {
+    func setupConstraints() {
         stopwatchView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
     }
     
-    //    private func startStopwatch() {
-    //        stopwatch.start()
-    //        if lapTimes.isEmpty {
-    //            addLap()
-    //        }
-    //    }
-    //
-    //    private func stopStopwatch() {
-    //        stopwatch.stop()
-    //        lapTimes[lapTimes.count - 1] = cellStopwatchElapsedTime
-    //    }
-    //
-    //    private func resetStopwatch() {
-    //        //timeLabel.text = Constants.stopwatchStartTime
-    //        stopwatch.reset()
-    //        lapTimes.removeAll()
-    //        //lapsTableView.reloadData()
-    //    }
-    //
-    //    private func addLap() {
-    //        if !lapTimes.isEmpty {
-    //            lapTimes[lapTimes.count - 1] = cellStopwatchElapsedTime
-    //        }
-    //        lapTimes.append(0.0)
-    //        //lapsTableView.reloadData()
-    //    }
-    
+    func setupDelegatesAndDataSources() {
+        stopwatchView.lapsTableView.delegate = self
+        stopwatchView.lapsTableView.dataSource = self
+    }
     
 }
 
 extension StopwatchViewController: StopwatchViewControllerDelegate {
     
     func startStopwatch() {
-        
+        stopwatch.start()
+        if lapTimes.isEmpty {
+            addLap()
+        }
     }
     
     func stopStopwatch() {
-        
+        stopwatch.stop()
+        lapTimes[lapTimes.count - 1] = elapsedLapTime
     }
     
     func saveLap() {
-        
+        addLap()
     }
     
     func resetStopwatch() {
-        
+        stopwatch.reset()
+        lapTimes.removeAll()
+        stopwatchView.lapsTableView.reloadData()
     }
     
-    func updateStopwatch() {
+    func didTimeChange() {
+        stopwatchView.updateStopwatchLabels(mainTime: stopwatch.elapsedTime, lapTime: elapsedLapTime)
+    }
+    
+}
+
+extension StopwatchViewController: UITableViewDelegate, UITableViewDataSource {
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
+        return lapTimes.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: Constants.lapCellId) as? LapsTableViewCell else {
+            
+            return UITableViewCell()
+        }
+        cell.setup(lap: String(lapTimes.count - indexPath.row),
+                   time: lapTimes.reversed()[indexPath.row])
+        
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        
+        return Constants.stopwatchTableHeightForRow
     }
     
 }

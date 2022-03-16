@@ -8,17 +8,9 @@
 import UIKit
 import SnapKit
 
-enum StopwatchButtonType {
-    case start
-    case stop
-    case reset
-    case lapDisabled
-    case lapEnabled
-}
-
 class CircleButtonView: UIView {
     
-    private let type: StopwatchButtonType?
+    private let type: CircleButtonType?
     private var action: (() -> ())?
     
     public weak var stopwatchViewDelegate: StopwatchViewDelegate?
@@ -30,7 +22,7 @@ class CircleButtonView: UIView {
         return button
     }()
     
-    init(type: StopwatchButtonType, delegate: StopwatchViewDelegate) {
+    init(type: CircleButtonType, delegate: StopwatchViewDelegate) {
         self.type = type
         self.stopwatchViewDelegate = delegate
         super.init(frame: CGRect.zero)
@@ -51,7 +43,7 @@ class CircleButtonView: UIView {
         setupTargets()
     }
     
-    public func setupBy(type: StopwatchButtonType?) {
+    public func setupBy(type: CircleButtonType?) {
         switch type {
         case .start:
             setupAsStartButton()
@@ -71,7 +63,7 @@ class CircleButtonView: UIView {
     private func setupTargets() {
         button.addTarget(self, action: #selector(didTap), for: .touchUpInside)
         button.addTarget(self, action: #selector(didPush), for: .touchDown)
-        button.addTarget(self, action: #selector(didTouchCancel), for: .touchUpOutside)
+        button.addTarget(self, action: #selector(didDragExit), for: .touchDragExit)
     }
     
     private func setupConstraints() {
@@ -86,11 +78,12 @@ class CircleButtonView: UIView {
     }
     
     @objc func didPush() {
-        button.backgroundColor = Constants.disabledPushedButtonBackgroundColor
-        layer.borderColor = Constants.disabledPushedButtonBackgroundColor.cgColor
+        let pushedAlpha = (button.backgroundColor?.cgColor.alpha ?? 0) - Constants.pushedDifferenceAlpha
+        button.backgroundColor = button.backgroundColor?.withAlphaComponent(pushedAlpha)
+        layer.borderColor = button.backgroundColor?.cgColor
     }
     
-    @objc func didTouchCancel() {
+    @objc func didDragExit() {
         setupBy(type: type)
     }
     

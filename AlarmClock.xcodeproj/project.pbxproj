@@ -110,6 +110,7 @@
 			isa = PBXGroup;
 			children = (
 				CB0C194227B156340074976D /* Constants.swift */,
+				CB80C46527E26611004B61B5 /* ReusableVIew */,
 				CBC7771F27B4FF5C0072EE40 /* Extensions */,
 				CBF6CE0127BD60D700843FBA /* TimeZone */,
 				CB0C193727B121980074976D /* WorldClock */,
@@ -161,7 +162,6 @@
 				CB0C192F27B120AD0074976D /* StopwatchViewController.swift */,
 				CB0C193C27B121C90074976D /* StopwatchView.swift */,
 				CBA774D727D64A55005CE96C /* Stopwatch.swift */,
-				CBA774D527D6043F005CE96C /* CircleButtonView.swift */,
 				CB6076A527D4FB43008333A8 /* LapsTableViewCell.swift */,
 			);
 			path = Stopwatch;
@@ -184,6 +184,14 @@
 				CB0CC82527B3DA50002C1FEA /* CoreDataManager.swift */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		CB80C46527E26611004B61B5 /* ReusableVIew */ = {
+			isa = PBXGroup;
+			children = (
+				CBA774D527D6043F005CE96C /* CircleButtonView.swift */,
+			);
+			path = ReusableVIew;
 			sourceTree = "<group>";
 		};
 		CBC7771F27B4FF5C0072EE40 /* Extensions */ = {

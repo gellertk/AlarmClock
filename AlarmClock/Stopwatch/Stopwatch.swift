@@ -51,13 +51,13 @@ class Stopwatch {
         isRunning = false
     }
     
-    @objc func didTimeChange() {
-        elapsedTime = getElapsedTime()
-        stopwatchViewControllerDelegate?.updateStopwatch()
+    private func getElapsedTime() -> TimeInterval {
+        return -(startTime?.timeIntervalSinceNow ?? 0) + accumulatedTime
     }
     
-    private func getElapsedTime() -> TimeInterval {
-        return (-(startTime?.timeIntervalSinceNow ?? 0) + accumulatedTime)
+    @objc func didTimeChange() {
+        elapsedTime = getElapsedTime()
+        stopwatchViewControllerDelegate?.didTimeChange()
     }
     
 }

@@ -62,9 +62,13 @@ class LapsTableViewCell: UITableViewCell {
         }
     }
     
-    public func setup(lap: String, time: String) {
+    public func setup(lap: String, time: TimeInterval) {
         lapLabel.text = "Круг \(lap)"
-        timeLabel.text = time
+        timeLabel.text = time.convertToStopwatchFormatString()
+    }
+    
+    public func updateStopwatch(lapTime: TimeInterval) {
+        timeLabel.text = lapTime.convertToStopwatchFormatString()
     }
     
 }
