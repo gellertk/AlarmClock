@@ -47,7 +47,6 @@ class StopwatchView: UIView {
         tableView.separatorColor = Constants.tableSeparatorLineColor
         tableView.register(LapsTableViewCell.self, forCellReuseIdentifier: Constants.lapCellId)
         tableView.addTableHeaderViewLine()
-        //tableView.scroll
         
         return tableView
     }()

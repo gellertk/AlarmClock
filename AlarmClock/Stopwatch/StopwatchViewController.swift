@@ -71,6 +71,16 @@ private extension StopwatchViewController {
     
 }
 
+extension StopwatchViewController: UIScrollViewDelegate {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if scrollView == stopwatchView.lapsTableView {
+            if scrollView.contentOffset.y >= 0 {
+                scrollView.contentOffset = CGPoint.zero
+            }
+        }
+    }
+}
+
 extension StopwatchViewController: StopwatchViewControllerDelegate {
     
     func startStopwatch() {
