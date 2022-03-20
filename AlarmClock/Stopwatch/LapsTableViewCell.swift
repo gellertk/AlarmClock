@@ -18,7 +18,6 @@ class LapsTableViewCell: UITableViewCell {
     
     private var lapLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .white
         label.font = UIFont.systemFont(ofSize: Constants.circleButtonFontSize)
         
         return label
@@ -62,9 +61,11 @@ class LapsTableViewCell: UITableViewCell {
         }
     }
     
-    public func setup(lap: String, time: TimeInterval) {
+    public func setup(lap: String, time: TimeInterval, textColor: UIColor) {
         lapLabel.text = "Круг \(lap)"
         timeLabel.text = time.convertToStopwatchFormatString()
+        lapLabel.textColor = textColor
+        timeLabel.textColor = textColor
     }
     
     public func updateStopwatch(lapTime: TimeInterval) {

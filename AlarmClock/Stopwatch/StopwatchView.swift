@@ -44,11 +44,18 @@ class StopwatchView: UIView {
     public lazy var lapsTableView: UITableView = {
         let tableView = UITableView()
         tableView.backgroundColor = .black
-        tableView.separatorColor = Constants.tableSeparatorLineColor
+        tableView.separatorColor = Constants.tableSeparatorColor
         tableView.register(LapsTableViewCell.self, forCellReuseIdentifier: Constants.lapCellId)
-        tableView.addTableHeaderViewLine()
+        tableView.showsVerticalScrollIndicator = false
         
         return tableView
+    }()
+    
+    private lazy var separatorView: UIView = {
+        let view = UIView()
+        view.backgroundColor = Constants.tableSeparatorColor
+        
+        return view
     }()
     
     override init(frame: CGRect) {
@@ -64,7 +71,8 @@ class StopwatchView: UIView {
         [timeLabel,
          lapAndResetButton,
          startAndStopButton,
-         lapsTableView].forEach {
+         lapsTableView,
+         separatorView].forEach {
             
             addSubview($0)
         }
@@ -72,25 +80,33 @@ class StopwatchView: UIView {
     }
     
     private func setupConstraints() {
+        
         timeLabel.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(UIScreen.main.bounds.height * 0.21)
+            $0.top.equalToSuperview().offset(UIScreen.main.bounds.height * 0.24)
             $0.centerX.leading.trailing.equalToSuperview()
         }
         
         lapAndResetButton.snp.makeConstraints {
-            $0.centerY.equalToSuperview()
-            $0.leading.equalToSuperview().offset(Constants.standartBorderConstraint)
+            $0.centerY.equalToSuperview().offset(30)
+            $0.leading.equalToSuperview().offset(Constants.defaultBorderConstraint)
             $0.width.height.equalTo(Constants.circleButtonViewWidthHeight)
         }
         
         startAndStopButton.snp.makeConstraints {
             $0.centerY.equalTo(lapAndResetButton)
-            $0.trailing.equalToSuperview().offset(-Constants.standartBorderConstraint)
+            $0.trailing.equalToSuperview().offset(-Constants.defaultBorderConstraint)
             $0.width.height.equalTo(Constants.circleButtonViewWidthHeight)
         }
         
+        separatorView.snp.makeConstraints {
+            $0.leading.equalTo(lapAndResetButton)
+            $0.trailing.equalTo(startAndStopButton)
+            $0.top.equalTo(lapAndResetButton.snp.bottom).offset(15)
+            $0.height.equalTo(0.5)
+        }
+        
         lapsTableView.snp.makeConstraints {
-            $0.top.equalTo(lapAndResetButton.snp.bottom).offset(10)
+            $0.top.equalTo(separatorView.snp.bottom)
             $0.leading.equalTo(lapAndResetButton)
             $0.trailing.equalTo(startAndStopButton)
             $0.bottomMargin.equalToSuperview()

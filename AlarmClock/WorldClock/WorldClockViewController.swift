@@ -32,7 +32,7 @@ class WorldClockViewController: UIViewController {
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationController?.navigationBar.largeTitleTextAttributes = [.foregroundColor: UIColor.white]
         navigationController?.navigationBar.isTranslucent = false
-        navigationController?.navigationBar.tintColor = Constants.buttonColor
+        navigationController?.navigationBar.tintColor = Constants.tabBarButtonColor
         navigationController?.navigationBar.barStyle = .black
         navigationController?.navigationBar.topItem?.setLeftBarButton(UIBarButtonItem(title: "Править",
                                                                 style: .plain,
@@ -53,7 +53,7 @@ class WorldClockViewController: UIViewController {
     }
     
     private func createDefaultWorldClocks() {
-        for city in Constants.firstLaunchWorldClocksCities {
+        for city in Constants.worldClockDefaultCities {
             let worldClock = CoreDataManager.sharedWorldClock.createWorldClock(city)
             worldClocks.insert(worldClock, at: 0)
             worldClockView.worldClockTableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)

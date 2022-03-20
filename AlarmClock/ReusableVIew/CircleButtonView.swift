@@ -78,7 +78,7 @@ class CircleButtonView: UIView {
     }
     
     @objc func didPush() {
-        let pushedAlpha = (button.backgroundColor?.cgColor.alpha ?? 0) - Constants.pushedDifferenceAlpha
+        let pushedAlpha = (button.backgroundColor?.cgColor.alpha ?? 0) - Constants.pushedCircleButtonDifferenceAlpha
         button.backgroundColor = button.backgroundColor?.withAlphaComponent(pushedAlpha)
         layer.borderColor = button.backgroundColor?.cgColor
     }

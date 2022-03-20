@@ -14,7 +14,7 @@ class WorldClockView: UIView {
         let tableView = UITableView()
         tableView.register(WorldClockTableViewCell.self, forCellReuseIdentifier: Constants.worldClockCellId)
         tableView.backgroundColor = .black
-        tableView.separatorColor = Constants.tableSeparatorLineColor
+        tableView.separatorColor = Constants.tableSeparatorColor
         
         return tableView
     }()

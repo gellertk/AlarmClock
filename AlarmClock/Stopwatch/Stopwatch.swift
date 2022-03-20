@@ -7,7 +7,7 @@
 
 import Foundation
 
-class Stopwatch {
+final class Stopwatch {
     
     public weak var stopwatchViewControllerDelegate: StopwatchViewControllerDelegate?
     

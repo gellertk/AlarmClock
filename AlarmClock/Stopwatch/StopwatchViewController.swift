@@ -48,6 +48,26 @@ class StopwatchViewController: UIViewController {
         stopwatchView.lapsTableView.reloadData()
     }
     
+    func getCurrentLapTextColor(indexPathRow: Int) -> UIColor {
+        
+        let lapTime = lapTimes.reversed()[indexPathRow]
+        if lapTimes.count >= Constants.stopwatchLapsToCustomizeTableViewText,
+           indexPathRow != 0 {
+            switch lapTime {
+            case lapTimes.dropLast().min():
+                
+                return Constants.stopwatchFasterLapTextColor
+            case lapTimes.dropLast().max():
+                
+                return Constants.stopwatchSlowestLapTextColor
+            default:
+                break
+            }
+        }
+        
+        return .white
+    }
+    
 }
 
 private extension StopwatchViewController {
@@ -69,16 +89,6 @@ private extension StopwatchViewController {
         stopwatchView.lapsTableView.dataSource = self
     }
     
-}
-
-extension StopwatchViewController: UIScrollViewDelegate {
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        if scrollView == stopwatchView.lapsTableView {
-            if scrollView.contentOffset.y >= 0 {
-                scrollView.contentOffset = CGPoint.zero
-            }
-        }
-    }
 }
 
 extension StopwatchViewController: StopwatchViewControllerDelegate {
@@ -123,10 +133,13 @@ extension StopwatchViewController: UITableViewDelegate, UITableViewDataSource {
             
             return UITableViewCell()
         }
+        
         cell.setup(lap: String(lapTimes.count - indexPath.row),
-                   time: lapTimes.reversed()[indexPath.row])
+                   time: lapTimes.reversed()[indexPath.row],
+                   textColor: getCurrentLapTextColor(indexPathRow: indexPath.row))
         
         return cell
+        
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
