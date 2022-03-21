@@ -20,14 +20,6 @@ class StopwatchViewController: UIViewController {
     
     private lazy var stopwatch = Stopwatch(stopwatchViewControllerDelegate: self)
     
-    private var lapTimes: [TimeInterval] = []
-    private var elapsedLapTime: Double {
-        if lapTimes.count > 1 {
-            return (stopwatch.elapsedTime - lapTimes.reduce(0, +) + lapTimes[lapTimes.count - 1])
-        }
-        return stopwatch.elapsedTime
-    }
-    
     private lazy var stopwatchView: StopwatchView = {
         let view = StopwatchView()
         view.stopwatchViewControllerDelegate = self
@@ -37,27 +29,25 @@ class StopwatchViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        stopwatch.setup()
         setupView()
     }
     
     private func addLap() {
-        if !lapTimes.isEmpty {
-            lapTimes[lapTimes.count - 1] = elapsedLapTime
-        }
-        lapTimes.append(0.0)
+        stopwatch.addLap()
         stopwatchView.lapsTableView.reloadData()
     }
     
-    func getCurrentLapTextColor(indexPathRow: Int) -> UIColor {
+    private func getCurrentLapTextColor(indexPathRow: Int) -> UIColor {
         
-        let lapTime = lapTimes.reversed()[indexPathRow]
-        if lapTimes.count >= Constants.stopwatchLapsToCustomizeTableViewText,
+        let lapTime = stopwatch.lapTimes.reversed()[indexPathRow]
+        if stopwatch.lapTimes.count >= Constants.stopwatchLapsToCustomizeCount,
            indexPathRow != 0 {
             switch lapTime {
-            case lapTimes.dropLast().min():
+            case stopwatch.lapTimes.dropLast().min():
                 
                 return Constants.stopwatchFasterLapTextColor
-            case lapTimes.dropLast().max():
+            case stopwatch.lapTimes.dropLast().max():
                 
                 return Constants.stopwatchSlowestLapTextColor
             default:
@@ -95,14 +85,11 @@ extension StopwatchViewController: StopwatchViewControllerDelegate {
     
     func startStopwatch() {
         stopwatch.start()
-        if lapTimes.isEmpty {
-            addLap()
-        }
+        stopwatchView.lapsTableView.reloadData()
     }
     
     func stopStopwatch() {
         stopwatch.stop()
-        lapTimes[lapTimes.count - 1] = elapsedLapTime
     }
     
     func saveLap() {
@@ -111,12 +98,11 @@ extension StopwatchViewController: StopwatchViewControllerDelegate {
     
     func resetStopwatch() {
         stopwatch.reset()
-        lapTimes.removeAll()
         stopwatchView.lapsTableView.reloadData()
     }
     
     func didTimeChange() {
-        stopwatchView.updateStopwatchLabels(mainTime: stopwatch.elapsedTime, lapTime: elapsedLapTime)
+        stopwatchView.updateStopwatchLabels(mainTime: stopwatch.elapsedTime, lapTime: stopwatch.elapsedLapTime)
     }
     
 }
@@ -125,7 +111,7 @@ extension StopwatchViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        return lapTimes.count
+        return stopwatch.lapTimes.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -134,8 +120,8 @@ extension StopwatchViewController: UITableViewDelegate, UITableViewDataSource {
             return UITableViewCell()
         }
         
-        cell.setup(lap: String(lapTimes.count - indexPath.row),
-                   time: lapTimes.reversed()[indexPath.row],
+        cell.setup(lap: String(stopwatch.lapTimes.count - indexPath.row),
+                   time: stopwatch.lapTimes.reversed()[indexPath.row],
                    textColor: getCurrentLapTextColor(indexPathRow: indexPath.row))
         
         return cell

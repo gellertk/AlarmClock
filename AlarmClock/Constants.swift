@@ -39,7 +39,7 @@ class Constants {
     static let stopwatchTableHeightForRow: CGFloat = 40
     static let defaultBorderConstraint: CGFloat = 20
     static let stopwatchMainLabelFont: UIFont = .monospacedDigitSystemFont(ofSize: 88, weight: .thin)
-    static let stopwatchLapsToCustomizeTableViewText = 3
+    static let stopwatchLapsToCustomizeCount = 3
     static let stopwatchFasterLapTextColor: UIColor = Constants.startButtonTextColor
     static let stopwatchSlowestLapTextColor: UIColor = Constants.stopButtonTextColor
     //CircleButtonView
