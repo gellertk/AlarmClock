@@ -29,7 +29,7 @@ class StopwatchViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        stopwatch.setup()
+        stopwatch.setupData()
         setupView()
     }
     
@@ -63,6 +63,7 @@ class StopwatchViewController: UIViewController {
 private extension StopwatchViewController {
     
     func setupView() {
+        didTimeChange()
         view.addSubview(stopwatchView)
         setupDelegatesAndDataSources()
         setupConstraints()

@@ -13,6 +13,7 @@ final class Stopwatch: Codable {
     
     public var elapsedTime: TimeInterval = 0
     public var lapTimes: [TimeInterval] = []
+    
     public var elapsedLapTime: Double {
         if lapTimes.count > 1 {
             return (elapsedTime - lapTimes.reduce(0, +) + lapTimes[lapTimes.count - 1])
@@ -25,11 +26,21 @@ final class Stopwatch: Codable {
     private var startTime: Date?
     private var accumulatedTime: TimeInterval = 0
     
+    private enum CodingKeys: String, CodingKey {
+        case isRunning
+        case lapTimes
+        case startTime
+    }
+    
     init(stopwatchViewControllerDelegate: StopwatchViewControllerDelegate) {
         self.stopwatchViewControllerDelegate = stopwatchViewControllerDelegate
     }
     
-    public func setup() {
+    required init(from decoder:Decoder) throws {
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        isRunning = try values.decode(Bool.self, forKey: .isRunning)
+        lapTimes = try values.decode([TimeInterval].self, forKey: .lapTimes)
+        startTime = try values.decode(Date.self, forKey: .startTime)
     }
     
     public func start() {
@@ -42,7 +53,14 @@ final class Stopwatch: Codable {
                                      userInfo: nil,
                                      repeats: true)
         RunLoop.current.add(timer ?? Timer(), forMode: .common)
+        //let profile = try UserDefaults.standard.getObject(forKey: "stopwatch", castTo: Stopwatch.self)
+//        if let _ = startTime {
+//        } else {
+//
+//        }
         startTime = Date()
+
+        //startTime = startTime == nil ?
         isRunning = true
     }
     
@@ -81,11 +99,23 @@ final class Stopwatch: Codable {
     }
     
     private func saveData() {
-//        do {
-//            try UserDefaults.standard.setObject(self, forKey: "profile")
-//        } catch {
-//            print(error.localizedDescription)
-//        }
+        do {
+            try UserDefaults.standard.saveObject(self, forKey: "stopwatch")
+        } catch {
+            print(error.localizedDescription)
+        }
+    }
+    
+    public func setupData() {
+        do {
+            let profile = try UserDefaults.standard.getObject(forKey: "stopwatch", castTo: Stopwatch.self)
+            self.startTime = profile.startTime
+            self.isRunning = profile.isRunning
+            self.lapTimes = profile.lapTimes
+            self.elapsedTime = lapTimes.reduce(0, +)
+        } catch {
+            print(error.localizedDescription)
+        }
     }
     
     @objc func didTimeChange() {
