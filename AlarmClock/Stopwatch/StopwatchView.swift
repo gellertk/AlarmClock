@@ -58,9 +58,10 @@ class StopwatchView: UIView {
         return view
     }()
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    init(interface: InterfaceType) {
+        super.init(frame: CGRect.zero)
         setupView()
+        setupInterfaceBy(type: interface)
     }
     
     required init?(coder: NSCoder) {

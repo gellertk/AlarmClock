@@ -10,11 +10,10 @@ import Foundation
 final class Stopwatch: Codable {
     
     public weak var stopwatchViewControllerDelegate: StopwatchViewControllerDelegate?
-    
     public var elapsedTime: TimeInterval = 0
     public var lapTimes: [TimeInterval] = []
     
-    public var elapsedLapTime: Double {
+    public var elapsedLastLapTime: Double {
         if lapTimes.count > 1 {
             return (elapsedTime - lapTimes.reduce(0, +) + lapTimes[lapTimes.count - 1])
         }
@@ -30,49 +29,41 @@ final class Stopwatch: Codable {
         case isRunning
         case lapTimes
         case startTime
+        case accumulatedTime
+        case elapsedTime
     }
     
     init(stopwatchViewControllerDelegate: StopwatchViewControllerDelegate) {
         self.stopwatchViewControllerDelegate = stopwatchViewControllerDelegate
     }
     
-    required init(from decoder:Decoder) throws {
+    required init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         isRunning = try values.decode(Bool.self, forKey: .isRunning)
         lapTimes = try values.decode([TimeInterval].self, forKey: .lapTimes)
         startTime = try values.decode(Date.self, forKey: .startTime)
+        accumulatedTime = try values.decode(TimeInterval.self, forKey: .accumulatedTime)
+        elapsedTime = try values.decode(TimeInterval.self, forKey: .elapsedTime)
     }
-    
+
     public func start() {
         if lapTimes.isEmpty {
             addLap()
         }
-        timer = Timer.scheduledTimer(timeInterval: 0.01,
-                                     target: self,
-                                     selector: #selector(didTimeChange),
-                                     userInfo: nil,
-                                     repeats: true)
-        RunLoop.current.add(timer ?? Timer(), forMode: .common)
-        //let profile = try UserDefaults.standard.getObject(forKey: "stopwatch", castTo: Stopwatch.self)
-//        if let _ = startTime {
-//        } else {
-//
-//        }
+        initializeTimer()
         startTime = Date()
-
-        //startTime = startTime == nil ?
         isRunning = true
     }
     
     public func stop() {
-        stopTimer()
+        deinitializeTimer()
+        lapTimes[lapTimes.count - 1] = elapsedLastLapTime
         accumulatedTime = getElapsedTime()
-        lapTimes[lapTimes.count - 1] = elapsedLapTime
         saveData()
     }
     
     public func reset() {
-        stopTimer()
+        deinitializeTimer()
         startTime = nil
         accumulatedTime = 0
         elapsedTime = 0
@@ -82,13 +73,21 @@ final class Stopwatch: Codable {
     
     public func addLap() {
         if !lapTimes.isEmpty {
-            lapTimes[lapTimes.count - 1] = elapsedLapTime
+            lapTimes[lapTimes.count - 1] = elapsedLastLapTime
         }
         lapTimes.append(0.0)
-        saveData()
     }
     
-    private func stopTimer() {
+    private func initializeTimer() {
+        timer = Timer.scheduledTimer(timeInterval: 0.01,
+                                     target: self,
+                                     selector: #selector(didTimeChange),
+                                     userInfo: nil,
+                                     repeats: true)
+        RunLoop.current.add(timer ?? Timer(), forMode: .common)
+    }
+    
+    private func deinitializeTimer() {
         timer?.invalidate()
         timer = nil
         isRunning = false
@@ -98,29 +97,47 @@ final class Stopwatch: Codable {
         return -(startTime?.timeIntervalSinceNow ?? 0) + accumulatedTime
     }
     
-    private func saveData() {
+    public func saveData() {
         do {
-            try UserDefaults.standard.saveObject(self, forKey: "stopwatch")
+            try UserDefaults.standard.saveObject(self, forKey: Constants.userDefaultsStopwatchKey)
         } catch {
             print(error.localizedDescription)
         }
     }
     
-    public func setupData() {
+    public func loadSavedData() {
         do {
-            let profile = try UserDefaults.standard.getObject(forKey: "stopwatch", castTo: Stopwatch.self)
+            let profile = try UserDefaults.standard.getObject(forKey: Constants.userDefaultsStopwatchKey, castTo: Stopwatch.self)
             self.startTime = profile.startTime
             self.isRunning = profile.isRunning
-            self.lapTimes = profile.lapTimes
-            self.elapsedTime = lapTimes.reduce(0, +)
+            self.lapTimes  = profile.lapTimes
+            self.accumulatedTime = profile.accumulatedTime
+            self.elapsedTime = profile.elapsedTime
+            
+            lapTimes[lapTimes.count - 1] = elapsedLastLapTime
+            if isRunning {
+                initializeTimer()
+            }
         } catch {
             print(error.localizedDescription)
         }
+    }
+    
+    public func getCurrentInterfaceType() -> InterfaceType {
+        var interface: InterfaceType = .stopwatchInitial
+        if isRunning {
+            interface = .stopwatchRunning
+        } else if !lapTimes.isEmpty {
+            interface = .stopwatchPause
+        }
+        
+        return interface
     }
     
     @objc func didTimeChange() {
         elapsedTime = getElapsedTime()
         stopwatchViewControllerDelegate?.didTimeChange()
+        saveData()
     }
     
 }

@@ -21,21 +21,18 @@ class StopwatchViewController: UIViewController {
     private lazy var stopwatch = Stopwatch(stopwatchViewControllerDelegate: self)
     
     private lazy var stopwatchView: StopwatchView = {
-        let view = StopwatchView()
+        let view = StopwatchView(interface: stopwatch.getCurrentInterfaceType())
         view.stopwatchViewControllerDelegate = self
+        view.updateStopwatchLabels(mainTime: stopwatch.elapsedTime, lapTime: stopwatch.elapsedLastLapTime)
         
         return view
     }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        stopwatch.setupData()
+        stopwatch.loadSavedData()
         setupView()
-    }
-    
-    private func addLap() {
-        stopwatch.addLap()
-        stopwatchView.lapsTableView.reloadData()
+        setupDelegatesAndDataSources()
     }
     
     private func getCurrentLapTextColor(indexPathRow: Int) -> UIColor {
@@ -63,9 +60,7 @@ class StopwatchViewController: UIViewController {
 private extension StopwatchViewController {
     
     func setupView() {
-        didTimeChange()
         view.addSubview(stopwatchView)
-        setupDelegatesAndDataSources()
         setupConstraints()
     }
     
@@ -94,7 +89,8 @@ extension StopwatchViewController: StopwatchViewControllerDelegate {
     }
     
     func saveLap() {
-        addLap()
+        stopwatch.addLap()
+        stopwatchView.lapsTableView.reloadData()
     }
     
     func resetStopwatch() {
@@ -103,7 +99,7 @@ extension StopwatchViewController: StopwatchViewControllerDelegate {
     }
     
     func didTimeChange() {
-        stopwatchView.updateStopwatchLabels(mainTime: stopwatch.elapsedTime, lapTime: stopwatch.elapsedLapTime)
+        stopwatchView.updateStopwatchLabels(mainTime: stopwatch.elapsedTime, lapTime: stopwatch.elapsedLastLapTime)
     }
     
 }

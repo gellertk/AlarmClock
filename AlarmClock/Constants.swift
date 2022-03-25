@@ -67,4 +67,6 @@ class Constants {
     static let cellStopwatchId = "cellStopwatchId"
     static let lapCellId = "lapCellId"
     
+    static let userDefaultsStopwatchKey = "stopwatch"
+    
 }
