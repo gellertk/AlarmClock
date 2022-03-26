@@ -21,7 +21,7 @@ class StopwatchViewController: UIViewController {
     private lazy var stopwatch = Stopwatch(stopwatchViewControllerDelegate: self)
     
     private lazy var stopwatchView: StopwatchView = {
-        let view = StopwatchView(interface: stopwatch.getCurrentInterfaceType())
+        let view = StopwatchView(interfaceType: stopwatch.getCurrentInterfaceType())
         view.stopwatchViewControllerDelegate = self
         view.updateStopwatchLabels(mainTime: stopwatch.elapsedTime, lapTime: stopwatch.elapsedLastLapTime)
         

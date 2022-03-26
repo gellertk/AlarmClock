@@ -10,7 +10,7 @@ import SnapKit
 
 class CircleButtonView: UIView {
     
-    private let type: CircleButtonType?
+    private var type: CircleButtonType?
     private var action: (() -> ())?
     
     public weak var stopwatchViewDelegate: StopwatchViewDelegate?
@@ -22,7 +22,7 @@ class CircleButtonView: UIView {
         return button
     }()
     
-    init(type: CircleButtonType, delegate: StopwatchViewDelegate) {
+    init(type: CircleButtonType = .lapDisabled, delegate: StopwatchViewDelegate) {
         self.type = type
         self.stopwatchViewDelegate = delegate
         super.init(frame: CGRect.zero)
@@ -44,6 +44,8 @@ class CircleButtonView: UIView {
     }
     
     public func setupBy(type: CircleButtonType?) {
+        self.type = type
+        
         switch type {
         case .start:
             setupAsStartButton()
