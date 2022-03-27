@@ -39,7 +39,7 @@ class StopwatchNumbersView: UIView {
     private func setupConstraints() {
         timeLabel.snp.makeConstraints {
             $0.left.right.centerX.equalToSuperview()
-            $0.centerY.equalToSuperview().offset(Constants.defaultBorderConstraint)
+            $0.centerY.equalToSuperview().offset(20)
         }
     }
     

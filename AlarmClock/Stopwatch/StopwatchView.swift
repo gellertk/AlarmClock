@@ -27,18 +27,23 @@ class StopwatchView: UIView {
         scrollView.isPagingEnabled = true
         scrollView.delegate = self
         scrollView.showsHorizontalScrollIndicator = false
+        scrollView.showsVerticalScrollIndicator = false
         
         return scrollView
     }()
     
     private lazy var lapAndResetButton: CircleButtonView = {
+        let button = CircleButtonView()
+        button.stopwatchViewDelegate = self
         
-        return CircleButtonView(delegate: self)
+        return button
     }()
     
     private lazy var startAndStopButton: CircleButtonView = {
+        let button = CircleButtonView()
+        button.stopwatchViewDelegate = self
         
-        return CircleButtonView(delegate: self)
+        return button
     }()
     
     private lazy var pageControl: UIPageControl = {
@@ -67,15 +72,46 @@ class StopwatchView: UIView {
     
     init(interfaceType: InterfaceType) {
         super.init(frame: CGRect.zero)
-        setupView()
-        setupButtonBy(type: interfaceType)
+        setupView(type: interfaceType)
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func setupView() {
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        let scrollViewElementHeight = pageControl.frame.origin.y - 1
+        scrollView.contentSize = CGSize(width: frame.size.width * CGFloat(scrollViewElements.count),
+                                        height: scrollViewElementHeight)
+        
+        for (index, element) in scrollViewElements.enumerated() {
+            let xOffset = frame.size.width * CGFloat(index)
+            
+            scrollView.addSubview(element)
+            element.snp.makeConstraints {
+                $0.top.width.equalToSuperview()
+                $0.height.equalTo(scrollViewElementHeight)
+                $0.left.equalToSuperview().offset(xOffset)
+            }
+        }
+    }
+    
+    //TODO: Convert to generic or smth
+    public func updateStopwatchLabels(mainTime: TimeInterval, lapTime: TimeInterval) {
+        (scrollViewElements.first as? StopwatchNumbersView)?.timeLabel.text = mainTime.convertToStopwatchFormatString()
+        (scrollViewElements.last as? StopwatchImitationView)?.timeLabel.text = mainTime.convertToStopwatchFormatString()
+        if let cell = lapsTableView.cellForRow(at: IndexPath(row: 0, section: 0)) as? LapsTableViewCell {
+            cell.updateStopwatch(lapTime: lapTime)
+        }
+    }
+    
+}
+
+private extension StopwatchView {
+    
+    func setupView(type: InterfaceType) {
         [scrollView,
          lapAndResetButton,
          startAndStopButton,
@@ -87,9 +123,10 @@ class StopwatchView: UIView {
         }
         
         setupConstraints()
+        setupButtonsBy(type: type)
     }
     
-    private func setupConstraints() {
+    func setupConstraints() {
         
         lapAndResetButton.snp.makeConstraints {
             $0.top.equalTo(UIScreen.main.bounds.height * 0.45)
@@ -127,41 +164,15 @@ class StopwatchView: UIView {
         }
     }
     
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        
-        let scrollViewElementHeight = pageControl.frame.origin.y - 1
-        scrollView.contentSize = CGSize(width: frame.size.width * CGFloat(scrollViewElements.count),
-                                        height: scrollViewElementHeight)
-        
-        for (index, element) in scrollViewElements.enumerated() {
-            let xOffset = frame.size.width * CGFloat(index)
-            
-            scrollView.addSubview(element)
-            element.snp.makeConstraints {
-                $0.top.width.equalToSuperview()
-                $0.height.equalTo(scrollViewElementHeight)
-                $0.left.equalToSuperview().offset(xOffset)
-            }
-        }
-    }
-    
-    func updateStopwatchLabels(mainTime: TimeInterval, lapTime: TimeInterval) {
-        (scrollViewElements.first as? StopwatchNumbersView)?.timeLabel.text = mainTime.convertToStopwatchFormatString()
-        (scrollViewElements.last as? StopwatchImitationView)?.timeLabel.text = mainTime.convertToStopwatchFormatString()
-        if let cell = lapsTableView.cellForRow(at: IndexPath(row: 0, section: 0)) as? LapsTableViewCell {
-            cell.updateStopwatch(lapTime: lapTime)
-        }
-    }
-    
-    private func setupButtonBy(type: InterfaceType) {
+    private func setupButtonsBy(type: InterfaceType) {
         switch type {
         case .stopwatchInitial:
             setupInitialInterface()
         case .stopwatchRunning:
             setupRunningInterface()
-        case .stopwatchPause:
+        case .stopwatchPaused:
             setupPauseInterface()
+        default: break
         }
     }
     
@@ -177,6 +188,7 @@ class StopwatchView: UIView {
     
     private func setupInitialInterface() {
         lapAndResetButton.setupBy(type: .lapDisabled)
+        startAndStopButton.setupBy(type: .start)
         (scrollViewElements.first as? StopwatchNumbersView)?.timeLabel.text = Constants.stopwatchStartTime
         (scrollViewElements.last as? StopwatchImitationView)?.timeLabel.text = Constants.stopwatchStartTime
     }
@@ -187,26 +199,26 @@ extension StopwatchView: StopwatchViewDelegate {
     
     func didTapStartStopwatchButton() {
         stopwatchViewControllerDelegate?.startStopwatch()
-        setupButtonBy(type: .stopwatchRunning)
+        setupButtonsBy(type: .stopwatchRunning)
     }
     
     func didTapStopStopwatchButton() {
         stopwatchViewControllerDelegate?.stopStopwatch()
-        setupButtonBy(type: .stopwatchPause)
+        setupButtonsBy(type: .stopwatchPaused)
     }
     
     func didTapLapStopwatchButton() {
         stopwatchViewControllerDelegate?.saveLap()
-        setupButtonBy(type: .stopwatchRunning)
+        setupButtonsBy(type: .stopwatchRunning)
     }
     
     func didTapDisabledLapStopwatchButton() {
-        setupButtonBy(type: .stopwatchInitial)
+        setupButtonsBy(type: .stopwatchInitial)
     }
     
     func didTapResetStopwatchButton() {
         stopwatchViewControllerDelegate?.resetStopwatch()
-        setupButtonBy(type: .stopwatchInitial)
+        setupButtonsBy(type: .stopwatchInitial)
     }
     
 }

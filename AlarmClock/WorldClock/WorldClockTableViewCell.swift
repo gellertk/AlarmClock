@@ -10,7 +10,7 @@ import SnapKit
 
 class WorldClockTableViewCell: UITableViewCell {
         
-    private lazy var currentDayLabel: UILabel = {
+    private var currentDayLabel: UILabel = {
         let label = UILabel()
         label.text = "Сегодня, + 0 Ч"
         label.font = UIFont.systemFont(ofSize: 14, weight: .regular)
@@ -19,7 +19,7 @@ class WorldClockTableViewCell: UITableViewCell {
         return label
     }()
     
-    private lazy var cityLabel: UILabel = {
+    private var cityLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 22, weight: .medium)
         label.textColor = .white
@@ -27,7 +27,7 @@ class WorldClockTableViewCell: UITableViewCell {
         return label
     }()
     
-    private lazy var timeLabel: UILabel = {
+    private var timeLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 55, weight: .light)
         label.textColor = .white

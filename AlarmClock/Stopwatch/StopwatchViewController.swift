@@ -18,6 +18,10 @@ protocol StopwatchViewControllerDelegate: AnyObject {
 
 class StopwatchViewController: UIViewController {
     
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        .lightContent
+    }
+    
     private lazy var stopwatch = Stopwatch(stopwatchViewControllerDelegate: self)
     
     private lazy var stopwatchView: StopwatchView = {
@@ -33,26 +37,6 @@ class StopwatchViewController: UIViewController {
         stopwatch.loadSavedData()
         setupView()
         setupDelegatesAndDataSources()
-    }
-    
-    private func getCurrentLapTextColor(indexPathRow: Int) -> UIColor {
-        
-        let lapTime = stopwatch.lapTimes.reversed()[indexPathRow]
-        if stopwatch.lapTimes.count >= Constants.stopwatchLapsToCustomizeCount,
-           indexPathRow != 0 {
-            switch lapTime {
-            case stopwatch.lapTimes.dropLast().min():
-                
-                return Constants.stopwatchFasterLapTextColor
-            case stopwatch.lapTimes.dropLast().max():
-                
-                return Constants.stopwatchSlowestLapTextColor
-            default:
-                break
-            }
-        }
-        
-        return .white
     }
     
 }
@@ -73,6 +57,26 @@ private extension StopwatchViewController {
     func setupDelegatesAndDataSources() {
         stopwatchView.lapsTableView.delegate = self
         stopwatchView.lapsTableView.dataSource = self
+    }
+    
+    private func getCurrentLapTextColor(indexPathRow: Int) -> UIColor {
+        
+        let lapTime = stopwatch.lapTimes.reversed()[indexPathRow]
+        if stopwatch.lapTimes.count >= Constants.stopwatchLapsToCustomizeCount,
+           indexPathRow != 0 {
+            switch lapTime {
+            case stopwatch.lapTimes.dropLast().min():
+                
+                return Constants.stopwatchFasterLapTextColor
+            case stopwatch.lapTimes.dropLast().max():
+                
+                return Constants.stopwatchSlowestLapTextColor
+            default:
+                break
+            }
+        }
+        
+        return .white
     }
     
 }

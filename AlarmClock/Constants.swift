@@ -7,32 +7,19 @@
 
 import UIKit
 
-enum CircleButtonType {
-    case start
-    case stop
-    case reset
-    case lapDisabled
-    case lapEnabled
-}
-
-enum InterfaceType {
-    case stopwatchInitial
-    case stopwatchRunning
-    case stopwatchPause
-}
-
+//TODO: refactor to several constants classes
 class Constants {
     
     static let worldClockDefaultCities = [
-       "Москва",
-       "Калининград",
-       "Омск",
-       "Екатеринбург"
-      ]
+        "Москва",
+        "Калининград",
+        "Омск",
+        "Екатеринбург"
+    ]
     static let timeZoneTableViewColor: UIColor = .black.withAlphaComponent(0.93)
     
     static let tabBarButtonColor: UIColor = .systemOrange
-
+    
     //Stopwatch
     static let stopwatchStartTime = "00:00,00"
     static let tableSeparatorColor: UIColor  = .white.withAlphaComponent(0.2)
@@ -49,7 +36,7 @@ class Constants {
     //pushed
     static let pushedCircleButtonDifferenceAlpha: CGFloat = 0.15
     //disabled
-    static let disabledButtonTextColor: UIColor         = .white.withAlphaComponent(0.8)
+    static let disabledButtonTextColor: UIColor         = .white.withAlphaComponent(0.5)
     static let disabledButtonBackgroundColor: UIColor   = .lightGray.withAlphaComponent(0.25)
     //enabled
     static let enabledButtonBackgroundColor: UIColor    = .lightGray.withAlphaComponent(0.4)
@@ -68,5 +55,10 @@ class Constants {
     static let lapCellId = "lapCellId"
     
     static let userDefaultsStopwatchKey = "stopwatch"
+    
+    static let timerPickerViewLabelFont: UIFont = .systemFont(ofSize: 18, weight: .bold)
+    static let numbersOfRowsAndLabelTexts: KeyValuePairs = [24: "ч",
+                                                          60: "мин",
+                                                          60: "с"]
     
 }

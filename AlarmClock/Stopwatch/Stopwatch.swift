@@ -128,7 +128,7 @@ final class Stopwatch: Codable {
         if isRunning {
             interface = .stopwatchRunning
         } else if !lapTimes.isEmpty {
-            interface = .stopwatchPause
+            interface = .stopwatchPaused
         }
         
         return interface
