@@ -18,10 +18,20 @@ protocol TimerViewDelegate: AnyObject {
 
 class TimerView: UIView {
     
+    public weak var timerViewControllerDelegate: TimerViewControllerDelegate?
+    
     public var timePickerView: TimerPickerView = {
         let pickerView = TimerPickerView()
+        pickerView.isHidden = true
         
         return pickerView
+    }()
+    
+    private var circularBarView: TimerCircularBarView = {
+        let view = TimerCircularBarView()
+        //view.isHidden = true
+        
+        return view
     }()
     
     private lazy var cancelButton: CircleButtonView = {
@@ -38,6 +48,12 @@ class TimerView: UIView {
         return button
     }()
     
+    private var soundSelectionButton: TimerSoundSelectionButton = {
+        let button = TimerSoundSelectionButton()
+        
+        return button
+    }()
+    
     init(interfaceType: InterfaceType = .timerInitial) {
         super.init(frame: CGRect.zero)
         setupView(type: interfaceType)
@@ -47,15 +63,20 @@ class TimerView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    public func updateTimerLabel(time: TimeInterval) {
+        circularBarView.setupTimeLabel(time: time)
+    }
+    
 }
 
 private extension TimerView {
     
     func setupView(type: InterfaceType) {
-        [
-            timePickerView,
-            cancelButton,
-            startAndPauseButton
+        [timePickerView,
+         circularBarView,
+         cancelButton,
+         startAndPauseButton,
+         soundSelectionButton
         ].forEach {
             addSubview($0)
         }
@@ -71,9 +92,17 @@ private extension TimerView {
             $0.bottom.equalTo(cancelButton.snp.top).offset(-50)
         }
         
+        circularBarView.snp.makeConstraints {
+            $0.centerX.equalToSuperview()
+            $0.topMargin.equalToSuperview().offset(10)
+            $0.leading.equalTo(cancelButton)
+            $0.trailing.equalTo(startAndPauseButton)
+            $0.bottom.equalTo(cancelButton.snp.centerY).offset(-15)
+        }
+        
         cancelButton.snp.makeConstraints {
-            $0.top.equalTo(UIScreen.main.bounds.height * 0.45)
-            $0.leading.equalToSuperview().offset(Constants.defaultBorderConstraint)
+            $0.top.equalTo(UIScreen.main.bounds.height * 0.46)
+            $0.leading.equalToSuperview().offset( Constants.defaultBorderConstraint)
             $0.width.height.equalTo(Constants.circleButtonViewWidthHeight)
         }
         
@@ -82,8 +111,16 @@ private extension TimerView {
             $0.trailing.equalToSuperview().offset(-Constants.defaultBorderConstraint)
             $0.width.height.equalTo(Constants.circleButtonViewWidthHeight)
         }
+        
+        soundSelectionButton.snp.makeConstraints {
+            $0.top.equalTo(cancelButton.snp.bottom).offset(40)
+            $0.leading.equalTo(cancelButton)
+            $0.trailing.equalTo(startAndPauseButton)
+            $0.height.equalTo(50)
+        }
+        
     }
-    
+        
     func setupButtonsBy(type: InterfaceType) {
         switch type {
         case .timerInitial:
@@ -116,11 +153,13 @@ private extension TimerView {
 extension TimerView: TimerViewDelegate {
     
     func didTapStartTimerButton() {
-        
+        timerViewControllerDelegate?.startTimer()
+        setupButtonsBy(type: .timerRunning)
     }
     
     func didTapPauseTimerButton() {
-        
+        timerViewControllerDelegate?.stopStopwatch()
+        setupButtonsBy(type: .stopwatchPaused)
     }
     
     func didTapResumeTimerButton() {
@@ -134,6 +173,30 @@ extension TimerView: TimerViewDelegate {
     func didTapDisabledCancelTimerButton() {
         
     }
+    
+//    func didTapStartStopwatchButton() {
+//        stopwatchViewControllerDelegate?.startStopwatch()
+//        setupButtonsBy(type: .stopwatchRunning)
+//    }
+//
+//    func didTapStopStopwatchButton() {
+//        stopwatchViewControllerDelegate?.stopStopwatch()
+//        setupButtonsBy(type: .stopwatchPaused)
+//    }
+//
+//    func didTapLapStopwatchButton() {
+//        stopwatchViewControllerDelegate?.saveLap()
+//        setupButtonsBy(type: .stopwatchRunning)
+//    }
+//
+//    func didTapDisabledLapStopwatchButton() {
+//        setupButtonsBy(type: .stopwatchInitial)
+//    }
+//
+//    func didTapResetStopwatchButton() {
+//        stopwatchViewControllerDelegate?.resetStopwatch()
+//        setupButtonsBy(type: .stopwatchInitial)
+//    }
     
 }
 

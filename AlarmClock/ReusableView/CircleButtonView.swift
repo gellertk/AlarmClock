@@ -27,6 +27,7 @@ class CircleButtonView: UIView {
         self.type = type
         super.init(frame: CGRect.zero)
         setupView()
+        setupTargets()
     }
     
     required init?(coder: NSCoder) {
@@ -64,7 +65,7 @@ class CircleButtonView: UIView {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        layer.cornerRadius = frame.size.width / 2
+        layer.cornerRadius = frame.width / 2
         button.layer.cornerRadius = button.frame.width / 2
     }
     
@@ -79,12 +80,11 @@ private extension CircleButtonView {
         
         setupBy(type: type)
         setupConstraints()
-        setupTargets()
     }
 
     func setupTargets() {
         button.addTarget(self, action: #selector(didTap), for: .touchUpInside)
-        button.addTarget(self, action: #selector(didPush), for: .touchDown)
+        button.addTarget(self, action: #selector(didTouchDown), for: .touchDown)
         button.addTarget(self, action: #selector(didDragExit), for: .touchDragExit)
     }
     
@@ -99,7 +99,7 @@ private extension CircleButtonView {
         performAction()
     }
     
-    @objc func didPush() {
+    @objc func didTouchDown() {
         let pushedAlpha = (button.backgroundColor?.cgColor.alpha ?? 0) - Constants.pushedCircleButtonDifferenceAlpha
         button.backgroundColor = button.backgroundColor?.withAlphaComponent(pushedAlpha)
         layer.borderColor = button.backgroundColor?.cgColor

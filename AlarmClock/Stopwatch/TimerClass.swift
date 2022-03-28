@@ -7,9 +7,13 @@
 
 import Foundation
 
-final class Stopwatch: Codable {
+final class TimerClass: Codable {
     
+    private var type: TimerType?
+            
     public weak var stopwatchViewControllerDelegate: StopwatchViewControllerDelegate?
+    public weak var timerViewControllerDelegate: TimerViewControllerDelegate?
+    
     public var elapsedTime: TimeInterval = 0
     public var lapTimes: [TimeInterval] = []
     
@@ -33,31 +37,31 @@ final class Stopwatch: Codable {
         case elapsedTime
     }
     
-    init(stopwatchViewControllerDelegate: StopwatchViewControllerDelegate) {
-        self.stopwatchViewControllerDelegate = stopwatchViewControllerDelegate
+    init(type: TimerType) {
+        self.type = type
     }
     
     required init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         isRunning = try values.decode(Bool.self, forKey: .isRunning)
-        lapTimes = try values.decode([TimeInterval].self, forKey: .lapTimes)
         startTime = try values.decode(Date.self, forKey: .startTime)
         accumulatedTime = try values.decode(TimeInterval.self, forKey: .accumulatedTime)
         elapsedTime = try values.decode(TimeInterval.self, forKey: .elapsedTime)
+        lapTimes = try values.decode([TimeInterval].self, forKey: .lapTimes)
     }
-
+    
     public func start() {
+        startTimer()
+        startTime = Date()
+        isRunning = true
         if lapTimes.isEmpty {
             addLap()
         }
-        initializeTimer()
-        startTime = Date()
-        isRunning = true
     }
     
     public func stop() {
         deinitializeTimer()
-        lapTimes[lapTimes.count - 1] = elapsedLastLapTime
+        saveLastLap()
         accumulatedTime = getElapsedTime()
         saveData()
     }
@@ -72,14 +76,20 @@ final class Stopwatch: Codable {
     }
     
     public func addLap() {
-        if !lapTimes.isEmpty {
-            lapTimes[lapTimes.count - 1] = elapsedLastLapTime
+        if type == .stopwatch {
+            if !lapTimes.isEmpty {
+                saveLastLap()
+            }
+            lapTimes.append(0.0)
         }
-        lapTimes.append(0.0)
     }
     
-    private func initializeTimer() {
-        timer = Timer.scheduledTimer(timeInterval: 0.01,
+    private func startTimer() {
+        var timeInterval = 1.0
+        if type == .stopwatch {
+            timeInterval = 0.01
+        }
+        timer = Timer.scheduledTimer(timeInterval: timeInterval,
                                      target: self,
                                      selector: #selector(didTimeChange),
                                      userInfo: nil,
@@ -94,7 +104,13 @@ final class Stopwatch: Codable {
     }
     
     private func getElapsedTime() -> TimeInterval {
-        return -(startTime?.timeIntervalSinceNow ?? 0) + accumulatedTime
+        
+        if type == .stopwatch {
+            
+            return -(startTime?.timeIntervalSinceNow ?? 0) + accumulatedTime
+        }
+        
+        return (startTime?.timeIntervalSinceNow ?? 0) + accumulatedTime
     }
     
     public func saveData() {
@@ -107,19 +123,25 @@ final class Stopwatch: Codable {
     
     public func loadSavedData() {
         do {
-            let profile = try UserDefaults.standard.getObject(forKey: Constants.userDefaultsStopwatchKey, castTo: Stopwatch.self)
+            let profile = try UserDefaults.standard.getObject(forKey: Constants.userDefaultsStopwatchKey, castTo: TimerClass.self)
             self.startTime = profile.startTime
             self.isRunning = profile.isRunning
             self.lapTimes  = profile.lapTimes
             self.accumulatedTime = profile.accumulatedTime
             self.elapsedTime = profile.elapsedTime
             
-            lapTimes[lapTimes.count - 1] = elapsedLastLapTime
+            saveLastLap()
             if isRunning {
-                initializeTimer()
+                startTimer()
             }
         } catch {
             print(error.localizedDescription)
+        }
+    }
+    
+    private func saveLastLap() {
+        if type == .stopwatch {
+            lapTimes[lapTimes.count - 1] = elapsedLastLapTime
         }
     }
     
@@ -137,6 +159,7 @@ final class Stopwatch: Codable {
     @objc func didTimeChange() {
         elapsedTime = getElapsedTime()
         stopwatchViewControllerDelegate?.didTimeChange()
+        timerViewControllerDelegate?.didTimeChange()
         saveData()
     }
     

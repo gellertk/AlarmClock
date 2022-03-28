@@ -8,11 +8,24 @@
 import UIKit
 import SnapKit
 
+protocol TimerViewControllerDelegate: AnyObject {
+    func startTimer()
+    func stopTimer()
+    func resetTimer()
+    func didTimeChange()
+}
+
 class TimerViewController: UIViewController {
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         .lightContent
     }
+    
+    private lazy var timer: TimerClass = {
+        let timer = TimerClass(type: .timer)
+        
+        return timer
+    }()
     
     private var timerView: TimerView = {
         let view = TimerView()
@@ -42,7 +55,31 @@ private extension TimerViewController {
     }
     
     func setupDelegatesAndDataSources() {
+        timer.timerViewControllerDelegate = self
         timerView.timePickerView.delegateDataSource = self
+    }
+    
+}
+
+extension TimerViewController: TimerViewControllerDelegate {
+    
+    func startTimer() {
+        timer.start()
+        //show timer circle
+    }
+    
+    func stopTimer() {
+        timer.stop()
+        //pause timer
+    }
+    
+    func resetTimer() {
+        timer.reset()
+        //show picker view
+    }
+    
+    func didTimeChange() {
+        timerView.updateTimerLabel(time: timer.elapsedTime)
     }
     
 }

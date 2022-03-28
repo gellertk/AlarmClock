@@ -129,7 +129,7 @@ private extension StopwatchView {
     func setupConstraints() {
         
         lapAndResetButton.snp.makeConstraints {
-            $0.top.equalTo(UIScreen.main.bounds.height * 0.45)
+            $0.top.equalTo(UIScreen.main.bounds.height * 0.46)
             $0.leading.equalToSuperview().offset(Constants.defaultBorderConstraint)
             $0.width.height.equalTo(Constants.circleButtonViewWidthHeight)
         }

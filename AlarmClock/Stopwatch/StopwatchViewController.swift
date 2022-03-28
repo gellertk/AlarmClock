@@ -22,7 +22,12 @@ class StopwatchViewController: UIViewController {
         .lightContent
     }
     
-    private lazy var stopwatch = Stopwatch(stopwatchViewControllerDelegate: self)
+    private lazy var stopwatch: TimerClass = {
+        let stopwatch = TimerClass(type: .stopwatch)
+        stopwatch.stopwatchViewControllerDelegate = self
+        
+        return stopwatch
+    }()
     
     private lazy var stopwatchView: StopwatchView = {
         let view = StopwatchView(interfaceType: stopwatch.getCurrentInterfaceType())
