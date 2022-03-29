@@ -183,7 +183,6 @@
 				CB0C193C27B121C90074976D /* StopwatchView.swift */,
 				CBDBB92627EF3A3A00A65087 /* StopwatchNumbersView.swift */,
 				CBDBB92827EF3C1900A65087 /* StopwatchImitationView.swift */,
-				CBA774D727D64A55005CE96C /* TimerClass.swift */,
 				CB6076A527D4FB43008333A8 /* LapsTableViewCell.swift */,
 			);
 			path = Stopwatch;
@@ -226,6 +225,7 @@
 			isa = PBXGroup;
 			children = (
 				CBA774D527D6043F005CE96C /* CircleButtonView.swift */,
+				CBA774D727D64A55005CE96C /* TimerClass.swift */,
 			);
 			path = ReusableView;
 			sourceTree = "<group>";

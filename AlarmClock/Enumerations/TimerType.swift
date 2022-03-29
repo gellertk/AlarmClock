@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum TimerType {
+enum TimerType: String {
     
     case stopwatch
     case timer

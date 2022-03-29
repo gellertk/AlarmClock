@@ -17,7 +17,7 @@ class TimerPickerView: UIView {
         }
     }
     
-    private lazy var timePickerView: UIPickerView = {
+    public lazy var timePickerView: UIPickerView = {
         let pickerView = UIPickerView()
         
         return pickerView

@@ -10,7 +10,7 @@ import Foundation
 final class TimerClass: Codable {
     
     private var type: TimerType?
-            
+    
     public weak var stopwatchViewControllerDelegate: StopwatchViewControllerDelegate?
     public weak var timerViewControllerDelegate: TimerViewControllerDelegate?
     
@@ -54,14 +54,14 @@ final class TimerClass: Codable {
         startTimer()
         startTime = Date()
         isRunning = true
-        if lapTimes.isEmpty {
+        if lapTimes.isEmpty, type == .stopwatch {
             addLap()
         }
     }
     
     public func stop() {
         deinitializeTimer()
-        saveLastLap()
+        calculateLastLapTime()
         accumulatedTime = getElapsedTime()
         saveData()
     }
@@ -76,12 +76,10 @@ final class TimerClass: Codable {
     }
     
     public func addLap() {
-        if type == .stopwatch {
-            if !lapTimes.isEmpty {
-                saveLastLap()
-            }
-            lapTimes.append(0.0)
+        if !lapTimes.isEmpty {
+            calculateLastLapTime()
         }
+        lapTimes.append(0.0)
     }
     
     private func startTimer() {
@@ -104,18 +102,13 @@ final class TimerClass: Codable {
     }
     
     private func getElapsedTime() -> TimeInterval {
-        
-        if type == .stopwatch {
-            
-            return -(startTime?.timeIntervalSinceNow ?? 0) + accumulatedTime
-        }
-        
-        return (startTime?.timeIntervalSinceNow ?? 0) + accumulatedTime
+                    
+        return -(startTime?.timeIntervalSinceNow ?? 0) + accumulatedTime
     }
     
     public func saveData() {
         do {
-            try UserDefaults.standard.saveObject(self, forKey: Constants.userDefaultsStopwatchKey)
+            try UserDefaults.standard.saveObject(self, forKey: type?.rawValue ?? "")
         } catch {
             print(error.localizedDescription)
         }
@@ -123,14 +116,15 @@ final class TimerClass: Codable {
     
     public func loadSavedData() {
         do {
-            let profile = try UserDefaults.standard.getObject(forKey: Constants.userDefaultsStopwatchKey, castTo: TimerClass.self)
+            let profile = try UserDefaults.standard.getObject(forKey: type?.rawValue ?? "", castTo: TimerClass.self)
             self.startTime = profile.startTime
             self.isRunning = profile.isRunning
-            self.lapTimes  = profile.lapTimes
             self.accumulatedTime = profile.accumulatedTime
             self.elapsedTime = profile.elapsedTime
-            
-            saveLastLap()
+            if type == .stopwatch {
+                self.lapTimes = profile.lapTimes
+                calculateLastLapTime()
+            }
             if isRunning {
                 startTimer()
             }
@@ -139,8 +133,8 @@ final class TimerClass: Codable {
         }
     }
     
-    private func saveLastLap() {
-        if type == .stopwatch {
+    private func calculateLastLapTime() {
+        if type == .stopwatch, !lapTimes.isEmpty {
             lapTimes[lapTimes.count - 1] = elapsedLastLapTime
         }
     }
@@ -157,9 +151,12 @@ final class TimerClass: Codable {
     }
     
     @objc func didTimeChange() {
-        elapsedTime = getElapsedTime()
-        stopwatchViewControllerDelegate?.didTimeChange()
-        timerViewControllerDelegate?.didTimeChange()
+        if type == .stopwatch {
+            elapsedTime = getElapsedTime()
+            stopwatchViewControllerDelegate?.didTimeChange()
+        } else {
+            timerViewControllerDelegate?.didTimeChange()
+        }
         saveData()
     }
     

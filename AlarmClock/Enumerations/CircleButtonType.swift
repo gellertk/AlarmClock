@@ -7,19 +7,23 @@
 
 enum CircleButtonType {
     
-    case start
+    case startStopwatch
     case stop
     case reset
-    case resume
-    case pause
     case lapEnabled
     case lapDisabled
+    
+    case startTimer
+    case pause
+    case resume
     case cancelEnabled
     case cancelDisabled
     
-    var buttonTitle: String {
+    var title: String {
         switch self {
-        case .start:
+        case .startStopwatch:
+            return "Старт"
+        case .startTimer:
             return "Старт"
         case .stop:
             return "Стоп"

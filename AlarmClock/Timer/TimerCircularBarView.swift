@@ -25,6 +25,7 @@ class TimerCircularBarView: UIView {
         label.font = Constants.stopwatchMainLabelFont
         label.textAlignment = .center
         label.text = "00:00"
+        label.adjustsFontSizeToFitWidth = true
         
         return label
     }()
@@ -44,7 +45,7 @@ class TimerCircularBarView: UIView {
     }
     
     func setupTimeLabel(time: TimeInterval) {
-        timeLabel.text = time.convertToStopwatchFormatString()
+        timeLabel.text = time.convertToReadableString(timerType: .timer)
     }
 
 }

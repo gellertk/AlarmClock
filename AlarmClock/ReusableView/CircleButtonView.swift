@@ -42,25 +42,38 @@ class CircleButtonView: UIView {
         self.type = type
         
         switch type {
-        case .start:
-            setupAsStopwatchStartButton()
+        case .startStopwatch:
+            setupAsStart()
+            action = stopwatchViewDelegate?.didTapStartStopwatchButton
+        case .startTimer:
+            setupAsStart()
+            action = timerViewDelegate?.didTapStartTimerButton
         case .stop:
-            setupAsStopwatchStopButton()
+            setupAsStop()
+            action = stopwatchViewDelegate?.didTapStopStopwatchButton
         case .lapDisabled:
-            setupAsStopwatchLapDisabledButton()
+            setupDisabled()
+            action = stopwatchViewDelegate?.didTapDisabledLapStopwatchButton
         case .lapEnabled:
-            setupAsStopwatchLapEnabledButton()
+            setupEnabled()
+            action = stopwatchViewDelegate?.didTapLapStopwatchButton
         case .reset:
-            setupAsStopwatchResetButton()
+            setupEnabled()
+            action = stopwatchViewDelegate?.didTapResetStopwatchButton
         case .cancelDisabled:
-            setupAsCancelDisabledTimerButton()
+            setupDisabled()
+            action = timerViewDelegate?.didTapDisabledCancelTimerButton
         case .cancelEnabled:
-            setupAsCancelEnabledTimerButton()
+            setupEnabled()
+            action = timerViewDelegate?.didTapCancelTimerButton
         case .pause:
-            setupAsPauseTimerButton()
+            setupAsPause()
+            action = timerViewDelegate?.didTapPauseTimerButton
         case .resume:
-            setupAsResumeTimerButton()
+            setupAsStart()
+            action = timerViewDelegate?.didTapResumeTimerButton
         }
+        
     }
     
     override func layoutSubviews() {
@@ -116,95 +129,40 @@ private extension CircleButtonView {
         action()
     }
     
-    func setupStart() {
-        button.setTitle(type?.buttonTitle ?? "", for: .normal)
+    //TODO: Make constants
+    func setupAsStart() {
+        button.setTitle(type?.title ?? "", for: .normal)
         button.setTitleColor(Constants.startButtonTextColor, for: .normal)
         button.backgroundColor = Constants.startButtonBackgroundColor
         layer.borderColor = Constants.startButtonBackgroundColor.cgColor
     }
     
-    func setupPaused() {
-        button.setTitle(type?.buttonTitle ?? "", for: .normal)
+    func setupAsStop() {
+        button.setTitle(type?.title ?? "", for: .normal)
         button.setTitleColor(Constants.stopButtonTextColor, for: .normal)
         button.backgroundColor = Constants.stopButtonBackgroundColor
         layer.borderColor = Constants.stopButtonBackgroundColor.cgColor
     }
     
+    func setupAsPause() {
+        button.setTitle(type?.title ?? "", for: .normal)
+        button.setTitleColor(.systemOrange, for: .normal)
+        button.backgroundColor = .systemOrange.withAlphaComponent(0.3)
+        layer.borderColor = UIColor.systemOrange.withAlphaComponent(0.3).cgColor
+    }
+    
     func setupDisabled() {
-        button.setTitle(type?.buttonTitle ?? "", for: .normal)
+        button.setTitle(type?.title ?? "", for: .normal)
         button.setTitleColor(Constants.disabledButtonTextColor, for: .normal)
         button.backgroundColor = Constants.disabledButtonBackgroundColor
         layer.borderColor = Constants.disabledButtonBackgroundColor.cgColor
     }
     
     func setupEnabled() {
-        button.setTitle(type?.buttonTitle ?? "", for: .normal)
+        button.setTitle(type?.title ?? "", for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.backgroundColor = Constants.enabledButtonBackgroundColor
         layer.borderColor = Constants.enabledButtonBackgroundColor.cgColor
-    }
-    
-}
-
-//MARK: Stopwatch setup
-private extension CircleButtonView {
-    
-    func setupAsStopwatchStartButton() {
-        setupStart()
-        action = stopwatchViewDelegate?.didTapStartStopwatchButton
-    }
-    
-    func setupAsStopwatchStopButton() {
-        setupPaused()
-        action = stopwatchViewDelegate?.didTapStopStopwatchButton
-    }
-    
-    func setupAsStopwatchLapDisabledButton() {
-        setupDisabled()
-        action = stopwatchViewDelegate?.didTapDisabledLapStopwatchButton
-    }
-    
-    func setupAsStopwatchLapEnabledButton() {
-        setupEnabled()
-        action = stopwatchViewDelegate?.didTapLapStopwatchButton
-    }
-    
-    func setupAsStopwatchResetButton() {
-        button.setTitle(type?.buttonTitle ?? "", for: .normal)
-        action = stopwatchViewDelegate?.didTapResetStopwatchButton
-    }
-    
-}
-
-//MARK: Timer setup
-private extension CircleButtonView {
-    
-    func setupAsStartTimerButton() {
-        setupStart()
-        action = timerViewDelegate?.didTapStartTimerButton
-    }
-    
-    func setupAsPauseTimerButton() {
-        button.setTitle(type?.buttonTitle ?? "", for: .normal)
-        button.setTitleColor(.systemOrange, for: .normal)
-        button.backgroundColor = .systemOrange
-        layer.borderColor = UIColor.systemOrange.cgColor
-        action = timerViewDelegate?.didTapPauseTimerButton
-    }
-    
-    func setupAsResumeTimerButton() {
-        setupStart()
-        action = timerViewDelegate?.didTapResumeTimerButton
-    }
-    
-    func setupAsCancelDisabledTimerButton() {
-        setupDisabled()
-        action = timerViewDelegate?.didTapDisabledCancelTimerButton
-    }
-    
-    func setupAsCancelEnabledTimerButton() {
-        setupEnabled()
-        action = timerViewDelegate?.didTapCancelTimerButton
     }
     
 }

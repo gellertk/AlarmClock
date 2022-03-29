@@ -22,14 +22,13 @@ class TimerView: UIView {
     
     public var timePickerView: TimerPickerView = {
         let pickerView = TimerPickerView()
-        pickerView.isHidden = true
         
         return pickerView
     }()
     
-    private var circularBarView: TimerCircularBarView = {
+    public var circularBarView: TimerCircularBarView = {
         let view = TimerCircularBarView()
-        //view.isHidden = true
+        view.isHidden = true
         
         return view
     }()
@@ -120,32 +119,23 @@ private extension TimerView {
         }
         
     }
-        
+    
     func setupButtonsBy(type: InterfaceType) {
+        
         switch type {
         case .timerInitial:
-            setupInitialInterface()
+            cancelButton.setupBy(type: .cancelDisabled)
+            startAndPauseButton.setupBy(type: .startTimer)
         case .timerRunning:
-            setupRunningInterface()
+            cancelButton.setupBy(type: .cancelEnabled)
+            startAndPauseButton.setupBy(type: .pause)
         case .timerPaused:
-            setupPauseInterface()
-        default: break
+            cancelButton.setupBy(type: .cancelEnabled)
+            startAndPauseButton.setupBy(type: .resume)
+        default:
+            break
         }
-    }
-    
-    func setupRunningInterface() {
-        cancelButton.setupBy(type: .cancelEnabled)
-        startAndPauseButton.setupBy(type: .pause)
-    }
-    
-    func setupPauseInterface() {
-        cancelButton.setupBy(type: .cancelEnabled)
-        startAndPauseButton.setupBy(type: .start)
-    }
-    
-    func setupInitialInterface() {
-        cancelButton.setupBy(type: .cancelDisabled)
-        startAndPauseButton.setupBy(type: .start)
+        
     }
     
 }
@@ -155,48 +145,30 @@ extension TimerView: TimerViewDelegate {
     func didTapStartTimerButton() {
         timerViewControllerDelegate?.startTimer()
         setupButtonsBy(type: .timerRunning)
+        timePickerView.isHidden = true
+        circularBarView.isHidden = false
     }
     
     func didTapPauseTimerButton() {
-        timerViewControllerDelegate?.stopStopwatch()
-        setupButtonsBy(type: .stopwatchPaused)
+        timerViewControllerDelegate?.stopTimer()
+        setupButtonsBy(type: .timerPaused)
     }
     
     func didTapResumeTimerButton() {
-        
+        timerViewControllerDelegate?.startTimer()
+        setupButtonsBy(type: .timerRunning)
     }
     
     func didTapCancelTimerButton() {
-        
+        timerViewControllerDelegate?.resetTimer()
+        setupButtonsBy(type: .timerInitial)
+        timePickerView.isHidden = false
+        circularBarView.isHidden = true
     }
     
     func didTapDisabledCancelTimerButton() {
-        
+        setupButtonsBy(type: .timerInitial)
     }
-    
-//    func didTapStartStopwatchButton() {
-//        stopwatchViewControllerDelegate?.startStopwatch()
-//        setupButtonsBy(type: .stopwatchRunning)
-//    }
-//
-//    func didTapStopStopwatchButton() {
-//        stopwatchViewControllerDelegate?.stopStopwatch()
-//        setupButtonsBy(type: .stopwatchPaused)
-//    }
-//
-//    func didTapLapStopwatchButton() {
-//        stopwatchViewControllerDelegate?.saveLap()
-//        setupButtonsBy(type: .stopwatchRunning)
-//    }
-//
-//    func didTapDisabledLapStopwatchButton() {
-//        setupButtonsBy(type: .stopwatchInitial)
-//    }
-//
-//    func didTapResetStopwatchButton() {
-//        stopwatchViewControllerDelegate?.resetStopwatch()
-//        setupButtonsBy(type: .stopwatchInitial)
-//    }
     
 }
 

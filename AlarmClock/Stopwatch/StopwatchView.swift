@@ -100,8 +100,8 @@ class StopwatchView: UIView {
     
     //TODO: Convert to generic or smth
     public func updateStopwatchLabels(mainTime: TimeInterval, lapTime: TimeInterval) {
-        (scrollViewElements.first as? StopwatchNumbersView)?.timeLabel.text = mainTime.convertToStopwatchFormatString()
-        (scrollViewElements.last as? StopwatchImitationView)?.timeLabel.text = mainTime.convertToStopwatchFormatString()
+        (scrollViewElements.first as? StopwatchNumbersView)?.timeLabel.text = mainTime.convertToReadableString(timerType: .stopwatch)
+        (scrollViewElements.last as? StopwatchImitationView)?.timeLabel.text = mainTime.convertToReadableString(timerType: .stopwatch)
         if let cell = lapsTableView.cellForRow(at: IndexPath(row: 0, section: 0)) as? LapsTableViewCell {
             cell.updateStopwatch(lapTime: lapTime)
         }
@@ -183,12 +183,12 @@ private extension StopwatchView {
     
     private func setupPauseInterface() {
         lapAndResetButton.setupBy(type: .reset)
-        startAndStopButton.setupBy(type: .start)
+        startAndStopButton.setupBy(type: .startStopwatch)
     }
     
     private func setupInitialInterface() {
         lapAndResetButton.setupBy(type: .lapDisabled)
-        startAndStopButton.setupBy(type: .start)
+        startAndStopButton.setupBy(type: .startStopwatch)
         (scrollViewElements.first as? StopwatchNumbersView)?.timeLabel.text = Constants.stopwatchStartTime
         (scrollViewElements.last as? StopwatchImitationView)?.timeLabel.text = Constants.stopwatchStartTime
     }

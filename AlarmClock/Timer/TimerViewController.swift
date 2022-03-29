@@ -21,6 +21,32 @@ class TimerViewController: UIViewController {
         .lightContent
     }
     
+    private var fullTimerDuration: TimeInterval {
+        
+        var result: TimeInterval = 0
+        for i in 0..<timerView.timePickerView.timePickerView.numberOfComponents {
+            let selectedRow = timerView.timePickerView.timePickerView.selectedRow(inComponent: i)
+            switch i {
+            case 0:
+                result += Double(selectedRow * (60 * 60))
+            case 1:
+                result += Double(selectedRow * 60)
+            case 2:
+                result += Double(selectedRow)
+            default:
+                break
+            }
+        }
+        
+        return result
+    }
+    
+    private var currentTimerDuration: TimeInterval = 0 {
+        didSet {
+            timerView.updateTimerLabel(time: currentTimerDuration)
+        }
+    }
+    
     private lazy var timer: TimerClass = {
         let timer = TimerClass(type: .timer)
         
@@ -56,6 +82,7 @@ private extension TimerViewController {
     
     func setupDelegatesAndDataSources() {
         timer.timerViewControllerDelegate = self
+        timerView.timerViewControllerDelegate = self
         timerView.timePickerView.delegateDataSource = self
     }
     
@@ -65,6 +92,7 @@ extension TimerViewController: TimerViewControllerDelegate {
     
     func startTimer() {
         timer.start()
+        currentTimerDuration = fullTimerDuration
         //show timer circle
     }
     
@@ -78,8 +106,16 @@ extension TimerViewController: TimerViewControllerDelegate {
         //show picker view
     }
     
+//    func resumeTimer() {
+//
+//    }
+    
     func didTimeChange() {
-        timerView.updateTimerLabel(time: timer.elapsedTime)
+        currentTimerDuration -= 1
+        if currentTimerDuration == -1 {
+            timer.reset()
+            timerView.didTapCancelTimerButton()
+        }
     }
     
 }
@@ -107,7 +143,7 @@ extension TimerViewController: UIPickerViewDelegate, UIPickerViewDataSource {
         
         let attributiveMainRow = NSMutableAttributedString(string: "\(row)", attributes: attributes)
         let attributiveLeadingDigit = NSMutableAttributedString(string: "1",
-                                                        attributes: leadingDigitAttributes)
+                                                                attributes: leadingDigitAttributes)
         
         if String(row).count == 1 {
             attributiveMainRow.insert(attributiveLeadingDigit, at: 0)
