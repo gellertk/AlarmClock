@@ -147,6 +147,7 @@ extension TimerView: TimerViewDelegate {
         setupButtonsBy(type: .timerRunning)
         timePickerView.isHidden = true
         circularBarView.isHidden = false
+        circularBarView.basicAnimation()
     }
     
     func didTapPauseTimerButton() {

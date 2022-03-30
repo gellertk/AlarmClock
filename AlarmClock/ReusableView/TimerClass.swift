@@ -27,7 +27,7 @@ final class TimerClass: Codable {
     private var isRunning = false
     private var timer: Timer?
     private var startTime: Date?
-    private var accumulatedTime: TimeInterval = 0
+    public var accumulatedTime: TimeInterval = 0
     
     private enum CodingKeys: String, CodingKey {
         case isRunning

@@ -13,6 +13,7 @@ protocol TimerViewControllerDelegate: AnyObject {
     func stopTimer()
     func resetTimer()
     func didTimeChange()
+    func resumeTimer()
 }
 
 class TimerViewController: UIViewController {
@@ -92,26 +93,25 @@ extension TimerViewController: TimerViewControllerDelegate {
     
     func startTimer() {
         timer.start()
-        currentTimerDuration = fullTimerDuration
-        //show timer circle
+        currentTimerDuration = fullTimerDuration - timer.accumulatedTime
+        timerView.circularBarView.timerDuration = fullTimerDuration
     }
     
     func stopTimer() {
         timer.stop()
-        //pause timer
     }
     
     func resetTimer() {
         timer.reset()
-        //show picker view
     }
     
-//    func resumeTimer() {
-//
-//    }
+    func resumeTimer() {
+        //timer.resume()
+    }
     
     func didTimeChange() {
         currentTimerDuration -= 1
+        //timerView.circularBarView.timerDuration = currentTimerDuration
         if currentTimerDuration == -1 {
             timer.reset()
             timerView.didTapCancelTimerButton()
