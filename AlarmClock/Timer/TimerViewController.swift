@@ -10,7 +10,7 @@ import SnapKit
 
 protocol TimerViewControllerDelegate: AnyObject {
     func startTimer()
-    func stopTimer()
+    func pauseTimer()
     func resetTimer()
     func didTimeChange()
     func resumeTimer()
@@ -22,11 +22,11 @@ class TimerViewController: UIViewController {
         .lightContent
     }
     
-    private var fullTimerDuration: TimeInterval {
+    private var timerDuration: TimeInterval {
         
         var result: TimeInterval = 0
-        for i in 0..<timerView.timePickerView.timePickerView.numberOfComponents {
-            let selectedRow = timerView.timePickerView.timePickerView.selectedRow(inComponent: i)
+        for i in 0 ..< Constant.Collection.numbersOfRowsAndLabelTexts.count {
+            let selectedRow = timerView.timerPickerView.pickerView.selectedRow(inComponent: i)
             switch i {
             case 0:
                 result += Double(selectedRow * (60 * 60))
@@ -39,26 +39,18 @@ class TimerViewController: UIViewController {
             }
         }
         
-        return result
+        return result + Constant.Numeric.timerDelay
     }
     
-    private var currentTimerDuration: TimeInterval = 0 {
+    private var currentTimerValue: TimeInterval = 0 {
         didSet {
-            timerView.updateTimerLabel(time: currentTimerDuration)
+            timerView.updateTimerLabel(time: currentTimerValue)
         }
     }
     
-    private lazy var timer: TimerClass = {
-        let timer = TimerClass(type: .timer)
-        
-        return timer
-    }()
+    private let timer = TimerClass(type: .timer)
     
-    private var timerView: TimerView = {
-        let view = TimerView()
-        
-        return view
-    }()
+    private let timerView = TimerView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -84,7 +76,7 @@ private extension TimerViewController {
     func setupDelegatesAndDataSources() {
         timer.timerViewControllerDelegate = self
         timerView.timerViewControllerDelegate = self
-        timerView.timePickerView.delegateDataSource = self
+        timerView.timerPickerView.delegateDataSource = self
     }
     
 }
@@ -93,12 +85,14 @@ extension TimerViewController: TimerViewControllerDelegate {
     
     func startTimer() {
         timer.start()
-        currentTimerDuration = fullTimerDuration - timer.accumulatedTime
-        timerView.circularBarView.timerDuration = fullTimerDuration
+        currentTimerValue = timerDuration
+        timerView.circularBarView.timerDuration = timerDuration
+        timerView.circularBarView.setupEndTimeLabel(timeLeft: timerDuration - timer.elapsedTime)
     }
     
-    func stopTimer() {
+    func pauseTimer() {
         timer.stop()
+        timerView.circularBarView.setupEndTimeLabel(disabled: true)
     }
     
     func resetTimer() {
@@ -106,13 +100,13 @@ extension TimerViewController: TimerViewControllerDelegate {
     }
     
     func resumeTimer() {
-        //timer.resume()
+        timer.start()
+        timerView.circularBarView.setupEndTimeLabel(timeLeft: timerDuration - timer.elapsedTime)
     }
     
     func didTimeChange() {
-        currentTimerDuration -= 1
-        //timerView.circularBarView.timerDuration = currentTimerDuration
-        if currentTimerDuration == -1 {
+        currentTimerValue = timerDuration - timer.elapsedTime
+        if currentTimerValue <= Constant.Numeric.timerDelay {
             timer.reset()
             timerView.didTapCancelTimerButton()
         }
@@ -124,12 +118,12 @@ extension TimerViewController: UIPickerViewDelegate, UIPickerViewDataSource {
     
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         
-        return Constants.numbersOfRowsAndLabelTexts.count
+        return Constant.Collection.numbersOfRowsAndLabelTexts.count
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         
-        return Constants.numbersOfRowsAndLabelTexts[component].key
+        return Constant.Collection.numbersOfRowsAndLabelTexts[component].key
     }
     
     func pickerView(_ pickerView: UIPickerView, attributedTitleForRow row: Int, forComponent component: Int) -> NSAttributedString? {

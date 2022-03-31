@@ -10,7 +10,7 @@ import SnapKit
 
 class TimerSoundSelectionButton: UIButton {
     
-    private var atEndLabel: UILabel = {
+    private let atEndLabel: UILabel = {
         let label = UILabel()
         label.text = "По окончании"
         label.textColor = .white
@@ -18,7 +18,7 @@ class TimerSoundSelectionButton: UIButton {
         return label
     }()
     
-    private var soundNameLabel: UILabel = {
+    private let soundNameLabel: UILabel = {
         let label = UILabel()
         label.text = "Радар"
         label.textColor = .lightGray
@@ -26,7 +26,7 @@ class TimerSoundSelectionButton: UIButton {
         return label
     }()
     
-    private var accesoryImageView: UIImageView = {
+    private let accesoryImageView: UIImageView = {
         let image = UIImage(systemName: "chevron.right")
         let imageView = UIImageView(image: image)
         imageView.tintColor = .lightGray
@@ -55,7 +55,6 @@ private extension TimerSoundSelectionButton {
     
     func setupView() {
         backgroundColor = .darkGray.withAlphaComponent(0.5)
-
         [atEndLabel,
          soundNameLabel,
          accesoryImageView].forEach {

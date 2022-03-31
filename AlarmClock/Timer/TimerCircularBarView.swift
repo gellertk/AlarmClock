@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SwiftUI
 import SnapKit
 
 class TimerCircularBarView: UIView {
@@ -16,37 +17,38 @@ class TimerCircularBarView: UIView {
         let layer = CAShapeLayer()
         layer.lineWidth = 7
         layer.fillColor = UIColor.clear.cgColor
-        layer.strokeEnd = 1
-        layer.lineCap = .round
         layer.strokeColor = UIColor.darkGray.cgColor
         
         return layer
     }()
     
-    private let trackLayer: CAShapeLayer = {
+    private let progressLayer: CAShapeLayer = {
         let layer = CAShapeLayer()
         layer.lineWidth = 7
         layer.fillColor = UIColor.clear.cgColor
-        layer.strokeEnd = 0
         layer.lineCap = .round
         layer.strokeColor = UIColor.systemOrange.cgColor
         
         return layer
     }()
     
-    private var shapeView: UIView = {
-        let view = UIView()
-        
-        return view
-    }()
+    private let shapeView = UIView()
     
-    private var timeLabel: UILabel = {
+    private let timeLabel: UILabel = {
         let label = UILabel()
         label.textColor = .white
-        label.text = Constants.stopwatchStartTime
-        label.font = Constants.stopwatchMainLabelFont
+        label.text = Constant.String.stopwatchStartTime
+        label.font = .monospacedDigitSystemFont(ofSize: 75, weight: .thin)
         label.textAlignment = .center
         label.adjustsFontSizeToFitWidth = true
+        
+        return label
+    }()
+    
+    private let endTimeLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = Constant.Color.enabledButtonBackground
+        label.font = .systemFont(ofSize: 19, weight: .regular)
         
         return label
     }()
@@ -62,51 +64,28 @@ class TimerCircularBarView: UIView {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        //shapeLayer.frame = bounds
-        shapeLayer.cornerRadius = frame.width / 2
-        //shapeView.layer.cornerRadius = frame.width / 2
-        animationCircular()
+        setupLayers()
     }
     
     func setupTimeLabel(time: TimeInterval) {
         timeLabel.text = time.convertToReadableString(timerType: .timer)
     }
     
-    //MARK: Animation
-    func animationCircular() {
-        
-//        let center = CGPoint(x: shapeView.frame.width / 2, y: shapeView.frame.height / 2)
-//        let endAngle = (-CGFloat.pi / 2)
-//        let startAngle = 2 * CGFloat.pi + endAngle
-        
-        let diameter = min(bounds.width, bounds.height)
-        let arcCenter = CGPoint(x: bounds.midX, y: bounds.midY)
-                
-        shapeLayer.path = UIBezierPath(arcCenter: arcCenter,
-                                       radius: diameter / 2,
-                                       startAngle: 0,
-                                       endAngle: .pi * 2,
-                                       clockwise: true).cgPath
-        
-        trackLayer.path = UIBezierPath(arcCenter: arcCenter,
-                                       radius: diameter / 2,
-                                       startAngle: .pi * 2,
-                                       endAngle: 0,
-                                       clockwise: true).cgPath
-        
-        shapeView.layer.addSublayer(shapeLayer)
-        shapeView.layer.insertSublayer(trackLayer, above: shapeLayer)
-    }
-    
-    func basicAnimation() {
-        
-        let basicAnimation = CABasicAnimation(keyPath: "strokeEnd")
-        basicAnimation.toValue = 0
-        basicAnimation.duration = timerDuration
-        basicAnimation.fillMode = .forwards
-        basicAnimation.isRemovedOnCompletion = false
-        
-        trackLayer.add(basicAnimation, forKey: "basicAnimation")
+    func setupEndTimeLabel(timeLeft: TimeInterval = 0, disabled: Bool = false) {
+        if disabled {
+            endTimeLabel.textColor = Constant.Color.disabledButtonBackground
+        } else {
+            let endTime = "  \((Date() + timeLeft).convertToFormatHoursMinutes())"
+            let image = UIImage(systemName: "bell.fill") ?? UIImage()
+            let imageAttachment = NSTextAttachment(image: image)
+            let attachmentString = NSAttributedString(attachment: imageAttachment)
+            let completeText = NSMutableAttributedString(string: "")
+            completeText.append(attachmentString)
+            let textAfterIcon = NSAttributedString(string: endTime)
+            completeText.append(textAfterIcon)
+            endTimeLabel.attributedText = completeText
+            endTimeLabel.textColor = .lightGray
+        }
     }
     
 }
@@ -116,7 +95,8 @@ private extension TimerCircularBarView {
     func setupView() {
         backgroundColor = .black
         [shapeView,
-         timeLabel
+         timeLabel,
+         endTimeLabel
         ].forEach {
             addSubview($0)
         }
@@ -130,9 +110,54 @@ private extension TimerCircularBarView {
         }
         
         timeLabel.snp.makeConstraints {
-            $0.edges.equalToSuperview()
+            $0.centerY.equalToSuperview().offset(-20)
+            $0.centerX.equalToSuperview()
         }
         
+        endTimeLabel.snp.makeConstraints {
+            $0.centerY.equalToSuperview().offset(50)
+            $0.centerX.equalToSuperview()
+        }
+        
+    }
+    
+    func setupLayers() {
+        
+        shapeLayer.cornerRadius = frame.width / 2
+        
+        let diameter = min(bounds.width, bounds.height)
+        let arcCenter = CGPoint(x: bounds.midX, y: bounds.midY)
+                
+        shapeLayer.path = UIBezierPath(arcCenter: arcCenter,
+                                       radius: diameter / 2,
+                                       startAngle: 0,
+                                       endAngle: .pi * 2,
+                                       clockwise: true).cgPath
+                
+        progressLayer.path = UIBezierPath(arcCenter: arcCenter,
+                                       radius: diameter / 2,
+                                       startAngle: -.pi / 2,
+                                       endAngle: .pi * 1.5,
+                                       clockwise: true).cgPath
+        
+        shapeView.layer.addSublayer(shapeLayer)
+        shapeView.layer.insertSublayer(progressLayer, above: shapeLayer)
+    }
+    
+}
+
+extension TimerCircularBarView {
+    
+    func startAnimation() {
+        progressLayer.addBasicAnimation(duration: timerDuration - Constant.Numeric.timerDelay)
+    }
+    
+    func pauseAnimation() {
+        progressLayer.pauseAnimation()
+    }
+    
+    func resumeAnimation() {
+        progressLayer.resumeAnimation()
     }
     
 }

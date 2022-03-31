@@ -16,23 +16,23 @@ class LapsTableViewCell: UITableViewCell {
     
     private weak var stopwatchViewDelegate: StopwatchViewDelegate?
     
-    private var lapLabel: UILabel = {
+    private let lapLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: Constants.circleButtonFontSize)
+        label.font = UIFont.systemFont(ofSize: Constant.FontSize.circleButton)
         
         return label
     }()
     
-    private var timeLabel: UILabel = {
+    private let timeLabel: UILabel = {
         let label = UILabel()
         label.textColor = .white
-        label.font = UIFont.monospacedDigitSystemFont(ofSize: Constants.circleButtonFontSize, weight: .regular)
+        label.font = UIFont.monospacedDigitSystemFont(ofSize: Constant.FontSize.circleButton, weight: .regular)
         
         return label
     }()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: Constants.timeZoneCellId)
+        super.init(style: style, reuseIdentifier: Constant.String.timeZoneCellId)
         setupView()
     }
     
@@ -40,10 +40,14 @@ class LapsTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func setupView() {
+}
+
+private extension LapsTableViewCell {
+    
+    func setupView() {
         isUserInteractionEnabled = false
         separatorInset = .zero
-        backgroundColor = Constants.timeZoneTableViewColor
+        backgroundColor = Constant.Color.timeZoneTableView
         [lapLabel, timeLabel].forEach {
             
             contentView.addSubview($0)
@@ -51,7 +55,8 @@ class LapsTableViewCell: UITableViewCell {
         setupConstraints()
     }
     
-    private func setupConstraints() {
+    func setupConstraints() {
+        
         lapLabel.snp.makeConstraints {
             $0.centerY.leading.equalToSuperview()
         }
@@ -59,16 +64,21 @@ class LapsTableViewCell: UITableViewCell {
         timeLabel.snp.makeConstraints {
             $0.centerY.trailing.equalToSuperview()
         }
+        
     }
     
-    public func setup(lap: String, time: TimeInterval, textColor: UIColor) {
+}
+
+extension LapsTableViewCell {
+    
+    func setup(lap: String, time: TimeInterval, textColor: UIColor) {
         lapLabel.text = "Круг \(lap)"
         timeLabel.text = time.convertToReadableString(timerType: .stopwatch)
         lapLabel.textColor = textColor
         timeLabel.textColor = textColor
     }
     
-    public func updateStopwatch(lapTime: TimeInterval) {
+    func updateStopwatch(lapTime: TimeInterval) {
         timeLabel.text = lapTime.convertToReadableString(timerType: .stopwatch)
     }
     

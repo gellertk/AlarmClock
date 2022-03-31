@@ -22,7 +22,7 @@ class StopwatchView: UIView {
     
     private lazy var scrollViewElements = [StopwatchNumbersView(), StopwatchImitationView()]
     
-    public lazy var scrollView: UIScrollView = {
+    private(set) lazy var scrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.isPagingEnabled = true
         scrollView.delegate = self
@@ -53,11 +53,11 @@ class StopwatchView: UIView {
         return pageControl
     }()
     
-    public lazy var lapsTableView: UITableView = {
+    private(set) lazy var lapsTableView: UITableView = {
         let tableView = UITableView()
         tableView.backgroundColor = .black
-        tableView.separatorColor = Constants.tableSeparatorColor
-        tableView.register(LapsTableViewCell.self, forCellReuseIdentifier: Constants.lapCellId)
+        tableView.separatorColor = Constant.Color.tableSeparator
+        tableView.register(LapsTableViewCell.self, forCellReuseIdentifier: Constant.String.lapCellId)
         tableView.showsVerticalScrollIndicator = false
         
         return tableView
@@ -65,7 +65,7 @@ class StopwatchView: UIView {
     
     private lazy var separatorView: UIView = {
         let view = UIView()
-        view.backgroundColor = Constants.tableSeparatorColor
+        view.backgroundColor = Constant.Color.tableSeparator
         
         return view
     }()
@@ -130,14 +130,14 @@ private extension StopwatchView {
         
         lapAndResetButton.snp.makeConstraints {
             $0.top.equalTo(UIScreen.main.bounds.height * 0.46)
-            $0.leading.equalToSuperview().offset(Constants.defaultBorderConstraint)
-            $0.width.height.equalTo(Constants.circleButtonViewWidthHeight)
+            $0.leading.equalToSuperview().offset(Constant.ViewSize.trailingLeadingDefault)
+            $0.width.height.equalTo(Constant.ViewSize.circleButtonViewWidthHeight)
         }
         
         startAndStopButton.snp.makeConstraints {
             $0.centerY.equalTo(lapAndResetButton)
-            $0.trailing.equalToSuperview().offset(-Constants.defaultBorderConstraint)
-            $0.width.height.equalTo(Constants.circleButtonViewWidthHeight)
+            $0.trailing.equalToSuperview().offset(-Constant.ViewSize.trailingLeadingDefault)
+            $0.width.height.equalTo(Constant.ViewSize.circleButtonViewWidthHeight)
         }
         
         separatorView.snp.makeConstraints {
@@ -189,8 +189,8 @@ private extension StopwatchView {
     private func setupInitialInterface() {
         lapAndResetButton.setupBy(type: .lapDisabled)
         startAndStopButton.setupBy(type: .startStopwatch)
-        (scrollViewElements.first as? StopwatchNumbersView)?.timeLabel.text = Constants.stopwatchStartTime
-        (scrollViewElements.last as? StopwatchImitationView)?.timeLabel.text = Constants.stopwatchStartTime
+        (scrollViewElements.first as? StopwatchNumbersView)?.timeLabel.text = Constant.String.stopwatchStartTime
+        (scrollViewElements.last as? StopwatchImitationView)?.timeLabel.text = Constant.String.stopwatchStartTime
     }
     
 }

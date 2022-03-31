@@ -10,11 +10,11 @@ import SnapKit
 
 class StopwatchNumbersView: UIView {
     
-    public var timeLabel: UILabel = {
+    public let timeLabel: UILabel = {
         let label = UILabel()
         label.textColor = .white
-        label.text = Constants.stopwatchStartTime
-        label.font = Constants.stopwatchMainLabelFont
+        label.text = Constant.String.stopwatchStartTime
+        label.font = Constant.Font.stopwatchMainLabel
         label.adjustsFontSizeToFitWidth = true
         label.textAlignment = .center
         
@@ -30,13 +30,17 @@ class StopwatchNumbersView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func setupView() {
+}
+
+private extension StopwatchNumbersView {
+    
+    func setupView() {
         backgroundColor = .black
         addSubview(timeLabel)
         setupConstraints()
     }
     
-    private func setupConstraints() {
+    func setupConstraints() {
         timeLabel.snp.makeConstraints {
             $0.left.right.centerX.equalToSuperview()
             $0.centerY.equalToSuperview().offset(20)

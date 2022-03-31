@@ -104,7 +104,7 @@ private extension CircleButtonView {
     func setupConstraints() {
         button.snp.makeConstraints {
             $0.center.equalToSuperview()
-            $0.width.height.equalTo(Constants.circleButtonWidthHeight)
+            $0.width.height.equalTo(Constant.ViewSize.circleButtonWidthHeight)
         }
     }
     
@@ -113,7 +113,7 @@ private extension CircleButtonView {
     }
     
     @objc func didTouchDown() {
-        let pushedAlpha = (button.backgroundColor?.cgColor.alpha ?? 0) - Constants.pushedCircleButtonDifferenceAlpha
+        let pushedAlpha = (button.backgroundColor?.cgColor.alpha ?? 0) - Constant.Numeric.pushedCircleButtonDifferenceAlpha
         button.backgroundColor = button.backgroundColor?.withAlphaComponent(pushedAlpha)
         layer.borderColor = button.backgroundColor?.cgColor
     }
@@ -132,16 +132,16 @@ private extension CircleButtonView {
     //TODO: Make constants
     func setupAsStart() {
         button.setTitle(type?.title ?? "", for: .normal)
-        button.setTitleColor(Constants.startButtonTextColor, for: .normal)
-        button.backgroundColor = Constants.startButtonBackgroundColor
-        layer.borderColor = Constants.startButtonBackgroundColor.cgColor
+        button.setTitleColor(Constant.Color.startButtonText, for: .normal)
+        button.backgroundColor = Constant.Color.startButtonBackground
+        layer.borderColor = Constant.Color.startButtonBackground.cgColor
     }
     
     func setupAsStop() {
         button.setTitle(type?.title ?? "", for: .normal)
-        button.setTitleColor(Constants.stopButtonTextColor, for: .normal)
-        button.backgroundColor = Constants.stopButtonBackgroundColor
-        layer.borderColor = Constants.stopButtonBackgroundColor.cgColor
+        button.setTitleColor(Constant.Color.stopButtonText, for: .normal)
+        button.backgroundColor = Constant.Color.stopButtonBackground
+        layer.borderColor = Constant.Color.stopButtonBackground.cgColor
     }
     
     func setupAsPause() {
@@ -153,16 +153,16 @@ private extension CircleButtonView {
     
     func setupDisabled() {
         button.setTitle(type?.title ?? "", for: .normal)
-        button.setTitleColor(Constants.disabledButtonTextColor, for: .normal)
-        button.backgroundColor = Constants.disabledButtonBackgroundColor
-        layer.borderColor = Constants.disabledButtonBackgroundColor.cgColor
+        button.setTitleColor(Constant.Color.disabledButtonText, for: .normal)
+        button.backgroundColor = Constant.Color.disabledButtonBackground
+        layer.borderColor = Constant.Color.disabledButtonBackground.cgColor
     }
     
     func setupEnabled() {
         button.setTitle(type?.title ?? "", for: .normal)
         button.setTitleColor(.white, for: .normal)
-        button.backgroundColor = Constants.enabledButtonBackgroundColor
-        layer.borderColor = Constants.enabledButtonBackgroundColor.cgColor
+        button.backgroundColor = Constant.Color.enabledButtonBackground
+        layer.borderColor = Constant.Color.enabledButtonBackground.cgColor
     }
     
 }

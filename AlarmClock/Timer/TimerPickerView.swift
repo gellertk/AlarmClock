@@ -12,16 +12,12 @@ class TimerPickerView: UIView {
     
     public weak var delegateDataSource: TimerViewController? {
         didSet {
-            timePickerView.delegate = delegateDataSource
-            timePickerView.dataSource = delegateDataSource
+            pickerView.delegate = delegateDataSource
+            pickerView.dataSource = delegateDataSource
         }
     }
     
-    public lazy var timePickerView: UIPickerView = {
-        let pickerView = UIPickerView()
-        
-        return pickerView
-    }()
+    private(set) lazy var pickerView = UIPickerView()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -42,26 +38,26 @@ class TimerPickerView: UIView {
 private extension TimerPickerView {
     
     private func setupView() {
-        addSubview(timePickerView)
+        addSubview(pickerView)
         setupConstraints()
     }
     
     private func setupConstraints() {
-        timePickerView.snp.makeConstraints {
+        pickerView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
     }
     
     func setupPickerViewLabels() {
-        for (index, element) in Constants.numbersOfRowsAndLabelTexts.enumerated() {
+        for (index, element) in Constant.Collection.numbersOfRowsAndLabelTexts.enumerated() {
             let label = TimerPickerViewLabel(text: element.value)
-            let componentWidth: CGFloat = frame.width / CGFloat(timePickerView.numberOfComponents)
-            let y = (timePickerView.frame.size.height / 2) - (Constants.timerPickerViewLabelFont.pointSize / 2)
+            let componentWidth: CGFloat = frame.width / CGFloat(pickerView.numberOfComponents)
+            let y = (pickerView.frame.size.height / 2) - (Constant.Font.timerPickerViewLabel.pointSize / 2)
             label.frame = CGRect(x: componentWidth * (CGFloat(index) + 0.68),
                                  y: y,
                                  width: componentWidth,
-                                 height: Constants.timerPickerViewLabelFont.pointSize)
-            timePickerView.addSubview(label)
+                                 height: Constant.Font.timerPickerViewLabel.pointSize)
+            pickerView.addSubview(label)
         }
     }
     

@@ -27,7 +27,7 @@ final class TimerClass: Codable {
     private var isRunning = false
     private var timer: Timer?
     private var startTime: Date?
-    public var accumulatedTime: TimeInterval = 0
+    private var accumulatedTime: TimeInterval = 0
     
     private enum CodingKeys: String, CodingKey {
         case isRunning
@@ -83,11 +83,7 @@ final class TimerClass: Codable {
     }
     
     private func startTimer() {
-        var timeInterval = 1.0
-        if type == .stopwatch {
-            timeInterval = 0.01
-        }
-        timer = Timer.scheduledTimer(timeInterval: timeInterval,
+        timer = Timer.scheduledTimer(timeInterval: Constant.Numeric.timeInterval,
                                      target: self,
                                      selector: #selector(didTimeChange),
                                      userInfo: nil,
@@ -117,12 +113,12 @@ final class TimerClass: Codable {
     public func loadSavedData() {
         do {
             let profile = try UserDefaults.standard.getObject(forKey: type?.rawValue ?? "", castTo: TimerClass.self)
-            self.startTime = profile.startTime
-            self.isRunning = profile.isRunning
-            self.accumulatedTime = profile.accumulatedTime
-            self.elapsedTime = profile.elapsedTime
+            startTime = profile.startTime
+            isRunning = profile.isRunning
+            accumulatedTime = profile.accumulatedTime
+            elapsedTime = profile.elapsedTime
             if type == .stopwatch {
-                self.lapTimes = profile.lapTimes
+                lapTimes = profile.lapTimes
                 calculateLastLapTime()
             }
             if isRunning {
@@ -151,8 +147,8 @@ final class TimerClass: Codable {
     }
     
     @objc func didTimeChange() {
+        elapsedTime = getElapsedTime()
         if type == .stopwatch {
-            elapsedTime = getElapsedTime()
             stopwatchViewControllerDelegate?.didTimeChange()
         } else {
             timerViewControllerDelegate?.didTimeChange()

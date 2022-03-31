@@ -20,13 +20,9 @@ class TimerView: UIView {
     
     public weak var timerViewControllerDelegate: TimerViewControllerDelegate?
     
-    public var timePickerView: TimerPickerView = {
-        let pickerView = TimerPickerView()
-        
-        return pickerView
-    }()
+    private(set) var timerPickerView = TimerPickerView()
     
-    public var circularBarView: TimerCircularBarView = {
+    public let circularBarView: TimerCircularBarView = {
         let view = TimerCircularBarView()
         view.isHidden = true
         
@@ -47,14 +43,10 @@ class TimerView: UIView {
         return button
     }()
     
-    private var soundSelectionButton: TimerSoundSelectionButton = {
-        let button = TimerSoundSelectionButton()
-        
-        return button
-    }()
+    private let soundSelectionButton = TimerSoundSelectionButton()
     
     init(interfaceType: InterfaceType = .timerInitial) {
-        super.init(frame: CGRect.zero)
+        super.init(frame: .zero)
         setupView(type: interfaceType)
     }
     
@@ -71,7 +63,7 @@ class TimerView: UIView {
 private extension TimerView {
     
     func setupView(type: InterfaceType) {
-        [timePickerView,
+        [timerPickerView,
          circularBarView,
          cancelButton,
          startAndPauseButton,
@@ -85,7 +77,8 @@ private extension TimerView {
     
     func setupConstraints() {
         
-        timePickerView.snp.makeConstraints {
+        //TODO: Fix centering
+        timerPickerView.snp.makeConstraints {
             $0.centerX.equalToSuperview()
             $0.top.equalToSuperview().offset(120)
             $0.bottom.equalTo(cancelButton.snp.top).offset(-50)
@@ -100,15 +93,15 @@ private extension TimerView {
         }
         
         cancelButton.snp.makeConstraints {
-            $0.top.equalTo(UIScreen.main.bounds.height * 0.46)
-            $0.leading.equalToSuperview().offset( Constants.defaultBorderConstraint)
-            $0.width.height.equalTo(Constants.circleButtonViewWidthHeight)
+            $0.top.equalTo(Constant.ViewSize.circleButtonTop)
+            $0.leading.equalToSuperview().offset(Constant.ViewSize.trailingLeadingDefault)
+            $0.width.height.equalTo(Constant.ViewSize.circleButtonViewWidthHeight)
         }
         
         startAndPauseButton.snp.makeConstraints {
             $0.centerY.equalTo(cancelButton)
-            $0.trailing.equalToSuperview().offset(-Constants.defaultBorderConstraint)
-            $0.width.height.equalTo(Constants.circleButtonViewWidthHeight)
+            $0.trailing.equalToSuperview().offset(-Constant.ViewSize.trailingLeadingDefault)
+            $0.width.height.equalTo(Constant.ViewSize.circleButtonViewWidthHeight)
         }
         
         soundSelectionButton.snp.makeConstraints {
@@ -145,25 +138,27 @@ extension TimerView: TimerViewDelegate {
     func didTapStartTimerButton() {
         timerViewControllerDelegate?.startTimer()
         setupButtonsBy(type: .timerRunning)
-        timePickerView.isHidden = true
+        timerPickerView.isHidden = true
         circularBarView.isHidden = false
-        circularBarView.basicAnimation()
+        circularBarView.startAnimation()
     }
     
     func didTapPauseTimerButton() {
-        timerViewControllerDelegate?.stopTimer()
+        timerViewControllerDelegate?.pauseTimer()
         setupButtonsBy(type: .timerPaused)
+        circularBarView.pauseAnimation()
     }
     
     func didTapResumeTimerButton() {
-        timerViewControllerDelegate?.startTimer()
+        timerViewControllerDelegate?.resumeTimer()
         setupButtonsBy(type: .timerRunning)
+        circularBarView.resumeAnimation()
     }
     
     func didTapCancelTimerButton() {
         timerViewControllerDelegate?.resetTimer()
         setupButtonsBy(type: .timerInitial)
-        timePickerView.isHidden = false
+        timerPickerView.isHidden = false
         circularBarView.isHidden = true
     }
     

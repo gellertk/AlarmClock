@@ -15,14 +15,18 @@ class TimerPickerViewLabel: UILabel {
         setupView()
     }
     
-    private func setupView() {
-        font = Constants.timerPickerViewLabelFont
-        textColor = .white
-        textAlignment = .left
-    }
-    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+}
+
+private extension TimerPickerViewLabel {
+    
+    func setupView() {
+        font = Constant.Font.timerPickerViewLabel
+        textColor = .white
+        textAlignment = .left
     }
     
 }

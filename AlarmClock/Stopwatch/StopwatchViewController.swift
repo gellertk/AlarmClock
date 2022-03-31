@@ -67,15 +67,15 @@ private extension StopwatchViewController {
     private func getCurrentLapTextColor(indexPathRow: Int) -> UIColor {
         
         let lapTime = stopwatch.lapTimes.reversed()[indexPathRow]
-        if stopwatch.lapTimes.count >= Constants.stopwatchLapsToCustomizeCount,
+        if stopwatch.lapTimes.count >= Constant.Numeric.lapsToCustomizeCount,
            indexPathRow != 0 {
             switch lapTime {
             case stopwatch.lapTimes.dropLast().min():
                 
-                return Constants.stopwatchFasterLapTextColor
+                return Constant.Color.fasterLapText
             case stopwatch.lapTimes.dropLast().max():
                 
-                return Constants.stopwatchSlowestLapTextColor
+                return Constant.Color.slowestLapText
             default:
                 break
             }
@@ -121,7 +121,7 @@ extension StopwatchViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: Constants.lapCellId) as? LapsTableViewCell else {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.String.lapCellId) as? LapsTableViewCell else {
             
             return UITableViewCell()
         }
@@ -136,7 +136,7 @@ extension StopwatchViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         
-        return Constants.stopwatchTableHeightForRow
+        return Constant.ViewSize.stopwatchTableHeightForRow
     }
     
 }
