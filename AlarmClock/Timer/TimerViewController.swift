@@ -127,6 +127,7 @@ extension TimerViewController: UIPickerViewDelegate, UIPickerViewDataSource {
     }
     
     func pickerView(_ pickerView: UIPickerView, attributedTitleForRow row: Int, forComponent component: Int) -> NSAttributedString? {
+        
         let attributes: [NSAttributedString.Key: Any] = [
             .foregroundColor: UIColor.white
         ]
@@ -141,6 +142,13 @@ extension TimerViewController: UIPickerViewDelegate, UIPickerViewDataSource {
         
         if String(row).count == 1 {
             attributiveMainRow.insert(attributiveLeadingDigit, at: 0)
+        }
+        
+        if timer.isRunning {
+            for i in 0 ..< Constant.Collection.numbersOfRowsAndLabelTexts.count {
+                let selectedRow = timerView.timerPickerView.pickerView.selectedRow(inComponent: i)
+                pickerView.selectRow(selectedRow, inComponent: i, animated: false)
+            }
         }
         
         return attributiveMainRow

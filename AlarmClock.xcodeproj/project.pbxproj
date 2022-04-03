@@ -40,6 +40,7 @@
 		CBC7772327B503F60072EE40 /* DateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBC7772227B503F60072EE40 /* DateExtension.swift */; };
 		CBCA7F5027BAC18000116516 /* WorldClock+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBCA7F4E27BAC18000116516 /* WorldClock+CoreDataClass.swift */; };
 		CBCA7F5127BAC18000116516 /* WorldClock+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBCA7F4F27BAC18000116516 /* WorldClock+CoreDataProperties.swift */; };
+		CBD87C4527F9B5FD0040B35E /* UIScrollViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBD87C4427F9B5FD0040B35E /* UIScrollViewExtension.swift */; };
 		CBDBB92727EF3A3A00A65087 /* StopwatchNumbersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBDBB92627EF3A3A00A65087 /* StopwatchNumbersView.swift */; };
 		CBDBB92927EF3C1900A65087 /* StopwatchImitationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBDBB92827EF3C1900A65087 /* StopwatchImitationView.swift */; };
 		CBEFCF2627E8567500BA0E05 /* UserDefaultsSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBEFCF2527E8567400BA0E05 /* UserDefaultsSettings.swift */; };
@@ -88,6 +89,7 @@
 		CBCA7F4E27BAC18000116516 /* WorldClock+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WorldClock+CoreDataClass.swift"; sourceTree = "<group>"; };
 		CBCA7F4F27BAC18000116516 /* WorldClock+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WorldClock+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		CBD3FB0227BE9FD200F718E3 /* AlarmClock.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AlarmClock.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		CBD87C4427F9B5FD0040B35E /* UIScrollViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIScrollViewExtension.swift; sourceTree = "<group>"; };
 		CBDBB92627EF3A3A00A65087 /* StopwatchNumbersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StopwatchNumbersView.swift; sourceTree = "<group>"; };
 		CBDBB92827EF3C1900A65087 /* StopwatchImitationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StopwatchImitationView.swift; sourceTree = "<group>"; };
 		CBEFCF2527E8567400BA0E05 /* UserDefaultsSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsSettings.swift; sourceTree = "<group>"; };
@@ -236,6 +238,7 @@
 			isa = PBXGroup;
 			children = (
 				CBC7772027B4FF860072EE40 /* UserDefaultsExtension.swift */,
+				CBD87C4427F9B5FD0040B35E /* UIScrollViewExtension.swift */,
 				CBC7772227B503F60072EE40 /* DateExtension.swift */,
 				CBA774D927D6767B005CE96C /* TimeIntervalExtension.swift */,
 				CB6647EE27F5C76A004B0819 /* CAShapeLayerExtension.swift */,
@@ -407,6 +410,7 @@
 				CBDBB92927EF3C1900A65087 /* StopwatchImitationView.swift in Sources */,
 				CBC7772127B4FF860072EE40 /* UserDefaultsExtension.swift in Sources */,
 				CB2BE1CC27F0978700137F6C /* CircleButtonType.swift in Sources */,
+				CBD87C4527F9B5FD0040B35E /* UIScrollViewExtension.swift in Sources */,
 				CB5BA76227F1E0DF00AECA3C /* TimerCircularBarView.swift in Sources */,
 				CB0C191827B119430074976D /* SceneDelegate.swift in Sources */,
 				CBEFCF2627E8567500BA0E05 /* UserDefaultsSettings.swift in Sources */,

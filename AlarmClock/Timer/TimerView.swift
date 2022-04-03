@@ -136,6 +136,7 @@ private extension TimerView {
 extension TimerView: TimerViewDelegate {
     
     func didTapStartTimerButton() {
+        //timerPickerView.pickerView.
         timerViewControllerDelegate?.startTimer()
         setupButtonsBy(type: .timerRunning)
         timerPickerView.isHidden = true

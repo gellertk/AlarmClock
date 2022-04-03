@@ -102,5 +102,4 @@ private extension TimerSoundSelectionButton {
         backgroundColor = .darkGray.withAlphaComponent(0.5)
     }
     
-    
 }

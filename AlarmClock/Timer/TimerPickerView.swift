@@ -19,6 +19,7 @@ class TimerPickerView: UIView {
     
     private(set) lazy var pickerView = UIPickerView()
     
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupView()

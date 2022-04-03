@@ -62,6 +62,7 @@ private extension StopwatchViewController {
     func setupDelegatesAndDataSources() {
         stopwatchView.lapsTableView.delegate = self
         stopwatchView.lapsTableView.dataSource = self
+        stopwatchView.scrollView.delegate = self
     }
     
     private func getCurrentLapTextColor(indexPathRow: Int) -> UIColor {
@@ -137,6 +138,14 @@ extension StopwatchViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         
         return Constant.ViewSize.stopwatchTableHeightForRow
+    }
+    
+}
+
+extension StopwatchViewController: UIScrollViewDelegate {
+    
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        stopwatchView.pageControl.currentPage = Int(scrollView.contentOffset.x / UIScreen.main.bounds.width)
     }
     
 }

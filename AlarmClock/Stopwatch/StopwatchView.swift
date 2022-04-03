@@ -25,7 +25,6 @@ class StopwatchView: UIView {
     private(set) lazy var scrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.isPagingEnabled = true
-        scrollView.delegate = self
         scrollView.showsHorizontalScrollIndicator = false
         scrollView.showsVerticalScrollIndicator = false
         
@@ -46,7 +45,7 @@ class StopwatchView: UIView {
         return button
     }()
     
-    private lazy var pageControl: UIPageControl = {
+    private(set) lazy var pageControl: UIPageControl = {
         let pageControl = UIPageControl()
         pageControl.numberOfPages = scrollViewElements.count
         
@@ -219,14 +218,6 @@ extension StopwatchView: StopwatchViewDelegate {
     func didTapResetStopwatchButton() {
         stopwatchViewControllerDelegate?.resetStopwatch()
         setupButtonsBy(type: .stopwatchInitial)
-    }
-    
-}
-
-extension StopwatchView: UIScrollViewDelegate {
-    
-    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        pageControl.currentPage = Int(scrollView.contentOffset.x / UIScreen.main.bounds.width)
     }
     
 }

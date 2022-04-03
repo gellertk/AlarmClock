@@ -11,12 +11,6 @@ final class TimerClass: Codable {
     
     private var type: TimerType?
     
-    public weak var stopwatchViewControllerDelegate: StopwatchViewControllerDelegate?
-    public weak var timerViewControllerDelegate: TimerViewControllerDelegate?
-    
-    public var elapsedTime: TimeInterval = 0
-    public var lapTimes: [TimeInterval] = []
-    
     public var elapsedLastLapTime: Double {
         if lapTimes.count > 1 {
             return (elapsedTime - lapTimes.reduce(0, +) + lapTimes[lapTimes.count - 1])
@@ -24,7 +18,13 @@ final class TimerClass: Codable {
         return elapsedTime
     }
     
-    private var isRunning = false
+    public weak var stopwatchViewControllerDelegate: StopwatchViewControllerDelegate?
+    public weak var timerViewControllerDelegate: TimerViewControllerDelegate?
+    
+    private(set) var elapsedTime: TimeInterval = 0
+    private(set) var lapTimes: [TimeInterval] = []
+    private(set) var isRunning = false
+    
     private var timer: Timer?
     private var startTime: Date?
     private var accumulatedTime: TimeInterval = 0
