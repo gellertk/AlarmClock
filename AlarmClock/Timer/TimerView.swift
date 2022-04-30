@@ -93,15 +93,15 @@ private extension TimerView {
         }
         
         cancelButton.snp.makeConstraints {
-            $0.top.equalTo(Constant.ViewSize.circleButtonTop)
-            $0.leading.equalToSuperview().offset(Constant.ViewSize.trailingLeadingDefault)
-            $0.width.height.equalTo(Constant.ViewSize.circleButtonViewWidthHeight)
+            $0.top.equalTo(K.Numeric.circleButtonTop)
+            $0.leading.equalToSuperview().offset(K.Numeric.trailingLeadingDefaultBorder)
+            $0.width.height.equalTo(K.Numeric.circleButtonViewWidthHeight)
         }
         
         startAndPauseButton.snp.makeConstraints {
             $0.centerY.equalTo(cancelButton)
-            $0.trailing.equalToSuperview().offset(-Constant.ViewSize.trailingLeadingDefault)
-            $0.width.height.equalTo(Constant.ViewSize.circleButtonViewWidthHeight)
+            $0.trailing.equalToSuperview().offset(-K.Numeric.trailingLeadingDefaultBorder)
+            $0.width.height.equalTo(K.Numeric.circleButtonViewWidthHeight)
         }
         
         soundSelectionButton.snp.makeConstraints {
@@ -136,7 +136,6 @@ private extension TimerView {
 extension TimerView: TimerViewDelegate {
     
     func didTapStartTimerButton() {
-        //timerPickerView.pickerView.
         timerViewControllerDelegate?.startTimer()
         setupButtonsBy(type: .timerRunning)
         timerPickerView.isHidden = true

@@ -14,11 +14,13 @@ protocol LapsTableViewCellDelegate: AnyObject {
 
 class LapsTableViewCell: UITableViewCell {
     
+    static let reuseId = "LapsTableViewCell"
+    
     private weak var stopwatchViewDelegate: StopwatchViewDelegate?
     
     private let lapLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: Constant.FontSize.circleButton)
+        label.font = UIFont.systemFont(ofSize: K.Numeric.circleButtonFontSize)
         
         return label
     }()
@@ -26,13 +28,13 @@ class LapsTableViewCell: UITableViewCell {
     private let timeLabel: UILabel = {
         let label = UILabel()
         label.textColor = .white
-        label.font = UIFont.monospacedDigitSystemFont(ofSize: Constant.FontSize.circleButton, weight: .regular)
+        label.font = UIFont.monospacedDigitSystemFont(ofSize: K.Numeric.circleButtonFontSize, weight: .regular)
         
         return label
     }()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: Constant.String.timeZoneCellId)
+        super.init(style: style, reuseIdentifier: LapsTableViewCell.reuseId)
         setupView()
     }
     
@@ -47,7 +49,7 @@ private extension LapsTableViewCell {
     func setupView() {
         isUserInteractionEnabled = false
         separatorInset = .zero
-        backgroundColor = Constant.Color.timeZoneTableView
+        backgroundColor = K.Color.timeZoneTableView
         [lapLabel, timeLabel].forEach {
             
             contentView.addSubview($0)
@@ -73,13 +75,13 @@ extension LapsTableViewCell {
     
     func setup(lap: String, time: TimeInterval, textColor: UIColor) {
         lapLabel.text = "Круг \(lap)"
-        timeLabel.text = time.convertToReadableString(timerType: .stopwatch)
+        timeLabel.text = time.convertToStopwatchFormat(timerType: .stopwatch)
         lapLabel.textColor = textColor
         timeLabel.textColor = textColor
     }
     
     func updateStopwatch(lapTime: TimeInterval) {
-        timeLabel.text = lapTime.convertToReadableString(timerType: .stopwatch)
+        timeLabel.text = lapTime.convertToStopwatchFormat(timerType: .stopwatch)
     }
     
 }

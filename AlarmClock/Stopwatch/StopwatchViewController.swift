@@ -14,6 +14,7 @@ protocol StopwatchViewControllerDelegate: AnyObject {
     func saveLap()
     func resetStopwatch()
     func didTimeChange()
+    func isPaused() -> Bool
 }
 
 class StopwatchViewController: UIViewController {
@@ -68,15 +69,15 @@ private extension StopwatchViewController {
     private func getCurrentLapTextColor(indexPathRow: Int) -> UIColor {
         
         let lapTime = stopwatch.lapTimes.reversed()[indexPathRow]
-        if stopwatch.lapTimes.count >= Constant.Numeric.lapsToCustomizeCount,
+        if stopwatch.lapTimes.count >= K.Numeric.lapsToCustomizeCount,
            indexPathRow != 0 {
             switch lapTime {
             case stopwatch.lapTimes.dropLast().min():
                 
-                return Constant.Color.fasterLapText
+                return K.Color.fasterLapText
             case stopwatch.lapTimes.dropLast().max():
                 
-                return Constant.Color.slowestLapText
+                return K.Color.slowestLapText
             default:
                 break
             }
@@ -88,6 +89,10 @@ private extension StopwatchViewController {
 }
 
 extension StopwatchViewController: StopwatchViewControllerDelegate {
+    
+    func isPaused() -> Bool {
+        return stopwatch.elapsedTime != 0
+    }
     
     func startStopwatch() {
         stopwatch.start()
@@ -122,7 +127,7 @@ extension StopwatchViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.String.lapCellId) as? LapsTableViewCell else {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: LapsTableViewCell.reuseId) as? LapsTableViewCell else {
             
             return UITableViewCell()
         }
@@ -132,12 +137,11 @@ extension StopwatchViewController: UITableViewDelegate, UITableViewDataSource {
                    textColor: getCurrentLapTextColor(indexPathRow: indexPath.row))
         
         return cell
-        
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         
-        return Constant.ViewSize.stopwatchTableHeightForRow
+        return K.Numeric.stopwatchTableHeightForRow
     }
     
 }

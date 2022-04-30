@@ -9,6 +9,8 @@ import UIKit
 import SnapKit
 
 class WorldClockTableViewCell: UITableViewCell {
+    
+    static let reuseId = "WorldClockTableViewCell"
         
     private var currentDayLabel: UILabel = {
         let label = UILabel()
@@ -36,7 +38,7 @@ class WorldClockTableViewCell: UITableViewCell {
     }()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: Constant.String.worldClockCellId)
+        super.init(style: style, reuseIdentifier: WorldClockTableViewCell.reuseId)
         selectionStyle = .none
         setupView()
     }

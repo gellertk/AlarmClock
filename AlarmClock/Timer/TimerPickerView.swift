@@ -19,7 +19,6 @@ class TimerPickerView: UIView {
     
     private(set) lazy var pickerView = UIPickerView()
     
-    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupView()
@@ -50,14 +49,14 @@ private extension TimerPickerView {
     }
     
     func setupPickerViewLabels() {
-        for (index, element) in Constant.Collection.numbersOfRowsAndLabelTexts.enumerated() {
+        for (index, element) in K.Collection.numbersOfRowsAndLabelTexts.enumerated() {
             let label = TimerPickerViewLabel(text: element.value)
             let componentWidth: CGFloat = frame.width / CGFloat(pickerView.numberOfComponents)
-            let y = (pickerView.frame.size.height / 2) - (Constant.Font.timerPickerViewLabel.pointSize / 2)
+            let y = (pickerView.frame.size.height / 2) - (K.Font.timerPickerViewLabel.pointSize / 2)
             label.frame = CGRect(x: componentWidth * (CGFloat(index) + 0.68),
                                  y: y,
                                  width: componentWidth,
-                                 height: Constant.Font.timerPickerViewLabel.pointSize)
+                                 height: K.Font.timerPickerViewLabel.pointSize)
             pickerView.addSubview(label)
         }
     }

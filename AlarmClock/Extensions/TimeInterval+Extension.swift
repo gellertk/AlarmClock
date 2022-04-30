@@ -10,7 +10,7 @@ import Foundation
 //TODO: fix rounding
 extension TimeInterval {
     
-    func convertToReadableString(timerType: TimerType) -> String {
+    func convertToStopwatchFormat(timerType: TimerType) -> String {
         
         let time = NSInteger(self)
         

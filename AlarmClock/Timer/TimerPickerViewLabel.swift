@@ -24,7 +24,7 @@ class TimerPickerViewLabel: UILabel {
 private extension TimerPickerViewLabel {
     
     func setupView() {
-        font = Constant.Font.timerPickerViewLabel
+        font = K.Font.timerPickerViewLabel
         textColor = .white
         textAlignment = .left
     }

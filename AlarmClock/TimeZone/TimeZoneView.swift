@@ -12,8 +12,8 @@ class TimeZoneView: UIView {
     
      public lazy var timeZoneTableView: UITableView = {
         let tableView = UITableView()
-         tableView.backgroundColor = Constant.Color.timeZoneTableView
-         tableView.register(TimeZoneTableViewCell.self, forCellReuseIdentifier: Constant.String.timeZoneCellId)
+         tableView.backgroundColor = K.Color.timeZoneTableView
+         tableView.register(TimeZoneTableViewCell.self, forCellReuseIdentifier: TimeZoneTableViewCell.reuseId)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.dataSource = self
         tableView.delegate = self
@@ -51,7 +51,7 @@ extension TimeZoneView: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.String.timeZoneCellId,
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: TimeZoneTableViewCell.reuseId,
                                                        for: indexPath) as? TimeZoneTableViewCell else {
             
             return UITableViewCell()

@@ -9,29 +9,29 @@ import UIKit
 
 extension CAShapeLayer {
     
-    func addBasicAnimation(duration: TimeInterval) {
+    func addTimerBasicAnimation(duration: TimeInterval) {
         speed = 1
         let basicAnimation = CABasicAnimation(keyPath: "strokeEnd")
         basicAnimation.toValue = 0
         basicAnimation.duration = duration
         basicAnimation.fillMode = .forwards
         basicAnimation.isRemovedOnCompletion = false
-        add(basicAnimation, forKey: "basicAnimation")
+        add(basicAnimation, forKey: "timerAnimation")
     }
     
-    func pauseAnimation() {
+    func pauseTimerAnimation() {
         let pausedTime : CFTimeInterval = convertTime(CACurrentMediaTime(), from: nil)
         speed = 0.0
         timeOffset = pausedTime
     }
     
-    func resumeAnimation() {
+    func resumeTimerAnimation() {
         let pausedTime = timeOffset
         speed = 1.0
         timeOffset = 0.0
         beginTime = 0.0
-        let timeSincePause = convertTime(CACurrentMediaTime(), from: nil) - pausedTime
-        beginTime = timeSincePause
+        //let timeSincePause = convertTime(CACurrentMediaTime(), from: nil) - pausedTime
+        beginTime = convertTime(CACurrentMediaTime(), from: nil) - pausedTime
     }
     
 }

@@ -50,7 +50,7 @@ final class TimerClass: Codable {
         lapTimes = try values.decode([TimeInterval].self, forKey: .lapTimes)
     }
     
-    public func start() {
+    func start() {
         startTimer()
         startTime = Date()
         isRunning = true
@@ -59,14 +59,14 @@ final class TimerClass: Codable {
         }
     }
     
-    public func stop() {
+    func stop() {
         deinitializeTimer()
         calculateLastLapTime()
         accumulatedTime = getElapsedTime()
         saveData()
     }
     
-    public func reset() {
+    func reset() {
         deinitializeTimer()
         startTime = nil
         accumulatedTime = 0
@@ -75,7 +75,7 @@ final class TimerClass: Codable {
         saveData()
     }
     
-    public func addLap() {
+    func addLap() {
         if !lapTimes.isEmpty {
             calculateLastLapTime()
         }
@@ -83,7 +83,7 @@ final class TimerClass: Codable {
     }
     
     private func startTimer() {
-        timer = Timer.scheduledTimer(timeInterval: Constant.Numeric.timeInterval,
+        timer = Timer.scheduledTimer(timeInterval: K.Numeric.timeInterval,
                                      target: self,
                                      selector: #selector(didTimeChange),
                                      userInfo: nil,
@@ -102,7 +102,7 @@ final class TimerClass: Codable {
         return -(startTime?.timeIntervalSinceNow ?? 0) + accumulatedTime
     }
     
-    public func saveData() {
+    func saveData() {
         do {
             try UserDefaults.standard.saveObject(self, forKey: type?.rawValue ?? "")
         } catch {
@@ -110,7 +110,7 @@ final class TimerClass: Codable {
         }
     }
     
-    public func loadSavedData() {
+    func loadSavedData() {
         do {
             let profile = try UserDefaults.standard.getObject(forKey: type?.rawValue ?? "", castTo: TimerClass.self)
             startTime = profile.startTime
@@ -135,7 +135,7 @@ final class TimerClass: Codable {
         }
     }
     
-    public func getCurrentInterfaceType() -> InterfaceType {
+    func getCurrentInterfaceType() -> InterfaceType {
         var interface: InterfaceType = .stopwatchInitial
         if isRunning {
             interface = .stopwatchRunning

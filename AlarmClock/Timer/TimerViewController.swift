@@ -25,7 +25,8 @@ class TimerViewController: UIViewController {
     private var timerDuration: TimeInterval {
         
         var result: TimeInterval = 0
-        for i in 0 ..< Constant.Collection.numbersOfRowsAndLabelTexts.count {
+        
+        for i in 0 ..< K.Collection.numbersOfRowsAndLabelTexts.count {
             let selectedRow = timerView.timerPickerView.pickerView.selectedRow(inComponent: i)
             switch i {
             case 0:
@@ -39,12 +40,12 @@ class TimerViewController: UIViewController {
             }
         }
         
-        return result + Constant.Numeric.timerDelay
+        return result + K.Numeric.timerDelay
     }
     
-    private var currentTimerValue: TimeInterval = 0 {
+    private var currentTime: TimeInterval = 0 {
         didSet {
-            timerView.updateTimerLabel(time: currentTimerValue)
+            timerView.updateTimerLabel(time: currentTime)
         }
     }
     
@@ -55,7 +56,7 @@ class TimerViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
-        setupDelegatesAndDataSources()
+        setupDelegate()
     }
     
 }
@@ -73,7 +74,7 @@ private extension TimerViewController {
         }
     }
     
-    func setupDelegatesAndDataSources() {
+    func setupDelegate() {
         timer.timerViewControllerDelegate = self
         timerView.timerViewControllerDelegate = self
         timerView.timerPickerView.delegateDataSource = self
@@ -85,14 +86,14 @@ extension TimerViewController: TimerViewControllerDelegate {
     
     func startTimer() {
         timer.start()
-        currentTimerValue = timerDuration
+        currentTime = timerDuration
         timerView.circularBarView.timerDuration = timerDuration
         timerView.circularBarView.setupEndTimeLabel(timeLeft: timerDuration - timer.elapsedTime)
     }
     
     func pauseTimer() {
         timer.stop()
-        timerView.circularBarView.setupEndTimeLabel(disabled: true)
+        timerView.circularBarView.setupEndTimeLabel(paused: true)
     }
     
     func resetTimer() {
@@ -105,8 +106,8 @@ extension TimerViewController: TimerViewControllerDelegate {
     }
     
     func didTimeChange() {
-        currentTimerValue = timerDuration - timer.elapsedTime
-        if currentTimerValue <= Constant.Numeric.timerDelay {
+        currentTime = timerDuration - timer.elapsedTime
+        if currentTime <= K.Numeric.timerDelay {
             timer.reset()
             timerView.didTapCancelTimerButton()
         }
@@ -118,12 +119,12 @@ extension TimerViewController: UIPickerViewDelegate, UIPickerViewDataSource {
     
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         
-        return Constant.Collection.numbersOfRowsAndLabelTexts.count
+        return K.Collection.numbersOfRowsAndLabelTexts.count
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         
-        return Constant.Collection.numbersOfRowsAndLabelTexts[component].key
+        return K.Collection.numbersOfRowsAndLabelTexts[component].key
     }
     
     func pickerView(_ pickerView: UIPickerView, attributedTitleForRow row: Int, forComponent component: Int) -> NSAttributedString? {
@@ -145,7 +146,7 @@ extension TimerViewController: UIPickerViewDelegate, UIPickerViewDataSource {
         }
         
         if timer.isRunning {
-            for i in 0 ..< Constant.Collection.numbersOfRowsAndLabelTexts.count {
+            for i in 0 ..< K.Collection.numbersOfRowsAndLabelTexts.count {
                 let selectedRow = timerView.timerPickerView.pickerView.selectedRow(inComponent: i)
                 pickerView.selectRow(selectedRow, inComponent: i, animated: false)
             }

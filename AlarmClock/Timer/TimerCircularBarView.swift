@@ -12,6 +12,8 @@ class TimerCircularBarView: UIView {
     
     public var timerDuration: TimeInterval = 0
     
+    private let shapeView = UIView()
+    
     private let shapeLayer: CAShapeLayer = {
         let layer = CAShapeLayer()
         layer.lineWidth = 7
@@ -26,17 +28,15 @@ class TimerCircularBarView: UIView {
         layer.lineWidth = 7
         layer.fillColor = UIColor.clear.cgColor
         layer.lineCap = .round
-        layer.strokeColor = UIColor.systemOrange.cgColor
+        layer.strokeColor = K.Color.secondaryInterface.cgColor
         
         return layer
     }()
     
-    private let shapeView = UIView()
-    
     private let timeLabel: UILabel = {
         let label = UILabel()
         label.textColor = .white
-        label.text = Constant.String.stopwatchStartTime
+        label.text = K.String.stopwatchStartTime
         label.font = .monospacedDigitSystemFont(ofSize: 75, weight: .thin)
         label.textAlignment = .center
         label.adjustsFontSizeToFitWidth = true
@@ -46,7 +46,7 @@ class TimerCircularBarView: UIView {
     
     private let endTimeLabel: UILabel = {
         let label = UILabel()
-        label.textColor = Constant.Color.enabledButtonBackground
+        label.textColor = K.Color.enabledButtonBackground
         label.font = .systemFont(ofSize: 19, weight: .regular)
         
         return label
@@ -67,12 +67,12 @@ class TimerCircularBarView: UIView {
     }
     
     func setupTimeLabel(time: TimeInterval) {
-        timeLabel.text = time.convertToReadableString(timerType: .timer)
+        timeLabel.text = time.convertToStopwatchFormat(timerType: .timer)
     }
     
-    func setupEndTimeLabel(timeLeft: TimeInterval = 0, disabled: Bool = false) {
-        if disabled {
-            endTimeLabel.textColor = Constant.Color.disabledButtonBackground
+    func setupEndTimeLabel(timeLeft: TimeInterval = 0, paused: Bool = false) {
+        if paused {
+            endTimeLabel.textColor = K.Color.disabledButtonBackground
         } else {
             let endTime = "  \((Date() + timeLeft).convertToFormatHoursMinutes())"
             let image = UIImage(systemName: "bell.fill") ?? UIImage()
@@ -148,15 +148,15 @@ private extension TimerCircularBarView {
 extension TimerCircularBarView {
     
     func startAnimation() {
-        progressLayer.addBasicAnimation(duration: timerDuration - Constant.Numeric.timerDelay)
+        progressLayer.addTimerBasicAnimation(duration: timerDuration - K.Numeric.timerDelay)
     }
     
     func pauseAnimation() {
-        progressLayer.pauseAnimation()
+        progressLayer.pauseTimerAnimation()
     }
     
     func resumeAnimation() {
-        progressLayer.resumeAnimation()
+        progressLayer.resumeTimerAnimation()
     }
     
 }
