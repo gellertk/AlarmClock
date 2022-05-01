@@ -8,7 +8,7 @@
 import UIKit
 import SnapKit
 
-class StopwatchMainView: UIView {
+class DigitalFormatView: UIView {
     
     public let timeLabel: UILabel = {
         let label = UILabel()
@@ -32,7 +32,7 @@ class StopwatchMainView: UIView {
     
 }
 
-private extension StopwatchMainView {
+private extension DigitalFormatView {
     
     func setupView() {
         backgroundColor = .black

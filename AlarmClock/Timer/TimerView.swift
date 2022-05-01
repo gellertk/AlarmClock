@@ -72,7 +72,7 @@ private extension TimerView {
             addSubview($0)
         }
         setupConstraints()
-        setupButtonsBy(type: type)
+        setupButtons(by: type)
     }
     
     func setupConstraints() {
@@ -113,18 +113,18 @@ private extension TimerView {
         
     }
     
-    func setupButtonsBy(type: InterfaceType) {
+    func setupButtons(by type: InterfaceType) {
         
         switch type {
         case .timerInitial:
-            cancelButton.setupBy(type: .cancelDisabled)
-            startAndPauseButton.setupBy(type: .startTimer)
+            cancelButton.setup(by: .cancelDisabled)
+            startAndPauseButton.setup(by: .startTimer)
         case .timerRunning:
-            cancelButton.setupBy(type: .cancelEnabled)
-            startAndPauseButton.setupBy(type: .pause)
+            cancelButton.setup(by: .cancelEnabled)
+            startAndPauseButton.setup(by: .pause)
         case .timerPaused:
-            cancelButton.setupBy(type: .cancelEnabled)
-            startAndPauseButton.setupBy(type: .resume)
+            cancelButton.setup(by: .cancelEnabled)
+            startAndPauseButton.setup(by: .resume)
         default:
             break
         }
@@ -137,7 +137,7 @@ extension TimerView: TimerViewDelegate {
     
     func didTapStartTimerButton() {
         timerViewControllerDelegate?.startTimer()
-        setupButtonsBy(type: .timerRunning)
+        setupButtons(by: .timerRunning)
         timerPickerView.isHidden = true
         circularBarView.isHidden = false
         circularBarView.startAnimation()
@@ -145,25 +145,25 @@ extension TimerView: TimerViewDelegate {
     
     func didTapPauseTimerButton() {
         timerViewControllerDelegate?.pauseTimer()
-        setupButtonsBy(type: .timerPaused)
+        setupButtons(by: .timerPaused)
         circularBarView.pauseAnimation()
     }
     
     func didTapResumeTimerButton() {
         timerViewControllerDelegate?.resumeTimer()
-        setupButtonsBy(type: .timerRunning)
+        setupButtons(by: .timerRunning)
         circularBarView.resumeAnimation()
     }
     
     func didTapCancelTimerButton() {
         timerViewControllerDelegate?.resetTimer()
-        setupButtonsBy(type: .timerInitial)
+        setupButtons(by: .timerInitial)
         timerPickerView.isHidden = false
         circularBarView.isHidden = true
     }
     
     func didTapDisabledCancelTimerButton() {
-        setupButtonsBy(type: .timerInitial)
+        setupButtons(by: .timerInitial)
     }
     
 }

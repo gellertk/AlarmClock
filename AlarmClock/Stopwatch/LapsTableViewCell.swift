@@ -15,12 +15,10 @@ protocol LapsTableViewCellDelegate: AnyObject {
 class LapsTableViewCell: UITableViewCell {
     
     static let reuseId = "LapsTableViewCell"
-    
-    private weak var stopwatchViewDelegate: StopwatchViewDelegate?
-    
+        
     private let lapLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: K.Numeric.circleButtonFontSize)
+        label.font = .systemFont(ofSize: K.Numeric.circleButtonFontSize)
         
         return label
     }()
@@ -28,7 +26,7 @@ class LapsTableViewCell: UITableViewCell {
     private let timeLabel: UILabel = {
         let label = UILabel()
         label.textColor = .white
-        label.font = UIFont.monospacedDigitSystemFont(ofSize: K.Numeric.circleButtonFontSize, weight: .regular)
+        label.font = .monospacedDigitSystemFont(ofSize: K.Numeric.circleButtonFontSize, weight: .regular)
         
         return label
     }()
@@ -75,13 +73,13 @@ extension LapsTableViewCell {
     
     func setup(lap: String, time: TimeInterval, textColor: UIColor) {
         lapLabel.text = "Круг \(lap)"
-        timeLabel.text = time.convertToStopwatchFormat(timerType: .stopwatch)
+        timeLabel.text = time.convertToFormat(by: .stopwatch)
         lapLabel.textColor = textColor
         timeLabel.textColor = textColor
     }
     
     func updateStopwatch(lapTime: TimeInterval) {
-        timeLabel.text = lapTime.convertToStopwatchFormat(timerType: .stopwatch)
+        timeLabel.text = lapTime.convertToFormat(by: .stopwatch)
     }
     
 }

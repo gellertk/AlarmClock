@@ -10,7 +10,7 @@ import Foundation
 //TODO: fix rounding
 extension TimeInterval {
     
-    func convertToStopwatchFormat(timerType: TimerType) -> String {
+    func convertToFormat(by type: TimerType) -> String {
         
         let time = NSInteger(self)
         
@@ -18,7 +18,7 @@ extension TimeInterval {
         let minutes = (time / 60) % 60
         let seconds = time % 60
         
-        if timerType == .stopwatch {
+        if type == .stopwatch {
             var ms = 0
             if let range = String(self).range(of: ".") {
                 ms = Int(String(self)[range.upperBound...].prefix(2)) ?? 0

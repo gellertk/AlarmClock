@@ -27,7 +27,7 @@ class TimerSoundSelectionButton: UIButton {
     }()
     
     private let accesoryImageView: UIImageView = {
-        let image = UIImage(systemName: "chevron.right")
+        let image = K.SystemImage.chevronRight
         let imageView = UIImageView(image: image)
         imageView.tintColor = .lightGray
         

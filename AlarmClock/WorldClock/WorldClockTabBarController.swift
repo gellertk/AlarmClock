@@ -30,10 +30,10 @@ class WorldClockTabBarController: UITabBarController {
         if let items = tabBar.items {
             
             let titlesAndImages: KeyValuePairs = [
-                "Мировые часы": UIImage(systemName: "globe") ?? UIImage(),
-                "Будильник": UIImage(systemName: "alarm.fill") ?? UIImage(),
-                "Секундомер": UIImage(systemName: "stopwatch.fill") ?? UIImage(),
-                "Таймер": UIImage(systemName: "timer") ?? UIImage()
+                "Мировые часы": K.SystemImage.worldClock,
+                "Будильник": K.SystemImage.alarmClock,
+                "Секундомер": K.SystemImage.stopwatch,
+                "Таймер": K.SystemImage.timer
             ]
             
             for index in titlesAndImages.indices {

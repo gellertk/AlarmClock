@@ -15,6 +15,8 @@ protocol StopwatchViewControllerDelegate: AnyObject {
     func resetStopwatch()
     func didTimeChange()
     func isPaused() -> Bool
+    func isRunning() -> Bool
+    func lastLapTime() -> TimeInterval
 }
 
 class StopwatchViewController: UIViewController {
@@ -42,7 +44,7 @@ class StopwatchViewController: UIViewController {
         super.viewDidLoad()
         stopwatch.loadSavedData()
         setupView()
-        setupDelegatesAndDataSources()
+        setupDelegates()
     }
     
 }
@@ -60,13 +62,13 @@ private extension StopwatchViewController {
         }
     }
     
-    func setupDelegatesAndDataSources() {
+    func setupDelegates() {
         stopwatchView.lapsTableView.delegate = self
         stopwatchView.lapsTableView.dataSource = self
         stopwatchView.scrollView.delegate = self
     }
     
-    private func getCurrentLapTextColor(indexPathRow: Int) -> UIColor {
+    func getCurrentLapTextColor(indexPathRow: Int) -> UIColor {
         
         let lapTime = stopwatch.lapTimes.reversed()[indexPathRow]
         if stopwatch.lapTimes.count >= K.Numeric.lapsToCustomizeCount,
@@ -90,7 +92,22 @@ private extension StopwatchViewController {
 
 extension StopwatchViewController: StopwatchViewControllerDelegate {
     
+    func lastLapTime() -> TimeInterval {
+        if stopwatch.lapTimes.count > 1 {
+            
+            return stopwatch.elapsedLastLapTime
+        }
+        
+        return 0
+    }
+    
+    func isRunning() -> Bool {
+        
+        return stopwatch.isRunning
+    }
+    
     func isPaused() -> Bool {
+        
         return stopwatch.elapsedTime != 0
     }
     
@@ -114,7 +131,8 @@ extension StopwatchViewController: StopwatchViewControllerDelegate {
     }
     
     func didTimeChange() {
-        stopwatchView.updateStopwatchLabels(mainTime: stopwatch.elapsedTime, lapTime: stopwatch.elapsedLastLapTime)
+        stopwatchView.updateStopwatchLabels(mainTime: stopwatch.elapsedTime,
+                                            lapTime: stopwatch.elapsedLastLapTime)
     }
     
 }

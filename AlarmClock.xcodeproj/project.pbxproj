@@ -40,7 +40,7 @@
 		CBCA7F5027BAC18000116516 /* WorldClock+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBCA7F4E27BAC18000116516 /* WorldClock+CoreDataClass.swift */; };
 		CBCA7F5127BAC18000116516 /* WorldClock+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBCA7F4F27BAC18000116516 /* WorldClock+CoreDataProperties.swift */; };
 		CBD87C4527F9B5FD0040B35E /* UIScrollView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBD87C4427F9B5FD0040B35E /* UIScrollView+Extension.swift */; };
-		CBDBB92727EF3A3A00A65087 /* StopwatchMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBDBB92627EF3A3A00A65087 /* StopwatchMainView.swift */; };
+		CBDBB92727EF3A3A00A65087 /* DigitalFormatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBDBB92627EF3A3A00A65087 /* DigitalFormatView.swift */; };
 		CBDBB92927EF3C1900A65087 /* ClockFaceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBDBB92827EF3C1900A65087 /* ClockFaceView.swift */; };
 		CBEFCF2627E8567500BA0E05 /* UserDefaultsSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBEFCF2527E8567400BA0E05 /* UserDefaultsSettings.swift */; };
 		CBF6CE0327BD610B00843FBA /* TimeZoneViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBF6CE0227BD610B00843FBA /* TimeZoneViewController.swift */; };
@@ -90,7 +90,7 @@
 		CBCA7F4F27BAC18000116516 /* WorldClock+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WorldClock+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		CBD3FB0227BE9FD200F718E3 /* AlarmClock.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AlarmClock.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CBD87C4427F9B5FD0040B35E /* UIScrollView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIScrollView+Extension.swift"; sourceTree = "<group>"; };
-		CBDBB92627EF3A3A00A65087 /* StopwatchMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StopwatchMainView.swift; sourceTree = "<group>"; };
+		CBDBB92627EF3A3A00A65087 /* DigitalFormatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DigitalFormatView.swift; sourceTree = "<group>"; };
 		CBDBB92827EF3C1900A65087 /* ClockFaceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClockFaceView.swift; sourceTree = "<group>"; };
 		CBEFCF2527E8567400BA0E05 /* UserDefaultsSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsSettings.swift; sourceTree = "<group>"; };
 		CBF6CE0227BD610B00843FBA /* TimeZoneViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeZoneViewController.swift; sourceTree = "<group>"; };
@@ -135,14 +135,15 @@
 			children = (
 				CB0C194227B156340074976D /* Constant.swift */,
 				CBEFCF2527E8567400BA0E05 /* UserDefaultsSettings.swift */,
+				CB1B780D281F0F910044B6D2 /* TimerClass */,
 				CB2BE1CD27F097C100137F6C /* Enumerations */,
-				CB80C46527E26611004B61B5 /* ReusableView */,
-				CBC7771F27B4FF5C0072EE40 /* Extensions */,
+				CB80C46527E26611004B61B5 /* Reusable */,
 				CBF6CE0127BD60D700843FBA /* TimeZone */,
 				CB0C193727B121980074976D /* WorldClock */,
 				CB0C193A27B121B00074976D /* AlarmClock */,
 				CB0C193E27B121CF0074976D /* Stopwatch */,
 				CB0C194127B121E50074976D /* Timer */,
+				CBC7771F27B4FF5C0072EE40 /* Extensions */,
 				CB0C192C27B11D6C0074976D /* SupportingFiles */,
 				CB0C192127B119470074976D /* Assets.xcassets */,
 				CB0C192327B119470074976D /* LaunchScreen.storyboard */,
@@ -187,7 +188,7 @@
 			children = (
 				CB0C192F27B120AD0074976D /* StopwatchViewController.swift */,
 				CB0C193C27B121C90074976D /* StopwatchView.swift */,
-				CBDBB92627EF3A3A00A65087 /* StopwatchMainView.swift */,
+				CBDBB92627EF3A3A00A65087 /* DigitalFormatView.swift */,
 				CBDBB92827EF3C1900A65087 /* ClockFaceView.swift */,
 				CB6076A527D4FB43008333A8 /* LapsTableViewCell.swift */,
 			);
@@ -217,6 +218,14 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
+		CB1B780D281F0F910044B6D2 /* TimerClass */ = {
+			isa = PBXGroup;
+			children = (
+				CBA774D727D64A55005CE96C /* TimerClass.swift */,
+			);
+			path = TimerClass;
+			sourceTree = "<group>";
+		};
 		CB2BE1CD27F097C100137F6C /* Enumerations */ = {
 			isa = PBXGroup;
 			children = (
@@ -225,13 +234,12 @@
 			path = Enumerations;
 			sourceTree = "<group>";
 		};
-		CB80C46527E26611004B61B5 /* ReusableView */ = {
+		CB80C46527E26611004B61B5 /* Reusable */ = {
 			isa = PBXGroup;
 			children = (
 				CBA774D527D6043F005CE96C /* CircleButtonView.swift */,
-				CBA774D727D64A55005CE96C /* TimerClass.swift */,
 			);
-			path = ReusableView;
+			path = Reusable;
 			sourceTree = "<group>";
 		};
 		CBC7771F27B4FF5C0072EE40 /* Extensions */ = {
@@ -391,7 +399,7 @@
 				CBC7772327B503F60072EE40 /* Date+Extension.swift in Sources */,
 				CBA774D627D6043F005CE96C /* CircleButtonView.swift in Sources */,
 				CB5BA76027F1A55500AECA3C /* TimerSoundSelectionButton.swift in Sources */,
-				CBDBB92727EF3A3A00A65087 /* StopwatchMainView.swift in Sources */,
+				CBDBB92727EF3A3A00A65087 /* DigitalFormatView.swift in Sources */,
 				CB6076A627D4FB43008333A8 /* LapsTableViewCell.swift in Sources */,
 				CBAACF3227B272D200A35A7F /* WorldClockTabBarController.swift in Sources */,
 				CB0C192027B119430074976D /* WorldClock.xcdatamodeld in Sources */,

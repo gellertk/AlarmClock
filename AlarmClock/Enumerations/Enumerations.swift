@@ -6,7 +6,6 @@
 //
 
 enum InterfaceType {
-    
     case stopwatchInitial
     case stopwatchRunning
     case stopwatchPaused
@@ -14,18 +13,14 @@ enum InterfaceType {
     case timerInitial
     case timerRunning
     case timerPaused
-    
 }
 
 enum TimerType: String {
-    
     case stopwatch
     case timer
-    
 }
 
 enum CircleButtonType {
-    
     case startStopwatch
     case stop
     case reset

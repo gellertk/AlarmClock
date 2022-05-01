@@ -14,6 +14,8 @@ protocol TimerViewControllerDelegate: AnyObject {
     func resetTimer()
     func didTimeChange()
     func resumeTimer()
+    func isPaused() -> Bool
+    func isRunning() -> Bool
 }
 
 class TimerViewController: UIViewController {
@@ -56,7 +58,7 @@ class TimerViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
-        setupDelegate()
+        setupDelegates()
     }
     
 }
@@ -74,7 +76,7 @@ private extension TimerViewController {
         }
     }
     
-    func setupDelegate() {
+    func setupDelegates() {
         timer.timerViewControllerDelegate = self
         timerView.timerViewControllerDelegate = self
         timerView.timerPickerView.delegateDataSource = self
@@ -83,6 +85,16 @@ private extension TimerViewController {
 }
 
 extension TimerViewController: TimerViewControllerDelegate {
+    
+    func isRunning() -> Bool {
+        
+        return timer.isRunning
+    }
+    
+    func isPaused() -> Bool {
+        
+        return timer.elapsedTime != 0
+    }
     
     func startTimer() {
         timer.start()

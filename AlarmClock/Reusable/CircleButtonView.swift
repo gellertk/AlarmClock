@@ -25,7 +25,7 @@ class CircleButtonView: UIView {
     
     init(type: CircleButtonType = .lapDisabled) {
         self.type = type
-        super.init(frame: CGRect.zero)
+        super.init(frame: .zero)
         setupView()
         setupTargets()
     }
@@ -34,7 +34,7 @@ class CircleButtonView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    public func setupBy(type: CircleButtonType?) {
+    public func setup(by type: CircleButtonType?) {
         guard let type = type else {
             return
         }
@@ -86,12 +86,30 @@ class CircleButtonView: UIView {
 
 private extension CircleButtonView {
     
+    @objc func didTap() {
+        performAction()
+    }
+    
+    @objc func didTouchDown() {
+        let pushedAlpha = (button.backgroundColor?.cgColor.alpha ?? 0) - K.Numeric.buttonDifferenceAlpha
+        button.backgroundColor = button.backgroundColor?.withAlphaComponent(pushedAlpha)
+        layer.borderColor = button.backgroundColor?.cgColor
+    }
+    
+    @objc func didDragExit() {
+        setup(by: type)
+    }
+    
+}
+
+private extension CircleButtonView {
+    
     func setupView() {
         layer.borderWidth = 2
         addSubview(button)
         bringSubviewToFront(button)
         
-        setupBy(type: type)
+        setup(by: type)
         setupConstraints()
     }
 
@@ -106,20 +124,6 @@ private extension CircleButtonView {
             $0.center.equalToSuperview()
             $0.width.height.equalTo(K.Numeric.circleButtonWidthHeight)
         }
-    }
-    
-    @objc func didTap() {
-        performAction()
-    }
-    
-    @objc func didTouchDown() {
-        let pushedAlpha = (button.backgroundColor?.cgColor.alpha ?? 0) - K.Numeric.buttonDifferenceAlpha
-        button.backgroundColor = button.backgroundColor?.withAlphaComponent(pushedAlpha)
-        layer.borderColor = button.backgroundColor?.cgColor
-    }
-    
-    @objc func didDragExit() {
-        setupBy(type: type)
     }
     
     func performAction() {

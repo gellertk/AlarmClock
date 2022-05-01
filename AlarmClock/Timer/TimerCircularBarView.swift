@@ -67,7 +67,7 @@ class TimerCircularBarView: UIView {
     }
     
     func setupTimeLabel(time: TimeInterval) {
-        timeLabel.text = time.convertToStopwatchFormat(timerType: .timer)
+        timeLabel.text = time.convertToFormat(by: .timer)
     }
     
     func setupEndTimeLabel(timeLeft: TimeInterval = 0, paused: Bool = false) {
@@ -75,7 +75,7 @@ class TimerCircularBarView: UIView {
             endTimeLabel.textColor = K.Color.disabledButtonBackground
         } else {
             let endTime = "  \((Date() + timeLeft).convertToFormatHoursMinutes())"
-            let image = UIImage(systemName: "bell.fill") ?? UIImage()
+            let image = K.SystemImage.bell
             let imageAttachment = NSTextAttachment(image: image)
             let attachmentString = NSAttributedString(attachment: imageAttachment)
             let completeText = NSMutableAttributedString(string: "")
@@ -121,7 +121,6 @@ private extension TimerCircularBarView {
     }
     
     func setupLayers() {
-        
         shapeLayer.cornerRadius = frame.width / 2
         
         let diameter = min(bounds.width, bounds.height)

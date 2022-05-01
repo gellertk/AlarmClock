@@ -10,6 +10,7 @@ import UIKit
 extension CALayer {
     
     func addStopwatchBasicAnimation(duration: TimeInterval, currentSecond: CGFloat) {
+        speed = 1.0
         let animation = CABasicAnimation(keyPath: "transform.rotation.z")
         animation.fromValue = degree2Radian(floatNumber: currentSecond)
         animation.byValue = 2 * Double.pi
@@ -34,10 +35,14 @@ extension CALayer {
         beginTime = convertTime(CACurrentMediaTime(), from: nil) - pausedTime
     }
     
-    private func degree2Radian(floatNumber: CGFloat) -> CGFloat {
-        let radian = CGFloat(Double.pi) * floatNumber / 180
-        
-        return radian
+    func resetStopwatchAnimation() {
+        pauseStopwatchAnimation()
+        timeOffset = 0.0
+        beginTime = 0.0
+    }
+    
+    private func degree2Radian(floatNumber: CGFloat) -> CGFloat {        
+        return CGFloat(Double.pi) * floatNumber / 180
     }
     
 }

@@ -20,10 +20,10 @@ class StopwatchView: UIView {
     
     public weak var stopwatchViewControllerDelegate: StopwatchViewControllerDelegate?
     
-    private let mainView = StopwatchMainView()
+    private let digitalFormatView = DigitalFormatView()
     private let clockFaceView = ClockFaceView()
     
-    private lazy var scrollViewElements = [mainView, clockFaceView]
+    private lazy var scrollViewElements = [digitalFormatView, clockFaceView]
     
     private(set) lazy var scrollView: UIScrollView = {
         let scrollView = UIScrollView()
@@ -103,11 +103,15 @@ class StopwatchView: UIView {
         }
     }
     
-    //TODO: Convert to generic or smth
     public func updateStopwatchLabels(mainTime: TimeInterval, lapTime: TimeInterval) {
-        let updatedTime = mainTime.convertToStopwatchFormat(timerType: .stopwatch)
-        mainView.timeLabel.text = updatedTime
-        clockFaceView.update(mainTime)
+        guard let stopwatchViewControllerDelegate = stopwatchViewControllerDelegate else {
+            return
+        }
+        let updatedTime = mainTime.convertToFormat(by: .stopwatch)
+        digitalFormatView.timeLabel.text = updatedTime
+        clockFaceView.update(secondsHandTime: mainTime,
+                             lapHandTime: stopwatchViewControllerDelegate.lastLapTime(),
+                             isRunning: stopwatchViewControllerDelegate.isRunning())
         if let cell = lapsTableView.cellForRow(at: IndexPath(row: 0, section: 0)) as? LapsTableViewCell {
             cell.updateStopwatch(lapTime: lapTime)
         }
@@ -129,7 +133,7 @@ private extension StopwatchView {
         }
         
         setupConstraints()
-        setupButtonsBy(type: type)
+        setupButtons(by: type)
     }
     
     func setupConstraints() {
@@ -170,7 +174,7 @@ private extension StopwatchView {
         }
     }
     
-    private func setupButtonsBy(type: InterfaceType) {
+    private func setupButtons(by type: InterfaceType) {
         switch type {
         case .stopwatchInitial:
             setupInitialInterface()
@@ -183,19 +187,19 @@ private extension StopwatchView {
     }
     
     private func setupRunningInterface() {
-        lapAndResetButton.setupBy(type: .lapEnabled)
-        startAndStopButton.setupBy(type: .stop)
+        lapAndResetButton.setup(by: .lapEnabled)
+        startAndStopButton.setup(by: .stop)
     }
     
     private func setupPauseInterface() {
-        lapAndResetButton.setupBy(type: .reset)
-        startAndStopButton.setupBy(type: .startStopwatch)
+        lapAndResetButton.setup(by: .reset)
+        startAndStopButton.setup(by: .startStopwatch)
     }
     
     private func setupInitialInterface() {
-        lapAndResetButton.setupBy(type: .lapDisabled)
-        startAndStopButton.setupBy(type: .startStopwatch)
-        (scrollViewElements.first as? StopwatchMainView)?.timeLabel.text = K.String.stopwatchStartTime
+        lapAndResetButton.setup(by: .lapDisabled)
+        startAndStopButton.setup(by: .startStopwatch)
+        digitalFormatView.timeLabel.text = K.String.stopwatchStartTime
     }
     
 }
@@ -207,33 +211,34 @@ extension StopwatchView: StopwatchViewDelegate {
             return
         }
         stopwatchViewControllerDelegate.startStopwatch()
-        setupButtonsBy(type: .stopwatchRunning)
+        setupButtons(by: .stopwatchRunning)
         if stopwatchViewControllerDelegate.isPaused() {
             clockFaceView.resumeHandsAnimation()
         } else {
-            clockFaceView.startHandsAnimation(currentSecond: 0)
+            clockFaceView.startHandsAnimation(0, 0)
         }
     }
     
     func didTapStopStopwatchButton() {
         stopwatchViewControllerDelegate?.stopStopwatch()
-        setupButtonsBy(type: .stopwatchPaused)
+        setupButtons(by: .stopwatchPaused)
         clockFaceView.pauseHandsAnimation()
     }
     
     func didTapLapStopwatchButton() {
         stopwatchViewControllerDelegate?.saveLap()
-        setupButtonsBy(type: .stopwatchRunning)
+        setupButtons(by: .stopwatchRunning)
+        clockFaceView.startLapHandAnimation()
     }
     
     func didTapDisabledLapStopwatchButton() {
-        setupButtonsBy(type: .stopwatchInitial)
+        setupButtons(by: .stopwatchInitial)
     }
     
     func didTapResetStopwatchButton() {
         stopwatchViewControllerDelegate?.resetStopwatch()
-        setupButtonsBy(type: .stopwatchInitial)
-        clockFaceView.resumeHandsAnimation()
+        setupButtons(by: .stopwatchInitial)
+        clockFaceView.resetHandsAnimation()
     }
     
 }

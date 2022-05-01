@@ -10,31 +10,46 @@ import SnapKit
 
 class ClockFaceView: UIView {
     
-    private var secondsHandsImageView = UIImageView()
-    private var minuteHandsImageView = UIImageView()
+    private var handsAnimationStarted = false
     
-    private let largeClockFaceCenterCircle: UIView = {
-        let view = UIView(frame: CGRect(x: 0, y: 0, width: 2, height: 2))
+    private let secondHandImageView = UIImageView()
+    private let minuteHandImageView = UIImageView()
+    
+    private lazy var lapHandImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.isHidden = true
+        
+        return imageView
+    }()
+    
+    private let secondImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.image = K.Image.secondsClockFace
+        
+        return imageView
+    }()
+    
+    private let secondCenterCircle: UIView = {
+        let view = UIView()
         view.backgroundColor = .black
         view.layer.borderColor = K.Color.secondaryInterface.cgColor
-        view.layer.cornerRadius = view.bounds.width / 2
-        view.layer.borderWidth = 2
+        view.layer.borderWidth = 2.5
         
         return view
     }()
     
-    private let largeClockFaceImageView: UIImageView = {
+    private let minuteImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = UIImage(named: "largeClockFace")
+        imageView.image = K.Image.minutesClockFace
         
         return imageView
     }()
     
-    private let smallClockFaceImageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.image = UIImage(named: "smallClockFace")
+    private let minuteCenterCircle: UIView = {
+        let view = UIView()
+        view.backgroundColor = K.Color.secondaryInterface
         
-        return imageView
+        return view
     }()
     
     private let timeLabel: UILabel = {
@@ -59,11 +74,21 @@ class ClockFaceView: UIView {
     
     override func layoutSubviews() {
         super.layoutSubviews()
+        secondCenterCircle.layer.cornerRadius = secondCenterCircle.bounds.width / 2
+        minuteCenterCircle.layer.cornerRadius = minuteCenterCircle.bounds.width / 2
         createHands()
     }
     
-    func update(_ time: TimeInterval) {
-        timeLabel.text = time.convertToStopwatchFormat(timerType: .stopwatch)
+    func update(secondsHandTime: TimeInterval, lapHandTime: TimeInterval, isRunning: Bool = false) {
+        timeLabel.text = secondsHandTime.convertToFormat(by: .stopwatch)
+        if !handsAnimationStarted, secondsHandTime != 0 {
+            startHandsAnimation(secondsHandTime, lapHandTime)
+            if !isRunning {
+                pauseHandsAnimation()
+            } else {
+                handsAnimationStarted = true
+            }
+        }
     }
     
 }
@@ -72,61 +97,80 @@ private extension ClockFaceView {
     
     func setupView() {
         backgroundColor = .black
-        [largeClockFaceImageView,
+        [secondImageView,
+         secondCenterCircle,
+         minuteImageView,
+         minuteCenterCircle,
          timeLabel,
-         secondsHandsImageView,
-         minuteHandsImageView].forEach {
+         secondHandImageView,
+         minuteHandImageView,
+         lapHandImageView].forEach {
             addSubview($0)
         }
-        [largeClockFaceCenterCircle, smallClockFaceImageView].forEach {
-            largeClockFaceImageView.addSubview($0)
-        }
+        bringSubviewToFront(secondCenterCircle)
+        
         setupConstraints()
     }
     
     func setupConstraints() {
-        largeClockFaceImageView.snp.makeConstraints {
+        secondImageView.snp.makeConstraints {
             $0.leading.equalToSuperview().offset(K.Numeric.trailingLeadingDefaultBorder / 2)
             $0.trailing.equalToSuperview().offset(-K.Numeric.trailingLeadingDefaultBorder / 2)
             $0.bottomMargin.topMargin.equalToSuperview()
         }
         
-        smallClockFaceImageView.snp.makeConstraints {
+        minuteImageView.snp.makeConstraints {
             $0.width.height.equalTo(K.Numeric.circleButtonWidthHeight * 1.3)
             $0.centerX.equalToSuperview()
-            $0.centerY.equalToSuperview().offset(-K.Numeric.circleButtonWidthHeight / 1.2)
+            $0.centerY.equalToSuperview().offset(-K.Numeric.circleButtonWidthHeight / 1.8)
         }
         
         timeLabel.snp.makeConstraints {
-            $0.centerX.equalTo(largeClockFaceImageView)
-            $0.centerY.equalTo(largeClockFaceImageView).offset(70)
+            $0.centerX.equalTo(secondImageView)
+            $0.centerY.equalTo(secondImageView).offset(70)
         }
         
-        secondsHandsImageView.snp.makeConstraints {
-            $0.edges.equalTo(largeClockFaceImageView)
+        secondHandImageView.snp.makeConstraints {
+            $0.edges.equalTo(secondImageView)
         }
         
-        minuteHandsImageView.snp.makeConstraints {
-            $0.edges.equalTo(smallClockFaceImageView)
+        minuteHandImageView.snp.makeConstraints {
+            $0.edges.equalTo(minuteImageView)
         }
         
-        largeClockFaceCenterCircle.snp.makeConstraints {
-            $0.centerX.centerY.equalToSuperview()
+        secondCenterCircle.snp.makeConstraints {
+            $0.center.equalTo(secondImageView)
+            $0.width.height.equalTo(10)
+        }
+        
+        minuteCenterCircle.snp.makeConstraints {
+            $0.center.equalTo(minuteImageView)
+            $0.width.height.equalTo(8)
+        }
+        
+        lapHandImageView.snp.makeConstraints {
+            $0.edges.equalTo(secondImageView)
         }
     }
     
     func createHands() {
-        drawLine(onView: secondsHandsImageView,
-                 from: CGPoint(x: secondsHandsImageView.bounds.width / 2, y: secondsHandsImageView.bounds.height / 1.7),
-                 to: CGPoint(x: secondsHandsImageView.bounds.width / 2, y: 0),
+        drawLine(onView: secondHandImageView,
+                 from: CGPoint(x: secondHandImageView.bounds.width / 2, y: secondHandImageView.bounds.height / 1.64),
+                 to: CGPoint(x: secondHandImageView.bounds.width / 2, y: 0),
                  colorLine: K.Color.secondaryInterface,
-                 widthLine: 2)
+                 widthLine: 2.2)
         
-        drawLine(onView: minuteHandsImageView,
-                 from: CGPoint(x: minuteHandsImageView.bounds.width / 2, y: minuteHandsImageView.bounds.height / 2),
-                 to: CGPoint(x: minuteHandsImageView.bounds.width / 2, y: 0),
+        drawLine(onView: minuteHandImageView,
+                 from: CGPoint(x: minuteHandImageView.bounds.width / 2, y: minuteHandImageView.bounds.height / 2),
+                 to: CGPoint(x: minuteHandImageView.bounds.width / 2, y: 0),
                  colorLine: K.Color.secondaryInterface,
-                 widthLine: 2)
+                 widthLine: 2.2)
+        
+        drawLine(onView: lapHandImageView,
+                 from: CGPoint(x: lapHandImageView.bounds.width / 2, y: lapHandImageView.bounds.height / 1.64),
+                 to: CGPoint(x: lapHandImageView.bounds.width / 2, y: 0),
+                 colorLine: K.Color.lapHand,
+                 widthLine: 2.2)
     }
     
     func drawLine(onView: UIImageView,
@@ -155,17 +199,41 @@ private extension ClockFaceView {
 
 extension ClockFaceView {
     
-    func startHandsAnimation(currentSecond: TimeInterval) {
-        secondsHandsImageView.layer.addStopwatchBasicAnimation(duration: 60, currentSecond: currentSecond)
-        minuteHandsImageView.layer.addStopwatchBasicAnimation(duration: 60 * 60, currentSecond: currentSecond / 60)
+    func startLapHandAnimation() {
+        lapHandImageView.layer.addStopwatchBasicAnimation(duration: 60, currentSecond: 0)
+        lapHandImageView.isHidden = false
+    }
+    
+    func startHandsAnimation(_ secondsHandTime: TimeInterval, _ lapHandTime: TimeInterval) {
+        let formattedSecondsHand = secondsHandTime.truncatingRemainder(dividingBy: 60)
+        let formattedLapHand = lapHandTime.truncatingRemainder(dividingBy: 60)
+        secondHandImageView.layer.addStopwatchBasicAnimation(duration: 60,
+                                                             currentSecond: CGFloat(formattedSecondsHand * (360 / 60)))
+        minuteHandImageView.layer.addStopwatchBasicAnimation(duration: 30 * 60,
+                                                             currentSecond: CGFloat(secondsHandTime / 60 * (360 / 30)))
+        lapHandImageView.layer.addStopwatchBasicAnimation(duration: 60,
+                                                          currentSecond: CGFloat(formattedLapHand * (360 / 60)))
+        lapHandImageView.isHidden = lapHandTime == 0
     }
     
     func pauseHandsAnimation() {
-        secondsHandsImageView.layer.pauseStopwatchAnimation()
+        [secondHandImageView, minuteHandImageView, lapHandImageView].forEach {
+            $0.layer.pauseStopwatchAnimation()
+        }
     }
     
     func resumeHandsAnimation() {
-        secondsHandsImageView.layer.resumeStopwatchAnimation()
+        [secondHandImageView, minuteHandImageView, lapHandImageView].forEach {
+            $0.layer.resumeStopwatchAnimation()
+        }
+    }
+    
+    func resetHandsAnimation() {
+        [secondHandImageView, minuteHandImageView, lapHandImageView].forEach {
+            $0.layer.resetStopwatchAnimation()
+        }
+        timeLabel.text = K.String.stopwatchStartTime
+        lapHandImageView.isHidden = true
     }
     
 }

@@ -10,9 +10,9 @@ import UIKit
 struct K {
     
     struct Color {
-
         static let tableSeparator: UIColor             = .init(red: 50, green: 50, blue: 50)
         static let secondaryInterface: UIColor         = .systemOrange
+        static let lapHand: UIColor                    = .init(red: 8, green: 120, blue: 247)
         static let fasterLapText: UIColor              = .init(red: 70, green: 198, blue: 107)
         static let slowestLapText: UIColor             = .init(red: 221, green: 84, blue: 83)
         static let disabledButtonText: UIColor         = .init(red: 160, green: 159, blue: 164)
@@ -23,7 +23,6 @@ struct K {
         static let stopButtonBackground: UIColor       = .init(red: 52, green: 14, blue: 11)
         static let stopButtonText: UIColor             = .init(red: 235, green: 89, blue: 84)
         static let timeZoneTableView: UIColor          = .black
-        
     }
 
     struct Collection {
@@ -61,4 +60,19 @@ struct K {
         static let timerPickerViewLabel: UIFont = .systemFont(ofSize: 18, weight: .bold)
     }
     
+    struct SystemImage {
+        static let bell = UIImage(systemName: "bell.fill") ?? UIImage()
+        static let worldClock = UIImage(systemName: "globe") ?? UIImage()
+        static let alarmClock = UIImage(systemName: "alarm.fill") ?? UIImage()
+        static let stopwatch = UIImage(systemName: "stopwatch.fill") ?? UIImage()
+        static let timer = UIImage(systemName: "timer") ?? UIImage()
+        static let plus = UIImage(systemName: "plus") ?? UIImage()
+        static let chevronRight = UIImage(systemName: "chevron.right") ?? UIImage()
+    }
+    
+    struct Image {
+        static let secondsClockFace = UIImage(named: "secondsClockFace")
+        static let minutesClockFace = UIImage(named: "minutesClockFace")
+    }
+
 }

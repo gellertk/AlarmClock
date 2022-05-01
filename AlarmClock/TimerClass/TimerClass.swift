@@ -122,6 +122,7 @@ final class TimerClass: Codable {
                 calculateLastLapTime()
             }
             if isRunning {
+                elapsedTime = getElapsedTime()
                 startTimer()
             }
         } catch {
