@@ -7,7 +7,7 @@
 
 import UIKit
 
-class WorldClockTabBarController: UITabBarController {
+class RootTabBarController: UITabBarController {
 
     override func viewDidLoad() {
         super.viewDidLoad()

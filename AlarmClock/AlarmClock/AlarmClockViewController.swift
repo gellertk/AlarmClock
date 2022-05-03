@@ -9,44 +9,92 @@ import UIKit
 
 class AlarmClockViewController: UIViewController {
     
-//    private lazy var alarmsTableView: UITableView = {
-//        let tableView = UITableView()
-//        tableView.delegate = self
-//        tableView.dataSource = self
-//        return tableView
-//    }()
-
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        .lightContent
+    }
+    
+    private let alarmClockView = AlarmClockView()
+    
+    private var dataSource: AlarmDataSource!
+    
+    override func loadView() {
+        view = alarmClockView
+        setupDelegates()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupView()
+        title = "Будильник"
+        reloadData()
+        setupNavigationController()
+        setupDataSource()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-    }
-    
-    private func setupView() {
-
-    }
-
-    init() {
-        super.init(nibName: nil, bundle: nil)
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-
 }
 
-//extension AlarmClockViewController: UITableViewDelegate, UITableViewDataSource {
-//
-//    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//        <#code#>
-//    }
-//
-//    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//        <#code#>
-//    }
-//
-//}
+private extension AlarmClockViewController {
+    
+    private func setupDataSource() {
+        dataSource = AlarmDataSource(tableView: alarmClockView.alarmsTableView,
+                                     cellProvider: { [weak self] (tableView, indexPath, alarm) -> UITableViewCell? in
+            if let cell = self?.alarmClockView.alarmsTableView.dequeueReusableCell(withIdentifier: AlarmClockTableViewCell.reuseId) as? AlarmClockTableViewCell {
+                cell.setupContent(alarm: alarm)
+                
+                return cell
+            }
+            
+            return nil
+        })
+    }
+    
+    func setupNavigationController() {
+        navigationController?.navigationBar.prefersLargeTitles = true
+        navigationController?.navigationBar.largeTitleTextAttributes = [.foregroundColor: UIColor.white]
+        navigationController?.navigationBar.tintColor = K.Color.secondaryInterface
+        navigationController?.navigationBar.barStyle = .black
+        navigationController?.navigationBar.topItem?.setLeftBarButton(UIBarButtonItem(title: "Править",
+                                                                                      style: .plain,
+                                                                                      target: self,
+                                                                                      action: #selector(didTapEditButton)), animated: false)
+        navigationController?.navigationBar.topItem?.setRightBarButton(UIBarButtonItem(image: K.SystemImage.plus,
+                                                                                       style: .plain,
+                                                                                       target: self,
+                                                                                       action: #selector(didTapAddButton)), animated: false)
+    }
+    
+    @objc private func didTapEditButton() {
+        
+    }
+    
+    @objc func didTapAddButton(_ sender: UIBarButtonItem) {
+        
+    }
+    
+    func setupDelegates() {
+        alarmClockView.alarmsTableView.delegate = self
+    }
+    
+    func reloadData() {
+        DispatchQueue.main.async {
+            var snapshot = NSDiffableDataSourceSnapshot<AlarmCategory, Alarm>()
+            for category in AlarmCategory.allCases {
+                let items = Alarm.getAlarms().filter { $0.category == category }
+                snapshot.appendSections([category])
+                snapshot.appendItems(items)
+            }
+            self.dataSource.apply(snapshot, animatingDifferences: false)
+        }
+    }
+    
+}
+
+extension AlarmClockViewController: UITableViewDelegate {
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let view = UIView(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
+        view.backgroundColor = .blue
+        
+        return view
+    }
+    
+}

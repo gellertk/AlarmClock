@@ -59,3 +59,19 @@ enum CircleButtonType {
     }
     
 }
+
+enum AlarmRepeatingType {
+    case everyMonday
+    case everyTuesday
+    case everyWednesday
+    case everyThursday
+    case everyFriday
+    case everySaturday
+    case everySunday
+    case everyDay
+}
+
+enum AlarmCategory: String, CaseIterable {
+    case main = "Сон | Пробуждение"
+    case other = "Другие"
+}

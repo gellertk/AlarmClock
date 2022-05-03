@@ -74,7 +74,7 @@ class TimerCircularBarView: UIView {
         if paused {
             endTimeLabel.textColor = K.Color.disabledButtonBackground
         } else {
-            let endTime = "  \((Date() + timeLeft).convertToFormatHoursMinutes())"
+            let endTime = "  \((Date() + timeLeft).convertToHoursMinutes())"
             let image = K.SystemImage.bell
             let imageAttachment = NSTextAttachment(image: image)
             let attachmentString = NSAttributedString(attachment: imageAttachment)

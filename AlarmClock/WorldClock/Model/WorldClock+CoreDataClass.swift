@@ -14,7 +14,7 @@ public class WorldClock: NSManagedObject {
     
     var time: String {
         
-        return dateAdded?.convertToFormatHoursMinutes() ?? ""
+        return dateAdded?.convertToHoursMinutes() ?? ""
     }
     
 }

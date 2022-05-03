@@ -31,7 +31,6 @@ class WorldClockViewController: UIViewController {
     private func setupNavigationController() {
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationController?.navigationBar.largeTitleTextAttributes = [.foregroundColor: UIColor.white]
-        navigationController?.navigationBar.isTranslucent = false
         navigationController?.navigationBar.tintColor = K.Color.secondaryInterface
         navigationController?.navigationBar.barStyle = .black
         navigationController?.navigationBar.topItem?.setLeftBarButton(UIBarButtonItem(title: "Править",
