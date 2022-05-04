@@ -1,0 +1,73 @@
+//
+//  AlarmAddEditView.swift
+//  AlarmClock
+//
+//  Created by Кирилл  Геллерт on 04.05.2022.
+//
+
+import UIKit
+
+class AlarmAddEditView: UIView {
+    
+    private let timeDatePicker: UIDatePicker = {
+        let datePicker = UIDatePicker()
+        datePicker.datePickerMode = .time
+        datePicker.tintColor = .white
+        datePicker.preferredDatePickerStyle = .wheels
+        datePicker.locale = Locale(identifier: "ru_RU")
+        datePicker.backgroundColor = K.Color.disabledBackground
+        
+        return datePicker
+    }()
+    
+    lazy var settingTableView: UITableView = {
+        let tableView = UITableView()
+        tableView.register(AlarmSettingsTableViewCell.self, forCellReuseIdentifier: AlarmSettingsTableViewCell.reuseId)
+        tableView.backgroundColor = .black
+        tableView.separatorColor = K.Color.tableSeparator
+        tableView.layer.cornerRadius = 10
+        tableView.isScrollEnabled = false
+        
+        return tableView
+    }()
+    
+    override init(frame: CGRect) {
+        super.init(frame: .zero)
+        setupView()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+}
+
+private extension AlarmAddEditView {
+    
+    func setupView() {
+        backgroundColor = K.Color.disabledBackground
+        [timeDatePicker,
+         settingTableView
+        ].forEach {
+            addSubview($0)
+        }
+        setupConstraints()
+    }
+    
+    func setupConstraints() {
+        timeDatePicker.snp.makeConstraints {
+            $0.leading.equalToSuperview().offset(15)
+            $0.trailing.equalToSuperview().offset(-15)
+            $0.top.equalToSuperview().offset(50)
+            $0.height.equalTo(220)
+        }
+        
+        settingTableView.snp.makeConstraints {
+            $0.top.equalTo(timeDatePicker.snp.bottom)
+            $0.leading.equalToSuperview().offset(15)
+            $0.trailing.equalToSuperview().offset(-15)
+            $0.height.equalTo(AlarmSettings.allCases.count * Int(K.Numeric.alarmSettingTableHeightForRow))
+        }
+    }
+    
+}

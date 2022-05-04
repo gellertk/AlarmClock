@@ -19,20 +19,24 @@ class AlarmClockViewController: UIViewController {
     
     override func loadView() {
         view = alarmClockView
-        setupDelegates()
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Будильник"
-        reloadData()
-        setupNavigationController()
+        setupNavigationBarItems()
+        setupDelegates()
         setupDataSource()
+        reloadData()
     }
     
 }
 
 private extension AlarmClockViewController {
+    
+    func setupDelegates() {
+        alarmClockView.alarmsTableView.delegate = self
+    }
     
     private func setupDataSource() {
         dataSource = AlarmDataSource(tableView: alarmClockView.alarmsTableView,
@@ -47,41 +51,42 @@ private extension AlarmClockViewController {
         })
     }
     
-    func setupNavigationController() {
-        navigationController?.navigationBar.prefersLargeTitles = true
-        navigationController?.navigationBar.largeTitleTextAttributes = [.foregroundColor: UIColor.white]
-        navigationController?.navigationBar.tintColor = K.Color.secondaryInterface
-        navigationController?.navigationBar.barStyle = .black
-        navigationController?.navigationBar.topItem?.setLeftBarButton(UIBarButtonItem(title: "Править",
+    func setupNavigationBarItems() {
+        navigationItem.setLeftBarButton(UIBarButtonItem(title: "Править",
                                                                                       style: .plain,
                                                                                       target: self,
                                                                                       action: #selector(didTapEditButton)), animated: false)
-        navigationController?.navigationBar.topItem?.setRightBarButton(UIBarButtonItem(image: K.SystemImage.plus,
-                                                                                       style: .plain,
-                                                                                       target: self,
-                                                                                       action: #selector(didTapAddButton)), animated: false)
+        navigationItem.setRightBarButton(UIBarButtonItem(image: K.SystemImage.plus,
+                                                         style: .plain,
+                                                         target: self,
+                                                         action: #selector(didTapAddButton)), animated: false)
     }
     
     @objc private func didTapEditButton() {
+        UIView.animate(withDuration: 0.3) {
+            self.alarmClockView.alarmsTableView.isEditing.toggle()
+            //            self.alarmClockView.alarmsTableView.layoutMargins = UIEdgeInsets(top: 0,
+            //                                                                        left: 20,
+            //                                                                        bottom: 0,
+            //                                                                        right: 0)
+            
+        }
         
+        //alarmClockView.alarmsTableView.allowsSelection.toggle()
     }
     
-    @objc func didTapAddButton(_ sender: UIBarButtonItem) {
-        
-    }
-    
-    func setupDelegates() {
-        alarmClockView.alarmsTableView.delegate = self
+    @objc func didTapAddButton() {
+        present(UINavigationController(rootViewController: AlarmAddEditViewController()), animated: true)
     }
     
     func reloadData() {
+        var snapshot = NSDiffableDataSourceSnapshot<AlarmCategory, Alarm>()
+        for category in AlarmCategory.allCases {
+            let items = Alarm.getAlarms().filter { $0.category == category }
+            snapshot.appendSections([category])
+            snapshot.appendItems(items)
+        }
         DispatchQueue.main.async {
-            var snapshot = NSDiffableDataSourceSnapshot<AlarmCategory, Alarm>()
-            for category in AlarmCategory.allCases {
-                let items = Alarm.getAlarms().filter { $0.category == category }
-                snapshot.appendSections([category])
-                snapshot.appendItems(items)
-            }
             self.dataSource.apply(snapshot, animatingDifferences: false)
         }
     }
@@ -91,10 +96,26 @@ private extension AlarmClockViewController {
 extension AlarmClockViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let view = UIView(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
-        view.backgroundColor = .blue
+        let sectionView = AlarmClockSectionHeaderView()
+        sectionView.setSection(section: section)
         
-        return view
+        return sectionView
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 100
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 40
+    }
+    
+    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
+        if indexPath.section == 0 {
+            return .none
+        } else {
+            return .delete
+        }
     }
     
 }

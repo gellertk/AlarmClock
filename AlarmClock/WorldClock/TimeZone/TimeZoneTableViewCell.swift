@@ -30,7 +30,7 @@ class TimeZoneTableViewCell: UITableViewCell {
     }
     
     private func setupView() {
-        backgroundColor = K.Color.timeZoneTableView
+        backgroundColor = .black
         contentView.addSubview(titleTextLabel)
         setupConstraints()
     }

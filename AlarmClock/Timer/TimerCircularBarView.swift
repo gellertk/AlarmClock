@@ -28,7 +28,7 @@ class TimerCircularBarView: UIView {
         layer.lineWidth = 7
         layer.fillColor = UIColor.clear.cgColor
         layer.lineCap = .round
-        layer.strokeColor = K.Color.secondaryInterface.cgColor
+        layer.strokeColor = UIColor.systemOrange.cgColor
         
         return layer
     }()
@@ -72,11 +72,10 @@ class TimerCircularBarView: UIView {
     
     func setupEndTimeLabel(timeLeft: TimeInterval = 0, paused: Bool = false) {
         if paused {
-            endTimeLabel.textColor = K.Color.disabledButtonBackground
+            endTimeLabel.textColor = K.Color.disabledBackground
         } else {
-            let endTime = "  \((Date() + timeLeft).convertToHoursMinutes())"
-            let image = K.SystemImage.bell
-            let imageAttachment = NSTextAttachment(image: image)
+            let endTime = "  \((Date() + timeLeft).toHoursMinutes())"
+            let imageAttachment = NSTextAttachment(image: K.SystemImage.bell)
             let attachmentString = NSAttributedString(attachment: imageAttachment)
             let completeText = NSMutableAttributedString(string: "")
             completeText.append(attachmentString)

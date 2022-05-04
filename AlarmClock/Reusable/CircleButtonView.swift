@@ -157,8 +157,8 @@ private extension CircleButtonView {
     func setupDisabled() {
         button.setTitle(type?.title ?? "", for: .normal)
         button.setTitleColor(K.Color.disabledButtonText, for: .normal)
-        button.backgroundColor = K.Color.disabledButtonBackground
-        layer.borderColor = K.Color.disabledButtonBackground.cgColor
+        button.backgroundColor = K.Color.disabledBackground
+        layer.borderColor = K.Color.disabledBackground.cgColor
     }
     
     func setupEnabled() {

@@ -9,7 +9,7 @@ import Foundation
 
 extension Date {
     
-    func convertToHoursMinutes() -> String {
+    func toHoursMinutes() -> String {
         let formatter = DateFormatter()
         formatter.dateFormat = "HH:mm"
         

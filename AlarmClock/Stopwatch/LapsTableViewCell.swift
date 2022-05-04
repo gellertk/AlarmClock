@@ -47,7 +47,7 @@ private extension LapsTableViewCell {
     func setupView() {
         isUserInteractionEnabled = false
         separatorInset = .zero
-        backgroundColor = K.Color.timeZoneTableView
+        backgroundColor = .black
         [lapLabel, timeLabel].forEach {
             
             contentView.addSubview($0)

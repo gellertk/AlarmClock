@@ -16,22 +16,22 @@ class WorldClockTableViewCell: UITableViewCell {
         let label = UILabel()
         label.text = "Сегодня, + 0 Ч"
         label.font = UIFont.systemFont(ofSize: 14, weight: .regular)
-        label.textColor = .lightGray
+        label.textColor = K.Color.disabledText
         
         return label
     }()
     
     private var cityLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 22, weight: .medium)
+        label.font = UIFont.systemFont(ofSize: 26, weight: .medium)
         label.textColor = .white
         
         return label
     }()
     
-    private var timeLabel: UILabel = {
+    var timeLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 55, weight: .light)
+        label.font = UIFont.systemFont(ofSize: 60, weight: .light)
         label.textColor = .white
         
         return label
@@ -47,7 +47,16 @@ class WorldClockTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
-    private func setupView() {
+    func setupData(_ worldClock: WorldClock) {
+        cityLabel.text = worldClock.city
+        timeLabel.text = worldClock.time
+    }
+    
+}
+
+private extension WorldClockTableViewCell {
+    
+    func setupView() {
         backgroundColor = .black
         [currentDayLabel, cityLabel, timeLabel].forEach {
             contentView.addSubview($0)
@@ -55,28 +64,23 @@ class WorldClockTableViewCell: UITableViewCell {
         setupConstraints()
     }
     
-    private func setupConstraints() {
+    func setupConstraints() {
 
         timeLabel.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(20)
-            $0.bottom.trailing.equalToSuperview().offset(-20)
+            $0.centerY.equalToSuperview()
+            $0.trailing.equalToSuperview().offset(-10)
         }
         
         currentDayLabel.snp.makeConstraints {
-            $0.top.equalTo(timeLabel).offset(-3)
+            $0.centerY.equalTo(timeLabel).offset(-15)
             $0.leading.equalToSuperview().offset(20)
         }
         
         cityLabel.snp.makeConstraints {
-            $0.bottom.equalTo(timeLabel).offset(3)
-            $0.leading.equalTo(currentDayLabel)
+            $0.centerY.equalTo(timeLabel).offset(10)
+            $0.leading.equalToSuperview().offset(20)
         }
         
     }
     
-    public func setupData(_ worldClock: WorldClock) {
-        cityLabel.text = worldClock.city
-        timeLabel.text = worldClock.time
-    }
-
 }

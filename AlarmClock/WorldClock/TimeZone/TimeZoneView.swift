@@ -10,14 +10,14 @@ import SnapKit
 
 class TimeZoneView: UIView {
     
-     public lazy var timeZoneTableView: UITableView = {
+    public lazy var timeZoneTableView: UITableView = {
         let tableView = UITableView()
-         tableView.backgroundColor = K.Color.timeZoneTableView
-         tableView.register(TimeZoneTableViewCell.self, forCellReuseIdentifier: TimeZoneTableViewCell.reuseId)
+        tableView.backgroundColor = .black
+        tableView.register(TimeZoneTableViewCell.self, forCellReuseIdentifier: TimeZoneTableViewCell.reuseId)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.dataSource = self
         tableView.delegate = self
-         
+        
         return tableView
     }()
     

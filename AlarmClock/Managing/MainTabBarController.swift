@@ -7,7 +7,7 @@
 
 import UIKit
 
-class RootTabBarController: UITabBarController {
+class MainTabBarController: UITabBarController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,8 +21,8 @@ class RootTabBarController: UITabBarController {
     private func setup() {
         
         setViewControllers([
-            UINavigationController(rootViewController: WorldClockViewController()),
-            UINavigationController(rootViewController: AlarmClockViewController()),
+            MainNavigationController(rootViewController: WorldClockViewController()),
+            MainNavigationController(rootViewController: AlarmClockViewController()),
             StopwatchViewController(),
             TimerViewController()
         ], animated: true)
@@ -43,6 +43,7 @@ class RootTabBarController: UITabBarController {
             
             tabBar.unselectedItemTintColor = .gray
             tabBar.tintColor = .systemOrange
+            tabBar.barTintColor = .black
         }
         
     }

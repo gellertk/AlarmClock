@@ -10,6 +10,8 @@ import SnapKit
 
 class WorldClockViewController: UIViewController {
     
+    private var timer: Timer?
+    
     private var worldClocks: [WorldClock] = []
     
     private lazy var worldClockView: WorldClockView = {
@@ -23,24 +25,21 @@ class WorldClockViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Мировые часы"
+        setupTimer()
         setupView()
-        setupNavigationController()
+        setupNavigationBarItems()
         fillWorldClocks()
     }
     
-    private func setupNavigationController() {
-        navigationController?.navigationBar.prefersLargeTitles = true
-        navigationController?.navigationBar.largeTitleTextAttributes = [.foregroundColor: UIColor.white]
-        navigationController?.navigationBar.tintColor = K.Color.secondaryInterface
-        navigationController?.navigationBar.barStyle = .black
-        navigationController?.navigationBar.topItem?.setLeftBarButton(UIBarButtonItem(title: "Править",
-                                                                style: .plain,
-                                                                target: self,
-                                                                action: #selector(didTapEditButton)), animated: false)
-        navigationController?.navigationBar.topItem?.setRightBarButton(UIBarButtonItem(image: K.SystemImage.plus,
-                                                                 style: .plain,
-                                                                 target: self,
-                                                                 action: #selector(didTapAddButton)), animated: false)
+    private func setupNavigationBarItems() {
+        navigationItem.setLeftBarButton(UIBarButtonItem(title: "Править",
+                                                        style: .plain,
+                                                        target: self,
+                                                        action: #selector(didTapEditButton)), animated: false)
+        navigationItem.setRightBarButton(UIBarButtonItem(image: K.SystemImage.plus,
+                                                         style: .plain,
+                                                         target: self,
+                                                         action: #selector(didTapAddButton)), animated: false)
     }
     
     private func fillWorldClocks() {
@@ -59,11 +58,13 @@ class WorldClockViewController: UIViewController {
         }
     }
     
-    @objc private func didTapEditButton() {
-        
+    @objc func didTapEditButton() {
+        UIView.animate(withDuration: 0.3) {
+            self.worldClockView.worldClockTableView.isEditing.toggle()
+        }
     }
     
-    @objc public func didTapAddButton(_ sender: UIBarButtonItem) {
+    @objc func didTapAddButton(_ sender: UIBarButtonItem) {
         present(TimeZoneViewController(), animated: true)
     }
     
@@ -75,6 +76,32 @@ class WorldClockViewController: UIViewController {
     private func setupConstraints() {
         worldClockView.snp.makeConstraints {
             $0.edges.equalToSuperview()
+        }
+    }
+    
+}
+
+private extension WorldClockViewController {
+    
+    func setupTimer() {
+        if timer == nil {
+            timer = Timer.scheduledTimer(timeInterval: 1.0,
+                                         target: self,
+                                         selector: #selector(updateTimer),
+                                         userInfo: nil,
+                                         repeats: true)
+        }
+    }
+    
+    @objc func updateTimer() {
+        guard let visibleRowsIndexPaths = worldClockView.worldClockTableView.indexPathsForVisibleRows else {
+            return
+        }
+        
+        for indexPath in visibleRowsIndexPaths {
+            if let cell = worldClockView.worldClockTableView.cellForRow(at: indexPath) as? WorldClockTableViewCell {
+                cell.timeLabel.text = Date().toHoursMinutes()
+            }
         }
     }
     
@@ -99,7 +126,7 @@ extension WorldClockViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         
-        return 80
+        return 95
     }
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
