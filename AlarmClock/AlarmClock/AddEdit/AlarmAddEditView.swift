@@ -12,7 +12,7 @@ class AlarmAddEditView: UIView {
     private let timeDatePicker: UIDatePicker = {
         let datePicker = UIDatePicker()
         datePicker.datePickerMode = .time
-        datePicker.tintColor = .white
+        datePicker.overrideUserInterfaceStyle = .dark
         datePicker.preferredDatePickerStyle = .wheels
         datePicker.locale = Locale(identifier: "ru_RU")
         datePicker.backgroundColor = K.Color.disabledBackground
@@ -22,7 +22,8 @@ class AlarmAddEditView: UIView {
     
     lazy var settingTableView: UITableView = {
         let tableView = UITableView()
-        tableView.register(AlarmSettingsTableViewCell.self, forCellReuseIdentifier: AlarmSettingsTableViewCell.reuseId)
+        tableView.register(AlarmSettingsTableViewCell.self,
+                           forCellReuseIdentifier: AlarmSettingsTableViewCell.reuseId)
         tableView.backgroundColor = .black
         tableView.separatorColor = K.Color.tableSeparator
         tableView.layer.cornerRadius = 10
@@ -45,6 +46,7 @@ class AlarmAddEditView: UIView {
 private extension AlarmAddEditView {
     
     func setupView() {
+        overrideUserInterfaceStyle = .dark
         backgroundColor = K.Color.disabledBackground
         [timeDatePicker,
          settingTableView

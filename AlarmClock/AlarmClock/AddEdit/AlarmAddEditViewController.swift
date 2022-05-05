@@ -29,6 +29,7 @@ class AlarmAddEditViewController: UIViewController {
 private extension AlarmAddEditViewController {
     
     func setupNavigationBarItems() {
+        navigationController?.navigationBar.barStyle = .black
         navigationController?.navigationBar.tintColor = .systemOrange
         navigationItem.setLeftBarButton(UIBarButtonItem(title: "Отменить",
                                                         style: .plain,
@@ -50,7 +51,24 @@ private extension AlarmAddEditViewController {
 
 extension AlarmAddEditViewController: UITableViewDelegate {
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let alarm = alarm else {
+            return
+        }
+        switch indexPath.row {
+        case 0:
+            navigationController?.pushViewController(AlarmRepeatingTypeViewController(repeatingTypes: alarm.repeatingTypes),
+                                                     animated: true)
+        case 1:
+            print(1)
+        default:
+            print(1)
+        }
+        
+    }
+    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        
         return K.Numeric.alarmSettingTableHeightForRow
     }
     
@@ -59,6 +77,7 @@ extension AlarmAddEditViewController: UITableViewDelegate {
 extension AlarmAddEditViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
         return 4
     }
     

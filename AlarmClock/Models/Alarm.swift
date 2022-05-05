@@ -18,6 +18,23 @@ struct Alarm: Hashable {
     let category: AlarmCategory
     let ringtoneId: Int?
     
+    func getRepeatingDays() -> String {
+        switch repeatingTypes.count {
+        case 0:
+            return "Никогда"
+        case 1:
+            return repeatingTypes[0].rawValue
+        case 7:
+            return "Каждый день"
+        default:
+            var repeatingString = ""
+            repeatingTypes.forEach {
+                repeatingString = " " + $0.reducing
+            }
+            return repeatingString
+        }
+    }
+    
     static func getAlarms() -> [Alarm] {
         return [
             Alarm(title: "Завтра утром", time: "09:30".toDate(), isEnabled: true, repeatingTypes: [], isRepeated: true, category: .main, ringtoneId: nil),

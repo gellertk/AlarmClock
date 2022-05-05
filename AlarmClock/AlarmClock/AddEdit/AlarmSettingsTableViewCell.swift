@@ -44,19 +44,7 @@ class AlarmSettingsTableViewCell: UITableViewCell {
         titleLabel.text = property.rawValue
         switch property {
         case .repeating:
-            if alarm.repeatingTypes.count == 0 {
-                valueLabel.text =  "Никогда"
-            } else if alarm.repeatingTypes.count == 7 {
-                valueLabel.text =  "Каждый день"
-            } else if alarm.repeatingTypes.count == 1 {
-                valueLabel.text = alarm.repeatingTypes[0].rawValue
-            } else {
-                var repeatingString = ""
-                alarm.repeatingTypes.forEach {
-                    repeatingString = " " + $0.reducing
-                }
-                valueLabel.text = repeatingString
-            }
+            valueLabel.text = alarm.getRepeatingDays()
         case .title:
             valueLabel.text = alarm.title
         case .ringtone:
@@ -99,7 +87,7 @@ private extension AlarmSettingsTableViewCell {
         
         repeatedSwitch.snp.makeConstraints {
             $0.centerY.equalToSuperview()
-            $0.trailing.equalToSuperview().offset(-5)
+            $0.trailing.equalToSuperview().offset(-20)
         }
     }
     
