@@ -54,7 +54,7 @@ class AlarmClockTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func setupContent(alarm: Alarm) {
+    func configure(alarm: Alarm) {
         timeLabel.text = alarm.time.toHoursMinutes()
         titleLabel.text = alarm.title
         availabilitySwitch.isOn = alarm.isEnabled

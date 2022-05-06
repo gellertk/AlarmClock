@@ -1,5 +1,5 @@
 //
-//  AlarmRepeatingTypeView.swift
+//  AlarmWeekDaysView.swift
 //  AlarmClock
 //
 //  Created by Кирилл  Геллерт on 05.05.2022.
@@ -7,12 +7,12 @@
 
 import UIKit
 
-class AlarmRepeatingTypeView: UIView {
+class AlarmWeekDaysView: UIView {
     
-    lazy var repeatingTypeTableView: UITableView = {
+    lazy var tableView: UITableView = {
         let tableView = UITableView()
-        tableView.register(AlarmRepeatingTypeTableViewCell.self,
-                           forCellReuseIdentifier: AlarmRepeatingTypeTableViewCell.reuseId)
+        tableView.register(AlarmWeekDaysTableViewCell.self,
+                           forCellReuseIdentifier: AlarmWeekDaysTableViewCell.reuseId)
         tableView.backgroundColor = .black
         tableView.separatorColor = K.Color.tableSeparator
         tableView.layer.cornerRadius = 10
@@ -32,13 +32,13 @@ class AlarmRepeatingTypeView: UIView {
     
 }
 
-private extension AlarmRepeatingTypeView {
+private extension AlarmWeekDaysView {
     
     func setupView() {
         overrideUserInterfaceStyle = .dark
         backgroundColor = K.Color.disabledBackground
         [
-            repeatingTypeTableView
+            tableView
         ].forEach {
             addSubview($0)
         }
@@ -46,11 +46,11 @@ private extension AlarmRepeatingTypeView {
     }
     
     func setupConstraints() {
-        repeatingTypeTableView.snp.makeConstraints {
-            $0.top.equalToSuperview()
+        tableView.snp.makeConstraints {
+            $0.top.equalToSuperview().offset(90)
             $0.leading.equalToSuperview().offset(15)
             $0.trailing.equalToSuperview().offset(-15)
-//            $0.height.equalTo(AlarmSettings.allCases.count * Int(K.Numeric.alarmSettingTableHeightForRow))
+            $0.height.equalTo(7 * Int(K.Numeric.alarmSettingTableHeightForRow))
         }
     }
     

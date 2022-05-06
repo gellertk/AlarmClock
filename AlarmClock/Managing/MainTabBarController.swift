@@ -21,8 +21,8 @@ class MainTabBarController: UITabBarController {
     private func setup() {
         
         setViewControllers([
-            MainNavigationController(rootViewController: WorldClockViewController()),
-            MainNavigationController(rootViewController: AlarmClockViewController()),
+            UINavigationController(rootViewController: WorldClockViewController(), withLargeTitle: true),
+            UINavigationController(rootViewController: AlarmClockViewController(), withLargeTitle: true),
             StopwatchViewController(),
             TimerViewController()
         ], animated: true)

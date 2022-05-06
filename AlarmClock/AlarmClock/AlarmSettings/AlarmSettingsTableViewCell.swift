@@ -39,19 +39,27 @@ class AlarmSettingsTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func setupContent(_ alarm: Alarm, with row: Int) {
+    func configure(_ alarm: Alarm, for row: Int) {
         let property = AlarmSettings.allCases[row]
         titleLabel.text = property.rawValue
         switch property {
         case .repeating:
             valueLabel.text = alarm.getRepeatingDays()
+            accessoryView = nil
+            accessoryType = .disclosureIndicator
         case .title:
             valueLabel.text = alarm.title
+            accessoryView = nil
+            accessoryType = .disclosureIndicator
         case .ringtone:
             valueLabel.text = alarm.ringtoneId == nil ? "Нет" : "Птички поют"
+            accessoryView = nil
+            accessoryType = .disclosureIndicator
         case .isRepeated:
             repeatedSwitch.isOn = alarm.isRepeated
             accessoryType = .none
+            accessoryView = repeatedSwitch
+            selectionStyle = .none
         }
         
         valueLabel.isHidden = property == .isRepeated
@@ -65,9 +73,9 @@ private extension AlarmSettingsTableViewCell {
     func setupView() {
         backgroundColor = K.Color.staticTableViewBackground
         accessoryType = .disclosureIndicator
-        [titleLabel,
-         valueLabel,
-         repeatedSwitch
+        [
+        titleLabel,
+         valueLabel
         ].forEach {
             contentView.addSubview($0)
         }
@@ -83,11 +91,6 @@ private extension AlarmSettingsTableViewCell {
         valueLabel.snp.makeConstraints {
             $0.centerY.equalToSuperview()
             $0.trailing.equalToSuperview().offset(-5)
-        }
-        
-        repeatedSwitch.snp.makeConstraints {
-            $0.centerY.equalToSuperview()
-            $0.trailing.equalToSuperview().offset(-20)
         }
     }
     

@@ -42,7 +42,7 @@ private extension AlarmClockViewController {
         dataSource = AlarmDataSource(tableView: alarmClockView.alarmsTableView,
                                      cellProvider: { [weak self] (tableView, indexPath, alarm) -> UITableViewCell? in
             if let cell = self?.alarmClockView.alarmsTableView.dequeueReusableCell(withIdentifier: AlarmClockTableViewCell.reuseId) as? AlarmClockTableViewCell {
-                cell.setupContent(alarm: alarm)
+                cell.configure(alarm: alarm)
                 
                 return cell
             }
@@ -76,7 +76,7 @@ private extension AlarmClockViewController {
     }
     
     @objc func didTapAddButton() {
-        present(UINavigationController(rootViewController: AlarmAddEditViewController()), animated: true)
+        present(UINavigationController(rootViewController: AlarmSettingsViewController(alarm: Alarm.createDefault()), withLargeTitle: false), animated: true)
     }
     
     func reloadData() {

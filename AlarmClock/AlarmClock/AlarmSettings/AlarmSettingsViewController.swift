@@ -1,5 +1,5 @@
 //
-//  AlarmAddEditViewController.swift
+//  AlarmSettingsViewController.swift
 //  AlarmClock
 //
 //  Created by Кирилл  Геллерт on 04.05.2022.
@@ -7,14 +7,23 @@
 
 import UIKit
 
-class AlarmAddEditViewController: UIViewController {
+class AlarmSettingsViewController: UIViewController {
     
     var alarm: Alarm?
     
-    private let alarmAddEditView = AlarmAddEditView()
+    private let alarmSettingsView = AlarmSettingsView()
+    
+    init(alarm: Alarm) {
+        self.alarm = alarm
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func loadView() {
-        view = alarmAddEditView
+        view = alarmSettingsView
     }
     
     override func viewDidLoad() {
@@ -26,11 +35,9 @@ class AlarmAddEditViewController: UIViewController {
     
 }
 
-private extension AlarmAddEditViewController {
+private extension AlarmSettingsViewController {
     
     func setupNavigationBarItems() {
-        navigationController?.navigationBar.barStyle = .black
-        navigationController?.navigationBar.tintColor = .systemOrange
         navigationItem.setLeftBarButton(UIBarButtonItem(title: "Отменить",
                                                         style: .plain,
                                                         target: self,
@@ -43,13 +50,14 @@ private extension AlarmAddEditViewController {
     }
     
     func setupDelegates() {
-        alarmAddEditView.settingTableView.delegate = self
-        alarmAddEditView.settingTableView.dataSource = self
+        alarmSettingsView.settingTableView.delegate = self
+        alarmSettingsView.settingTableView.dataSource = self
+        
     }
     
 }
 
-extension AlarmAddEditViewController: UITableViewDelegate {
+extension AlarmSettingsViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let alarm = alarm else {
@@ -57,14 +65,17 @@ extension AlarmAddEditViewController: UITableViewDelegate {
         }
         switch indexPath.row {
         case 0:
-            navigationController?.pushViewController(AlarmRepeatingTypeViewController(repeatingTypes: alarm.repeatingTypes),
+            let weekDaysVC = AlarmWeekDaysViewController(repeatingWeekDays: alarm.repeatingWeekDays)
+            weekDaysVC.delegate = self
+            navigationController?.pushViewController(weekDaysVC,
                                                      animated: true)
         case 1:
             print(1)
         default:
             print(1)
         }
-        
+
+        tableView.deselectRow(at: indexPath, animated: true)
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -74,38 +85,38 @@ extension AlarmAddEditViewController: UITableViewDelegate {
     
 }
 
-extension AlarmAddEditViewController: UITableViewDataSource {
+extension AlarmSettingsViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        return 4
+        return AlarmSettings.allCases.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: AlarmSettingsTableViewCell.reuseId) as? AlarmSettingsTableViewCell else {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier:
+                                                        AlarmSettingsTableViewCell.reuseId) as? AlarmSettingsTableViewCell,
+              let alarm = alarm else {
             
             return UITableViewCell()
         }
-        
-        if let alarm = alarm {
-            cell.setupContent(alarm, with: indexPath.row)
-        } else {
-            let newAlarm = Alarm(title: "Будильник",
-                                 time: Date(),
-                                 isEnabled: true,
-                                 repeatingTypes: [],
-                                 isRepeated: true,
-                                 category: .other,
-                                 ringtoneId: nil)
-            cell.setupContent(newAlarm, with: indexPath.row)
-        }
+                
+        cell.configure(alarm, for: indexPath.row)
         
         return cell
     }
     
 }
 
-private extension AlarmAddEditViewController {
+extension AlarmSettingsViewController: AlarmDelegate {
+    
+    func update(weekDays: [Int]) {
+        alarm?.repeatingWeekDays = weekDays
+        alarmSettingsView.settingTableView.reloadData()
+    }
+    
+}
+
+private extension AlarmSettingsViewController {
     
     @objc func didTapCancelButton() {
         dismiss(animated: true)

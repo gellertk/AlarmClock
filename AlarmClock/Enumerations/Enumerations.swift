@@ -60,37 +60,6 @@ enum CircleButtonType {
     
 }
 
-enum AlarmRepeatingType: String, CaseIterable {
-    
-    case everyMonday = "Каждый понедельник"
-    case everyTuesday = "Каждый вторник"
-    case everyWednesday = "Каждую среду"
-    case everyThursday = "Каждый четверг"
-    case everyFriday = "Каждую пятницу"
-    case everySaturday = "Каждую субботу"
-    case everySunday = "Каждое воскресенье"
-    
-    var reducing: String {
-        switch self {
-        case .everyMonday:
-            return "Пн"
-        case .everyTuesday:
-            return "Вт"
-        case .everyWednesday:
-            return "Ср"
-        case .everyThursday:
-            return "Чт"
-        case .everyFriday:
-            return "Пт"
-        case .everySaturday:
-            return "Сб"
-        case .everySunday:
-            return "Вс"
-        }
-    }
-    
-}
-
 enum AlarmCategory: String, CaseIterable {
     case main = "Сон | Пробуждение"
     case other = "Другие"

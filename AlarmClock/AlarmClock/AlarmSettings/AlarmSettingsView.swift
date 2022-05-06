@@ -1,5 +1,5 @@
 //
-//  AlarmAddEditView.swift
+//  AlarmSettingsView.swift
 //  AlarmClock
 //
 //  Created by Кирилл  Геллерт on 04.05.2022.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class AlarmAddEditView: UIView {
+class AlarmSettingsView: UIView {
     
     private let timeDatePicker: UIDatePicker = {
         let datePicker = UIDatePicker()
@@ -43,7 +43,7 @@ class AlarmAddEditView: UIView {
     
 }
 
-private extension AlarmAddEditView {
+private extension AlarmSettingsView {
     
     func setupView() {
         overrideUserInterfaceStyle = .dark
