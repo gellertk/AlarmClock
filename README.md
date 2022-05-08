@@ -6,7 +6,7 @@
 * No Storyboard (SnapKit)
 * MVC
 
-**Data stores**
+**Data store**
 * UserDefaults
 * CoreData
 
@@ -15,7 +15,7 @@
 * ImageContext
 * UIBasicAnimation
 
-**Collection features**
+**Collection feature**
 * UIDiffableDataSource
 * Modern Cell Configuration (contentConfiguration)
 
