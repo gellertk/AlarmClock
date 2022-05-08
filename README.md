@@ -1,13 +1,24 @@
 # AlarmClock
 
-**Clone of native iOS Alarm clock app**
+***Clone of native iOS Alarm clock app***
 
+**General**
 * No Storyboard (SnapKit)
 * MVC
-* CoreData
+
+**Data stores**
 * UserDefaults
-* DiffableDataSource
-* Modern Cell Configuration (contentConfiguration)
+* CoreData
+
+**Animation**
 * CALayer, CAShapeLayer
-* Draw with ImageContext
+* ImageContext
+* UIBasicAnimation
+
+**Collection features**
+* UIDiffableDataSource
+* Modern Cell Configuration (contentConfiguration)
+
+**System**
 * RunLoop
+
