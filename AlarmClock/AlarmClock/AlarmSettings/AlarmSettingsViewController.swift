@@ -50,8 +50,8 @@ private extension AlarmSettingsViewController {
     }
     
     func setupDelegates() {
-        alarmSettingsView.settingTableView.delegate = self
-        alarmSettingsView.settingTableView.dataSource = self
+        alarmSettingsView.tableView.delegate = self
+        alarmSettingsView.tableView.dataSource = self
         
     }
     
@@ -99,8 +99,11 @@ extension AlarmSettingsViewController: UITableViewDataSource {
             
             return UITableViewCell()
         }
+        
+        let config = SettingsContentConfiguration(text: AlarmSettings.allCases[indexPath.row].rawValue)
+        cell.contentConfiguration = config
                 
-        cell.configure(alarm, for: indexPath.row)
+        //cell.configure(alarm, for: indexPath.row)
         
         return cell
     }
@@ -111,7 +114,7 @@ extension AlarmSettingsViewController: AlarmDelegate {
     
     func update(weekDays: [Int]) {
         alarm?.repeatingWeekDays = weekDays
-        alarmSettingsView.settingTableView.reloadData()
+        alarmSettingsView.tableView.reloadData()
     }
     
 }

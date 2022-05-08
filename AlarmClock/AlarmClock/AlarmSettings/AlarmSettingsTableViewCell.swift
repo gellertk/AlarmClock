@@ -11,14 +11,14 @@ class AlarmSettingsTableViewCell: UITableViewCell {
 
     static let reuseId: String = String(describing: AlarmSettingsTableViewCell.self)
     
-    private let titleLabel: UILabel = {
-        let label = UILabel()
-        label.textColor = .white
-        label.font = .systemFont(ofSize: 18, weight: .regular)
-        label.adjustsFontSizeToFitWidth = true
-        
-        return label
-    }()
+//    private let titleLabel: UILabel = {
+//        let label = UILabel()
+//        label.textColor = .white
+//        label.font = .systemFont(ofSize: 18, weight: .regular)
+//        label.adjustsFontSizeToFitWidth = true
+//
+//        return label
+//    }()
     
     private let valueLabel: UILabel = {
         let label = UILabel()
@@ -41,7 +41,7 @@ class AlarmSettingsTableViewCell: UITableViewCell {
     
     func configure(_ alarm: Alarm, for row: Int) {
         let property = AlarmSettings.allCases[row]
-        titleLabel.text = property.rawValue
+        //titleLabel.text = property.rawValue
         switch property {
         case .repeating:
             valueLabel.text = alarm.getRepeatingDays()
@@ -74,7 +74,7 @@ private extension AlarmSettingsTableViewCell {
         backgroundColor = K.Color.staticTableViewBackground
         accessoryType = .disclosureIndicator
         [
-        titleLabel,
+        //titleLabel,
          valueLabel
         ].forEach {
             contentView.addSubview($0)
@@ -83,10 +83,10 @@ private extension AlarmSettingsTableViewCell {
     }
     
     func setupConstraints() {
-        titleLabel.snp.makeConstraints {
-            $0.centerY.equalToSuperview()
-            $0.leading.equalToSuperview().offset(10)
-        }
+//        titleLabel.snp.makeConstraints {
+//            $0.centerY.equalToSuperview()
+//            $0.leading.equalToSuperview().offset(10)
+//        }
         
         valueLabel.snp.makeConstraints {
             $0.centerY.equalToSuperview()

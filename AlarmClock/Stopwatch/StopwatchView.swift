@@ -73,7 +73,7 @@ class StopwatchView: UIView {
     }()
     
     init(interfaceType: InterfaceType) {
-        super.init(frame: CGRect.zero)
+        super.init(frame: .zero)
         setupView(type: interfaceType)
     }
     

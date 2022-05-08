@@ -34,6 +34,7 @@
 		CB5BA76227F1E0DF00AECA3C /* TimerCircularBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB5BA76127F1E0DF00AECA3C /* TimerCircularBarView.swift */; };
 		CB6076A627D4FB43008333A8 /* LapsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB6076A527D4FB43008333A8 /* LapsTableViewCell.swift */; };
 		CB6647EF27F5C76A004B0819 /* CAShapeLayer+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB6647EE27F5C76A004B0819 /* CAShapeLayer+Extension.swift */; };
+		CB682EF828282FF500EFA3EE /* SettingsContentConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB682EF728282FF500EFA3EE /* SettingsContentConfiguration.swift */; };
 		CB7ABE4A27B3FFA800CD04B1 /* WorldClockTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB7ABE4927B3FFA800CD04B1 /* WorldClockTableViewCell.swift */; };
 		CB980115282457800087F2A9 /* AlarmWeekDaysViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB980114282457800087F2A9 /* AlarmWeekDaysViewController.swift */; };
 		CB980118282457AF0087F2A9 /* AlarmWeekDaysView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB980117282457AF0087F2A9 /* AlarmWeekDaysView.swift */; };
@@ -96,6 +97,7 @@
 		CB5BA76127F1E0DF00AECA3C /* TimerCircularBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerCircularBarView.swift; sourceTree = "<group>"; };
 		CB6076A527D4FB43008333A8 /* LapsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LapsTableViewCell.swift; sourceTree = "<group>"; };
 		CB6647EE27F5C76A004B0819 /* CAShapeLayer+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CAShapeLayer+Extension.swift"; sourceTree = "<group>"; };
+		CB682EF728282FF500EFA3EE /* SettingsContentConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsContentConfiguration.swift; sourceTree = "<group>"; };
 		CB7ABE4927B3FFA800CD04B1 /* WorldClockTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorldClockTableViewCell.swift; sourceTree = "<group>"; };
 		CB980114282457800087F2A9 /* AlarmWeekDaysViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmWeekDaysViewController.swift; sourceTree = "<group>"; };
 		CB980117282457AF0087F2A9 /* AlarmWeekDaysView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmWeekDaysView.swift; sourceTree = "<group>"; };
@@ -151,6 +153,7 @@
 			children = (
 				CB01ACDB2822C14900727A58 /* AlarmSettingsViewController.swift */,
 				CB01ACDE2822C16E00727A58 /* AlarmSettingsView.swift */,
+				CB682EF728282FF500EFA3EE /* SettingsContentConfiguration.swift */,
 				CB2E4C2A2822DE0C008033F3 /* AlarmSettingsTableViewCell.swift */,
 				CB9801162824578C0087F2A9 /* AlarmWeekDays */,
 			);
@@ -482,6 +485,7 @@
 				CBFB4CD4281D4FDB00A1B189 /* UIColor+Extension.swift in Sources */,
 				CBC5BD0F28206DD7003832B7 /* AlarmDataSource.swift in Sources */,
 				CB2BE1CF27F097EE00137F6C /* Enumerations.swift in Sources */,
+				CB682EF828282FF500EFA3EE /* SettingsContentConfiguration.swift in Sources */,
 				CB6647EF27F5C76A004B0819 /* CAShapeLayer+Extension.swift in Sources */,
 				CB0C192E27B1203B0074976D /* AlarmClockViewController.swift in Sources */,
 				CBA774D827D64A55005CE96C /* TimerClass.swift in Sources */,

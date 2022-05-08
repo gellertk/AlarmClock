@@ -20,7 +20,7 @@ class AlarmSettingsView: UIView {
         return datePicker
     }()
     
-    lazy var settingTableView: UITableView = {
+    lazy var tableView: UITableView = {
         let tableView = UITableView()
         tableView.register(AlarmSettingsTableViewCell.self,
                            forCellReuseIdentifier: AlarmSettingsTableViewCell.reuseId)
@@ -49,7 +49,7 @@ private extension AlarmSettingsView {
         overrideUserInterfaceStyle = .dark
         backgroundColor = K.Color.disabledBackground
         [timeDatePicker,
-         settingTableView
+         tableView
         ].forEach {
             addSubview($0)
         }
@@ -64,7 +64,7 @@ private extension AlarmSettingsView {
             $0.height.equalTo(220)
         }
         
-        settingTableView.snp.makeConstraints {
+        tableView.snp.makeConstraints {
             $0.top.equalTo(timeDatePicker.snp.bottom)
             $0.leading.equalToSuperview().offset(15)
             $0.trailing.equalToSuperview().offset(-15)

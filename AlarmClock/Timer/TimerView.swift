@@ -18,7 +18,7 @@ protocol TimerViewDelegate: AnyObject {
 
 class TimerView: UIView {
     
-    public weak var timerViewControllerDelegate: TimerViewControllerDelegate?
+    weak var timerViewControllerDelegate: TimerViewControllerDelegate?
     
     private(set) var timerPickerView = TimerPickerView()
     
