@@ -11,11 +11,10 @@ class AlarmClockView: UIView {
     
     private(set) lazy var alarmsTableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .insetGrouped)
-        tableView.register(AlarmClockTableViewCell.self, forCellReuseIdentifier: AlarmClockTableViewCell.reuseId)
+        tableView.register(AlarmClockTableViewCell.self, forCellReuseIdentifier: AlarmClockTableViewCell.reuseIdentifier)
         tableView.backgroundColor = .black
         tableView.separatorColor = K.Color.tableSeparator
-        //tableView.preservesSuperviewLayoutMargins = false
-        //tableView.separatorInset = .zero
+        tableView.separatorInset = .zero
         tableView.layoutMargins = .zero
         tableView.allowsSelection = false
         

@@ -145,7 +145,7 @@ extension StopwatchViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: LapsTableViewCell.reuseId) as? LapsTableViewCell else {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: LapsTableViewCell.reuseIdentifier) as? LapsTableViewCell else {
             
             return UITableViewCell()
         }
@@ -159,7 +159,7 @@ extension StopwatchViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         
-        return K.Numeric.stopwatchTableHeightForRow
+        return K.Numeric.defaultHeightForRow
     }
     
 }

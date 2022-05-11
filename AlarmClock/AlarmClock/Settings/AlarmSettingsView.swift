@@ -20,14 +20,10 @@ class AlarmSettingsView: UIView {
         return datePicker
     }()
     
-    lazy var tableView: UITableView = {
-        let tableView = UITableView()
-        tableView.register(AlarmSettingsTableViewCell.self,
-                           forCellReuseIdentifier: AlarmSettingsTableViewCell.reuseId)
-        tableView.backgroundColor = .black
-        tableView.separatorColor = K.Color.tableSeparator
-        tableView.layer.cornerRadius = 10
-        tableView.isScrollEnabled = false
+    lazy var tableView: StaticTableView = {
+        let cellTypes = [DefaultTableViewCell.self,
+                         SwitchTableViewCell.self]
+        let tableView = StaticTableView(cellTypes: cellTypes)
         
         return tableView
     }()
@@ -68,7 +64,7 @@ private extension AlarmSettingsView {
             $0.top.equalTo(timeDatePicker.snp.bottom)
             $0.leading.equalToSuperview().offset(15)
             $0.trailing.equalToSuperview().offset(-15)
-            $0.height.equalTo(AlarmSettings.allCases.count * Int(K.Numeric.alarmSettingTableHeightForRow))
+            $0.height.equalTo(AlarmSetting.allCases.count * Int(K.Numeric.defaultHeightForRow))
         }
     }
     

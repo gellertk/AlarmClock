@@ -13,8 +13,6 @@ protocol LapsTableViewCellDelegate: AnyObject {
 }
 
 class LapsTableViewCell: UITableViewCell {
-    
-    static let reuseId = "LapsTableViewCell"
         
     private let lapLabel: UILabel = {
         let label = UILabel()
@@ -32,7 +30,7 @@ class LapsTableViewCell: UITableViewCell {
     }()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: LapsTableViewCell.reuseId)
+        super.init(style: style, reuseIdentifier: LapsTableViewCell.reuseIdentifier)
         setupView()
     }
     

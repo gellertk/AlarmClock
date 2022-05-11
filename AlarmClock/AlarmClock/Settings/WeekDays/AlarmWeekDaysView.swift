@@ -9,17 +9,7 @@ import UIKit
 
 class AlarmWeekDaysView: UIView {
     
-    lazy var tableView: UITableView = {
-        let tableView = UITableView()
-        tableView.register(AlarmWeekDaysTableViewCell.self,
-                           forCellReuseIdentifier: AlarmWeekDaysTableViewCell.reuseId)
-        tableView.backgroundColor = .black
-        tableView.separatorColor = K.Color.tableSeparator
-        tableView.layer.cornerRadius = 10
-        tableView.isScrollEnabled = false
-        
-        return tableView
-    }()
+    lazy var tableView = StaticTableView(cellTypes: [DefaultTableViewCell.self])
     
     override init(frame: CGRect) {
         super.init(frame: .zero)
@@ -50,7 +40,8 @@ private extension AlarmWeekDaysView {
             $0.top.equalToSuperview().offset(90)
             $0.leading.equalToSuperview().offset(15)
             $0.trailing.equalToSuperview().offset(-15)
-            $0.height.equalTo(7 * Int(K.Numeric.alarmSettingTableHeightForRow))
+            $0.bottom.equalToSuperview()
+            //$0.height.equalTo(7 * Int(K.Numeric.defaultHeightForRow))
         }
     }
     

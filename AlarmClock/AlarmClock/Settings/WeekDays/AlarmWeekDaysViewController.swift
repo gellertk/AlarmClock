@@ -7,20 +7,16 @@
 
 import UIKit
 
-protocol AlarmDelegate: AnyObject {
-    func update(weekDays: [Int])
-}
-
 class AlarmWeekDaysViewController: UIViewController {
+        
+    weak var delegate: AlarmUpdateDelegate?
     
-    weak var delegate: AlarmDelegate?
-    
-    private var repeatingWeekDays: [Int]?
+    private var alarm: Alarm?
 
     private let alarmWeekDaysView = AlarmWeekDaysView()
     
-    init(repeatingWeekDays: [Int]) {
-        self.repeatingWeekDays = repeatingWeekDays
+    init(alarm: Alarm) {
+        self.alarm = alarm
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -46,10 +42,10 @@ class AlarmWeekDaysViewController: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         if isMovingFromParent {
-            guard let repeatingWeekDays = repeatingWeekDays else {
+            guard let alarm = alarm else {
                 return
             }
-            delegate?.update(weekDays: repeatingWeekDays)
+            delegate?.update(alarm: alarm)
         }
     }
     
@@ -57,19 +53,19 @@ class AlarmWeekDaysViewController: UIViewController {
 
 extension AlarmWeekDaysViewController: UITableViewDelegate {
     
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        
-        return K.Numeric.alarmSettingTableHeightForRow
-    }
+//    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+//        
+//        return K.Numeric.defaultHeightForRow
+//    }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if let cell = tableView.cellForRow(at: indexPath) {
             if cell.accessoryType == .none {
                 cell.accessoryType = .checkmark
-                repeatingWeekDays?.append(indexPath.row)
+                alarm?.weekDays.append(indexPath.row)
             } else {
                 cell.accessoryType = .none
-                repeatingWeekDays?.removeAll { $0 == indexPath.row }
+                alarm?.weekDays.removeAll { $0 == indexPath.row }
             }
         }
         tableView.deselectRow(at: indexPath, animated: true)
@@ -86,17 +82,17 @@ extension AlarmWeekDaysViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        guard let repeatingWeekDays = repeatingWeekDays else {
+        guard let alarm = alarm else {
             return UITableViewCell()
         }
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: AlarmWeekDaysTableViewCell.reuseId, for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: DefaultTableViewCell.reuseIdentifier, for: indexPath)
         
         var config = cell.defaultContentConfiguration()
         config.text = indexPath.row.getWeekDayFullDescription()
         cell.contentConfiguration = config
         
-        if repeatingWeekDays.contains(indexPath.row) {
+        if alarm.weekDays.contains(indexPath.row) {
             cell.accessoryType = .checkmark
         }
         

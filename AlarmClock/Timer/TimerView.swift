@@ -43,7 +43,7 @@ class TimerView: UIView {
         return button
     }()
     
-    private let soundSelectionButton = TimerSoundSelectionButton()
+//    private let soundSelectionButton = TimerSoundSelectionButton()
     
     init(interfaceType: InterfaceType = .timerInitial) {
         super.init(frame: .zero)
@@ -67,7 +67,7 @@ private extension TimerView {
          circularBarView,
          cancelButton,
          startAndPauseButton,
-         soundSelectionButton
+         //soundSelectionButton
         ].forEach {
             addSubview($0)
         }
@@ -104,12 +104,12 @@ private extension TimerView {
             $0.width.height.equalTo(K.Numeric.circleButtonViewWidthHeight)
         }
         
-        soundSelectionButton.snp.makeConstraints {
-            $0.top.equalTo(cancelButton.snp.bottom).offset(40)
-            $0.leading.equalTo(cancelButton)
-            $0.trailing.equalTo(startAndPauseButton)
-            $0.height.equalTo(50)
-        }
+//        soundSelectionButton.snp.makeConstraints {
+//            $0.top.equalTo(cancelButton.snp.bottom).offset(40)
+//            $0.leading.equalTo(cancelButton)
+//            $0.trailing.equalTo(startAndPauseButton)
+//            $0.height.equalTo(50)
+//        }
         
     }
     

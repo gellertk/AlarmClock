@@ -7,7 +7,11 @@
 
 import UIKit
 
-class AlarmSettingsViewController: UIViewController {
+protocol AlarmUpdateDelegate: AnyObject {
+    func update(alarm: Alarm)
+}
+
+class AlarmSettingsViewController: UIViewController {    
     
     var alarm: Alarm?
     
@@ -63,24 +67,33 @@ extension AlarmSettingsViewController: UITableViewDelegate {
         guard let alarm = alarm else {
             return
         }
-        switch indexPath.row {
-        case 0:
-            let weekDaysVC = AlarmWeekDaysViewController(repeatingWeekDays: alarm.repeatingWeekDays)
+        
+        switch AlarmSetting.allCases[indexPath.row] {
+        case .weekDays:
+            let weekDaysVC = AlarmWeekDaysViewController(alarm: alarm)
             weekDaysVC.delegate = self
             navigationController?.pushViewController(weekDaysVC,
                                                      animated: true)
-        case 1:
-            print(1)
+        case .title:
+            let titleVC = AlarmTitleViewController(alarm: alarm)
+            titleVC.delegate = self
+            navigationController?.pushViewController(titleVC,
+                                                     animated: true)
+        case .melody:
+            let melodyVC = AlarmMelodyViewController(alarm: alarm)
+            melodyVC.delegate = self
+            navigationController?.pushViewController(melodyVC,
+                                                     animated: true)
         default:
-            print(1)
+            break
         }
-
+        
         tableView.deselectRow(at: indexPath, animated: true)
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         
-        return K.Numeric.alarmSettingTableHeightForRow
+        return K.Numeric.defaultHeightForRow
     }
     
 }
@@ -89,31 +102,57 @@ extension AlarmSettingsViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        return AlarmSettings.allCases.count
+        return AlarmSetting.allCases.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier:
-                                                        AlarmSettingsTableViewCell.reuseId) as? AlarmSettingsTableViewCell,
-              let alarm = alarm else {
-            
+        
+        guard let alarm = alarm else {
             return UITableViewCell()
         }
         
-        let config = SettingsContentConfiguration(text: AlarmSettings.allCases[indexPath.row].rawValue)
-        cell.contentConfiguration = config
-                
-        //cell.configure(alarm, for: indexPath.row)
+        let setting = AlarmSetting.allCases[indexPath.row]
         
-        return cell
+        switch setting {
+        case .weekDays, .title, .melody:
+            let cell = tableView.dequeueReusableCell(withIdentifier:
+                                                        DefaultTableViewCell.reuseIdentifier, for: indexPath)
+            
+            var config = UIListContentConfiguration.valueCell()
+            config.text = setting.rawValue
+            config.secondaryText = alarm[indexPath.row]
+            cell.contentConfiguration = config
+            
+            cell.accessoryType = .disclosureIndicator
+            
+            return cell
+        case .isRepeated:
+            guard let cell = tableView.dequeueReusableCell(withIdentifier:
+                                                            SwitchTableViewCell.reuseIdentifier) as? SwitchTableViewCell else {
+                return UITableViewCell()
+            }
+            
+            cell.delegate = self
+            cell.configure(text: setting.rawValue, switchIsOn: alarm.isRepeated)
+            
+            return cell
+        }
     }
     
 }
 
-extension AlarmSettingsViewController: AlarmDelegate {
+extension AlarmSettingsViewController: SwitchTableViewCellDelegate {
     
-    func update(weekDays: [Int]) {
-        alarm?.repeatingWeekDays = weekDays
+    func didAccessorySwitchValueChange(isOn: Bool) {
+        alarm?.isRepeated = isOn
+    }
+    
+}
+
+extension AlarmSettingsViewController: AlarmUpdateDelegate {
+    
+    func update(alarm: Alarm) {
+        self.alarm = alarm
         alarmSettingsView.tableView.reloadData()
     }
     

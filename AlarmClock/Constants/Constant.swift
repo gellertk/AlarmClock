@@ -41,6 +41,7 @@ struct K {
     struct String {
         static let userDefaultsStopwatchKey = "stopwatch"
         static let stopwatchStartTime = "00:00,00"
+        static let defaultAlarmTitle = "Будильник"
     }
     
     struct Numeric {
@@ -51,10 +52,10 @@ struct K {
         static let circleButtonFontSize: CGFloat = 17
         static let trailingLeadingDefaultBorder: CGFloat = 20
         static let circleButtonTop = UIScreen.main.bounds.height * 0.46
-        static let stopwatchTableHeightForRow: CGFloat = 45
+        static let defaultHeightForRow: CGFloat = 45
         static let circleButtonWidthHeight: CGFloat = 80
         static let circleButtonViewWidthHeight: CGFloat = Numeric.circleButtonWidthHeight + 4
-        static let alarmSettingTableHeightForRow: CGFloat = 45
+        static let defaultCornerRadius: CGFloat = 10
     }
     
     struct Font {

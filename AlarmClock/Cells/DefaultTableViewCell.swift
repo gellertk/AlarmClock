@@ -1,18 +1,18 @@
 //
-//  AlarmWeekDaysTableViewCell.swift
+//  AlarmSettingsTableViewCell.swift
 //  AlarmClock
 //
-//  Created by Кирилл  Геллерт on 05.05.2022.
+//  Created by Кирилл  Геллерт on 04.05.2022.
 //
 
 import UIKit
 
-class AlarmWeekDaysTableViewCell: UITableViewCell {
-    
-    static let reuseId: String = String(describing: AlarmWeekDaysTableViewCell.self)
-    
+class DefaultTableViewCell: UITableViewCell {
+        
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: AlarmWeekDaysTableViewCell.reuseId)
+        super.init(style: .default,
+                   reuseIdentifier: DefaultTableViewCell.reuseIdentifier)
+        
         setupView()
     }
     
@@ -22,11 +22,11 @@ class AlarmWeekDaysTableViewCell: UITableViewCell {
     
 }
 
-private extension AlarmWeekDaysTableViewCell {
+private extension DefaultTableViewCell {
     
     func setupView() {
         backgroundColor = K.Color.staticTableViewBackground
         tintColor = .systemOrange
     }
-
+    
 }

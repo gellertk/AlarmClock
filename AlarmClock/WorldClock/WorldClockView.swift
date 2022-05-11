@@ -12,7 +12,7 @@ class WorldClockView: UIView {
     
     public lazy var worldClockTableView: UITableView = {
         let tableView = UITableView()
-        tableView.register(WorldClockTableViewCell.self, forCellReuseIdentifier: WorldClockTableViewCell.reuseId)
+        tableView.register(WorldClockTableViewCell.self, forCellReuseIdentifier: WorldClockTableViewCell.reuseIdentifier)
         tableView.backgroundColor = .black
         tableView.separatorColor = K.Color.tableSeparator
         

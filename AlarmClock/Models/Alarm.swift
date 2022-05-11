@@ -9,52 +9,78 @@ import Foundation
 
 struct Alarm: Hashable {
     
-    let title: String
+    var title: String
     let time: Date
     let isEnabled: Bool
     let id = UUID()
-    var repeatingWeekDays: [Int] {
+    var weekDays: [Int] {
         didSet {
-            return repeatingWeekDays.sort()
+            return weekDays.sort()
         }
     }
-    let isRepeated: Bool
-    let category: AlarmCategory
-    let ringtoneId: Int?
+    var isRepeated: Bool
+    let section: AlarmSection
+    var melody: Melody?
     
     static func createDefault() -> Alarm {
         return Alarm(title: "Будильник",
                      time: Date(),
                      isEnabled: true,
-                     repeatingWeekDays: [],
+                     weekDays: [],
                      isRepeated: true,
-                     category: .other,
-                     ringtoneId: nil)
+                     section: .other,
+                     melody: nil)
     }
     
     static func getAlarms() -> [Alarm] {
         return [
-            Alarm(title: "Завтра утром",time: "09:30".toDate(), isEnabled: true, repeatingWeekDays: [], isRepeated: true, category: .main, ringtoneId: nil),
-            Alarm(title: "Будильник", time: "17:15".toDate(), isEnabled: true, repeatingWeekDays: [], isRepeated: true, category: .other, ringtoneId: nil),
-            Alarm(title: "Будильник2", time: "20:00".toDate(), isEnabled: false, repeatingWeekDays: [], isRepeated: true, category: .other, ringtoneId: nil),
-            Alarm(title: "Будильниковский", time: "23:10".toDate(), isEnabled: false, repeatingWeekDays: [], isRepeated: true, category: .other, ringtoneId: nil)
+            Alarm(title: "Завтра утром",time: "09:30".toDate(), isEnabled: true, weekDays: [], isRepeated: true, section: .main, melody: nil),
+            Alarm(title: "Будильник", time: "17:15".toDate(), isEnabled: true, weekDays: [], isRepeated: true, section: .other, melody: nil),
+            Alarm(title: "Будильник2", time: "20:00".toDate(), isEnabled: false, weekDays: [], isRepeated: true, section: .other, melody: nil),
+            Alarm(title: "Будильниковский", time: "23:10".toDate(), isEnabled: false, weekDays: [], isRepeated: true, section: .other, melody: nil)
         ]
     }
     
-    func getRepeatingDays() -> String {
-        switch repeatingWeekDays.count {
+    func formatedWeekDays() -> String {
+        switch weekDays.count {
         case 0:
             return "Никогда"
         case 1:
-            return repeatingWeekDays[0].getWeekDayFullDescription()
+            return weekDays[0].getWeekDayFullDescription()
         case 7:
             return "Каждый день"
         default:
-            var repeatingString = ""
-            repeatingWeekDays.forEach {
-                repeatingString = repeatingString + " " + $0.getWeekDayReducedDescription()
+            var weekDaysString = ""
+            weekDays.forEach {
+                weekDaysString = weekDaysString + " " + $0.getWeekDayReducedDescription()
             }
-            return repeatingString
+            return weekDaysString
+        }
+    }
+    
+    subscript(index: Int) -> String {
+        get {
+            switch index {
+            case 0:
+                return formatedWeekDays()
+            case 1:
+                return title
+            case 2:
+                return (melody?.title ?? "Нет")
+            default:
+                return ""
+            }
+        }
+    }
+        
+    subscript(index: Int) -> Bool? {
+        get {
+            switch index {
+            case 3:
+                return isRepeated
+            default:
+                return nil
+            }
         }
     }
   

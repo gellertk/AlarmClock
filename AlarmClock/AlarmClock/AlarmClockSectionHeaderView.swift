@@ -27,8 +27,8 @@ class AlarmClockSectionHeaderView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func setSection(section: Int) {
-        let stringPart = AlarmCategory.allCases[section].rawValue
+    func set(section: Int) {
+        let stringPart = AlarmSection.allCases[section].rawValue
         if section == 0 {
             let imagePart = NSTextAttachment(image: K.SystemImage.bed)
             let attachmentString = NSAttributedString(attachment: imagePart)

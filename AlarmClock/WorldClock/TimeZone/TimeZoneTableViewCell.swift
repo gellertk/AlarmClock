@@ -9,9 +9,7 @@ import UIKit
 import SnapKit
 
 class TimeZoneTableViewCell: UITableViewCell {
-    
-    static let reuseId = "TimeZoneTableViewCell"
-    
+        
     private lazy var titleTextLabel: UILabel = {
         let label = UILabel()
         label.textColor = .white
@@ -21,7 +19,7 @@ class TimeZoneTableViewCell: UITableViewCell {
     }()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: TimeZoneTableViewCell.reuseId)
+        super.init(style: style, reuseIdentifier: TimeZoneTableViewCell.reuseIdentifier)
         setupView()
     }
     

@@ -8,8 +8,6 @@
 import UIKit
 
 class AlarmClockTableViewCell: UITableViewCell {
-    
-    static let reuseId: String = String(describing: AlarmClockTableViewCell.self)
         
     private let timeLabel: UILabel = {
         let label = UILabel()
@@ -34,7 +32,7 @@ class AlarmClockTableViewCell: UITableViewCell {
     }()
     
     private lazy var changeButton: UIButton = {
-        let button = UIButton()
+        let button = UIButton(frame: CGRect(x: 0, y: 0, width: 109, height: 30))
         button.setTitle("ИЗМЕНИТЬ", for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 16, weight: .semibold)
         button.addTarget(self, action: #selector(didTapChangeButton), for: .touchUpInside)
@@ -46,7 +44,7 @@ class AlarmClockTableViewCell: UITableViewCell {
     }()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: AlarmClockTableViewCell.reuseId)
+        super.init(style: style, reuseIdentifier: AlarmClockTableViewCell.reuseIdentifier)
         setupView()
     }
     
@@ -54,12 +52,16 @@ class AlarmClockTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configure(alarm: Alarm) {
+    func configure(alarm: Alarm, section: Int) {
         timeLabel.text = alarm.time.toHoursMinutes()
         titleLabel.text = alarm.title
         availabilitySwitch.isOn = alarm.isEnabled
         setupAvailability(alarm.isEnabled)
-        setupRightButtonVisibility(section: alarm.category)
+        if section == 0 {
+            accessoryView = changeButton
+        } else {
+            accessoryView = availabilitySwitch
+        }
     }
     
 }
@@ -84,17 +86,10 @@ private extension AlarmClockTableViewCell {
         }
     }
     
-    func setupRightButtonVisibility(section: AlarmCategory) {
-        availabilitySwitch.isHidden = section == .main
-        changeButton.isHidden       = section == .other
-    }
-    
     func setupView() {
         backgroundColor = .black
         [timeLabel,
-         titleLabel,
-         availabilitySwitch,
-         changeButton
+         titleLabel
         ].forEach {
             contentView.addSubview($0)
         }
@@ -110,18 +105,6 @@ private extension AlarmClockTableViewCell {
         timeLabel.snp.makeConstraints {
             $0.leading.equalToSuperview()
             $0.bottom.equalTo(titleLabel.snp.top)
-        }
-        
-        availabilitySwitch.snp.makeConstraints {
-            $0.trailing.equalToSuperview().offset(-10)
-            $0.top.equalTo(timeLabel.snp.centerY).offset(-10)
-        }
-        
-        changeButton.snp.makeConstraints {
-            $0.width.equalTo(109)
-            $0.height.equalTo(30)
-            $0.trailing.equalToSuperview().offset(-10)
-            $0.top.equalTo(timeLabel.snp.centerY).offset(-5)
         }
     }
     

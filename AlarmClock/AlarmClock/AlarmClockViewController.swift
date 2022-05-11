@@ -15,7 +15,17 @@ class AlarmClockViewController: UIViewController {
     
     private let alarmClockView = AlarmClockView()
     
-    private var dataSource: AlarmDataSource!
+    private lazy var dataSource = AlarmDataSource(tableView: alarmClockView.alarmsTableView,
+                                 cellProvider: { [weak self] (tableView, indexPath, alarm) -> UITableViewCell? in
+        if let cell = self?.alarmClockView.alarmsTableView.dequeueReusableCell(withIdentifier: AlarmClockTableViewCell.reuseIdentifier) as? AlarmClockTableViewCell {
+       
+            cell.configure(alarm: alarm, section: indexPath.section)
+            
+            return cell
+        }
+        
+        return nil
+    })
     
     override func loadView() {
         view = alarmClockView
@@ -26,8 +36,7 @@ class AlarmClockViewController: UIViewController {
         title = "Будильник"
         setupNavigationBarItems()
         setupDelegates()
-        setupDataSource()
-        reloadData()
+        reloadTableViewData()
     }
     
 }
@@ -36,19 +45,6 @@ private extension AlarmClockViewController {
     
     func setupDelegates() {
         alarmClockView.alarmsTableView.delegate = self
-    }
-    
-    private func setupDataSource() {
-        dataSource = AlarmDataSource(tableView: alarmClockView.alarmsTableView,
-                                     cellProvider: { [weak self] (tableView, indexPath, alarm) -> UITableViewCell? in
-            if let cell = self?.alarmClockView.alarmsTableView.dequeueReusableCell(withIdentifier: AlarmClockTableViewCell.reuseId) as? AlarmClockTableViewCell {
-                cell.configure(alarm: alarm)
-                
-                return cell
-            }
-            
-            return nil
-        })
     }
     
     func setupNavigationBarItems() {
@@ -79,10 +75,10 @@ private extension AlarmClockViewController {
         present(UINavigationController(rootViewController: AlarmSettingsViewController(alarm: Alarm.createDefault()), withLargeTitle: false), animated: true)
     }
     
-    func reloadData() {
-        var snapshot = NSDiffableDataSourceSnapshot<AlarmCategory, Alarm>()
-        for category in AlarmCategory.allCases {
-            let items = Alarm.getAlarms().filter { $0.category == category }
+    func reloadTableViewData() {
+        var snapshot = NSDiffableDataSourceSnapshot<AlarmSection, Alarm>()
+        for category in AlarmSection.allCases {
+            let items = Alarm.getAlarms().filter { $0.section == category }
             snapshot.appendSections([category])
             snapshot.appendItems(items)
         }
@@ -97,7 +93,7 @@ extension AlarmClockViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let sectionView = AlarmClockSectionHeaderView()
-        sectionView.setSection(section: section)
+        sectionView.set(section: section)
         
         return sectionView
     }

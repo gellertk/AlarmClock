@@ -115,7 +115,7 @@ extension WorldClockViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: WorldClockTableViewCell.reuseId, for: indexPath) as? WorldClockTableViewCell else {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: WorldClockTableViewCell.reuseIdentifier, for: indexPath) as? WorldClockTableViewCell else {
             
             return UITableViewCell()
         }

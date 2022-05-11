@@ -59,7 +59,7 @@ class StopwatchView: UIView {
         let tableView = UITableView()
         tableView.backgroundColor = .black
         tableView.separatorColor = K.Color.tableSeparator
-        tableView.register(LapsTableViewCell.self, forCellReuseIdentifier: LapsTableViewCell.reuseId)
+        tableView.register(LapsTableViewCell.self, forCellReuseIdentifier: LapsTableViewCell.reuseIdentifier)
         tableView.showsVerticalScrollIndicator = false
         
         return tableView
