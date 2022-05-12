@@ -9,7 +9,7 @@ import Foundation
 
 extension Int {
     
-    func getWeekDayFullDescription() -> String {
+    func toWeekDayFullString() -> String {
         switch self {
         case 0:
             return "Каждый понедельник"
@@ -30,7 +30,7 @@ extension Int {
         }
     }
     
-    func getWeekDayReducedDescription() -> String {
+    func toWeekDayReducedString() -> String {
         switch self {
         case 0:
             return "Пн"

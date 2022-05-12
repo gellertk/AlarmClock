@@ -9,7 +9,7 @@ import UIKit
 
 class AlarmClockView: UIView {
     
-    private(set) lazy var alarmsTableView: UITableView = {
+    lazy var alarmsTableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .insetGrouped)
         tableView.register(AlarmClockTableViewCell.self, forCellReuseIdentifier: AlarmClockTableViewCell.reuseIdentifier)
         tableView.backgroundColor = .black

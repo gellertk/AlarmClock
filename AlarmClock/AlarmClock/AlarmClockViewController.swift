@@ -72,7 +72,7 @@ private extension AlarmClockViewController {
     }
     
     @objc func didTapAddButton() {
-        present(UINavigationController(rootViewController: AlarmSettingsViewController(alarm: Alarm.createDefault()), withLargeTitle: false), animated: true)
+        present(UINavigationController(rootViewController: SettingsViewController(alarm: Alarm.createDefault()), withLargeTitle: false), animated: true)
     }
     
     func reloadTableViewData() {

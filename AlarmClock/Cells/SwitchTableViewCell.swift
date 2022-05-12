@@ -7,24 +7,20 @@
 
 import UIKit
 
-protocol SwitchTableViewCellDelegate: AnyObject {
-    func didAccessorySwitchValueChange(isOn: Bool)
-}
-
 class SwitchTableViewCell: UITableViewCell {
-
-    weak var delegate: SwitchTableViewCellDelegate?
+    
+    var model: SwitchCellOption?
     
     private lazy var accessorySwitch: UISwitch = {
         let aSwitch = UISwitch()
-        aSwitch.addTarget(self, action: #selector(didAccessorySwitchValueChange), for: .valueChanged)
+        aSwitch.addTarget(self, action: #selector(didSwitchCellValueChange), for: .valueChanged)
 
         return aSwitch
     }()
         
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: .default,
-                   reuseIdentifier: DefaultTableViewCell.reuseIdentifier)
+                   reuseIdentifier: ValueTableViewCell.reuseIdentifier)
         
         setupView()
     }
@@ -33,11 +29,12 @@ class SwitchTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configure(text: String, switchIsOn: Bool) {
+    func configure(with options: SwitchCellOption) {
+        self.model = options
         var config = defaultContentConfiguration()
-        config.text = text
+        config.text = options.text
         contentConfiguration = config
-        accessorySwitch.isOn = switchIsOn
+        accessorySwitch.isOn = options.isOn
         accessoryView = accessorySwitch
     }
 
@@ -45,8 +42,8 @@ class SwitchTableViewCell: UITableViewCell {
 
 private extension SwitchTableViewCell {
     
-    @objc func didAccessorySwitchValueChange(_ sender: UISwitch) {
-        delegate?.didAccessorySwitchValueChange(isOn: sender.isOn)
+    @objc func didSwitchCellValueChange(_ sender: UISwitch) {
+        model?.handler()
     }
     
     func setupView() {

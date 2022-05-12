@@ -7,7 +7,7 @@
 
 import UIKit
 
-class AlarmSettingsView: UIView {
+class SettingsView: UIView {
     
     private let timeDatePicker: UIDatePicker = {
         let datePicker = UIDatePicker()
@@ -20,10 +20,11 @@ class AlarmSettingsView: UIView {
         return datePicker
     }()
     
-    lazy var tableView: StaticTableView = {
-        let cellTypes = [DefaultTableViewCell.self,
+    lazy var tableView: TableView = {
+        let cellTypes = [ValueTableViewCell.self,
                          SwitchTableViewCell.self]
-        let tableView = StaticTableView(cellTypes: cellTypes)
+        let tableView = TableView(cellTypes: cellTypes, isScrollEnabled: false)
+        tableView.tableHeaderView = .init(frame: .init(x: 0, y: 0, width: 0, height: CGFloat.leastNonzeroMagnitude))
         
         return tableView
     }()
@@ -39,7 +40,7 @@ class AlarmSettingsView: UIView {
     
 }
 
-private extension AlarmSettingsView {
+private extension SettingsView {
     
     func setupView() {
         overrideUserInterfaceStyle = .dark
@@ -54,17 +55,15 @@ private extension AlarmSettingsView {
     
     func setupConstraints() {
         timeDatePicker.snp.makeConstraints {
-            $0.leading.equalToSuperview().offset(15)
-            $0.trailing.equalToSuperview().offset(-15)
+            $0.leading.equalToSuperview().offset(10)
+            $0.trailing.equalToSuperview().offset(-10)
             $0.top.equalToSuperview().offset(50)
             $0.height.equalTo(220)
         }
         
         tableView.snp.makeConstraints {
             $0.top.equalTo(timeDatePicker.snp.bottom)
-            $0.leading.equalToSuperview().offset(15)
-            $0.trailing.equalToSuperview().offset(-15)
-            $0.height.equalTo(AlarmSetting.allCases.count * Int(K.Numeric.defaultHeightForRow))
+            $0.leading.trailing.bottom.equalToSuperview()
         }
     }
     

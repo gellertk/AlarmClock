@@ -7,9 +7,9 @@
 
 import UIKit
 
-class AlarmWeekDaysView: UIView {
+class WeekDaysView: UIView {
     
-    lazy var tableView = StaticTableView(cellTypes: [DefaultTableViewCell.self])
+    lazy var tableView = TableView(cellTypes: [CheckmarkTableViewCell.self], isScrollEnabled: false)
     
     override init(frame: CGRect) {
         super.init(frame: .zero)
@@ -22,7 +22,7 @@ class AlarmWeekDaysView: UIView {
     
 }
 
-private extension AlarmWeekDaysView {
+private extension WeekDaysView {
     
     func setupView() {
         overrideUserInterfaceStyle = .dark
@@ -37,11 +37,7 @@ private extension AlarmWeekDaysView {
     
     func setupConstraints() {
         tableView.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(90)
-            $0.leading.equalToSuperview().offset(15)
-            $0.trailing.equalToSuperview().offset(-15)
-            $0.bottom.equalToSuperview()
-            //$0.height.equalTo(7 * Int(K.Numeric.defaultHeightForRow))
+            $0.edges.equalToSuperview()
         }
     }
     

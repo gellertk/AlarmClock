@@ -7,6 +7,21 @@
 
 import Foundation
 
+struct MelodySection: Hashable {
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+    
+    static func == (lhs: MelodySection, rhs: MelodySection) -> Bool {
+        lhs.id == rhs.id
+    }
+    
+    let id = UUID()
+    let title: String
+    let items: [CellType]
+}
+
 struct Melody: Hashable {
     
     let id: Int?
@@ -14,18 +29,7 @@ struct Melody: Hashable {
     
     init(_ title: String) {
         self.title = title
-        //self.section = section
         self.id = nil
     }
-    
-//    static func getMelodys() -> [Melody] {
-//        //NSSound
-////        return [
-////            Melody(title: "Пение Птиц Весной (Звуки Природы для Релаксации и Отдыха)", section: .songs(title: "Песни", items: <#T##[String]#>)),
-////            //Melody(title: "Вибрация", section: .vibration),
-////
-////        ]
-//        return [Melody(title: <#T##String#>, section: <#T##MelodySection#>)]
-//    }
     
 }

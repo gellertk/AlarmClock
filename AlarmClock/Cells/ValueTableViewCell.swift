@@ -1,17 +1,17 @@
 //
-//  DefaultTableViewCell.swift
+//  AlarmSettingsTableViewCell.swift
 //  AlarmClock
 //
-//  Created by Кирилл  Геллерт on 12.05.2022.
+//  Created by Кирилл  Геллерт on 04.05.2022.
 //
 
 import UIKit
 
-class DefaultTableViewCell: UITableViewCell {
+class ValueTableViewCell: UITableViewCell {
         
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style,
-                   reuseIdentifier: DefaultTableViewCell.reuseIdentifier)
+                   reuseIdentifier: ValueTableViewCell.reuseIdentifier)
         
         setupView()
     }
@@ -22,7 +22,7 @@ class DefaultTableViewCell: UITableViewCell {
     
 }
 
-private extension DefaultTableViewCell {
+private extension ValueTableViewCell {
     
     func setupView() {
         backgroundColor = K.Color.staticTableViewBackground
@@ -31,14 +31,15 @@ private extension DefaultTableViewCell {
     
 }
 
-extension DefaultTableViewCell {
+extension ValueTableViewCell {
     
-    func configure(with options: DefaultCellOption) {
+    func configure(with options: ValueCellOption) {
         var config = UIListContentConfiguration.valueCell()
         config.text = options.text
-        config.textProperties.color = options.textColor
+        config.secondaryText = options.secondaryText
         config.textProperties.numberOfLines = 1
         contentConfiguration = config
+        accessoryType = .disclosureIndicator
     }
 
 }

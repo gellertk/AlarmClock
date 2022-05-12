@@ -7,17 +7,17 @@
 
 import UIKit
 
-class StaticTableView: UITableView {
+class TableView: UITableView {
 
-    convenience init<T: UITableViewCell>(cellTypes: [T.Type]) {
-        self.init(frame: .zero, style: .plain)
+    convenience init<T: UITableViewCell>(cellTypes: [T.Type], isScrollEnabled: Bool = true) {
+        self.init(frame: .zero, style: .insetGrouped)
         cellTypes.forEach {
             register($0.self, forCellReuseIdentifier: $0.reuseIdentifier)
         }
-        backgroundColor = .black
+        backgroundColor = K.Color.disabledBackground
         separatorColor = K.Color.tableSeparator
         layer.cornerRadius = K.Numeric.defaultCornerRadius
-        isScrollEnabled = false
+        self.isScrollEnabled = isScrollEnabled
     }
 
 }

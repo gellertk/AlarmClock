@@ -7,12 +7,13 @@
 
 import UIKit
 
-class AlarmMelodyView: UIView {
+class MelodyView: UIView {
     
-    lazy var tableView: UITableView = {
-        let tableView = UITableView(frame: .zero, style: .insetGrouped)
-        tableView.register(DefaultTableViewCell.self)
-        
+    lazy var tableView: TableView = {
+        let cellTypes = [ValueTableViewCell.self, DefaultTableViewCell.self]
+        let tableView = TableView(cellTypes: cellTypes)
+        tableView.tableHeaderView = .init(frame: .init(x: 0, y: 0, width: 0, height: 20))
+
         return tableView
     }()
         
@@ -27,13 +28,11 @@ class AlarmMelodyView: UIView {
     
 }
 
-private extension AlarmMelodyView {
+private extension MelodyView {
     
     func setupView() {
         backgroundColor = K.Color.disabledBackground
-        [
-            tableView
-        ].forEach {
+        [tableView].forEach {
             addSubview($0)
         }
         setupConstraints()
@@ -42,10 +41,6 @@ private extension AlarmMelodyView {
     func setupConstraints() {
         tableView.snp.makeConstraints {
             $0.edges.equalToSuperview()
-//            $0.bottom.equalToSuperview()
-//            $0.leading.equalToSuperview()
-//            $0.trailing.equalToSuperview()
-            //$0.height.equalTo(20 * K.Numeric.defaultHeightForRow)
         }
     }
     

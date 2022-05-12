@@ -16,20 +16,13 @@ class AlarmDataSource: UITableViewDiffableDataSource<AlarmSection, Alarm> {
     
 }
 
-class MelodyDataSource: UITableViewDiffableDataSource<MelodySection, AnyHashable> {
+class MelodyDataSource: UITableViewDiffableDataSource<MelodySection, CellType> {
+    
+    var sections: [MelodySection] = []
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         
-        switch MelodySection.allCases[section] {
-        case .shop(let title, _):
-            return title
-        case .song(let title, _):
-            return title
-        case .ringtone(let title, _):
-            return title
-        default:
-            return nil
-        }
+        return sections[section].title
     }
     
 }
