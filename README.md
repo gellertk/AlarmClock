@@ -19,6 +19,7 @@
 * UIDiffableDataSource
 * Modern Cell Configuration (contentConfiguration)
 
-**System**
-* RunLoop
-
+**Other**
+* Subscripts
+* Hashable
+* Associated values
