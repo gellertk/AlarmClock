@@ -108,8 +108,8 @@ private extension WeekDaysViewController {
         for index in 0...6 {
             cells += [
                 .checkmarkedCell(options: CheckmarkCellOption(text: index.toWeekDayFullString(),
-                                                              isCheckmarkLeft: false,
-                                                              isCheckmarked: alarm.weekDays[index] ?? false, handler: nil))
+                                                              isCheckmarked: alarm.weekDays[index] ?? false,
+                                                              handler: nil))
             ]
         }
         

@@ -8,11 +8,10 @@
 import UIKit
 
 class CheckmarkTableViewCell: UITableViewCell {
-        
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: .default,
                    reuseIdentifier: ValueTableViewCell.reuseIdentifier)
-        
         setupView()
     }
     
@@ -23,6 +22,7 @@ class CheckmarkTableViewCell: UITableViewCell {
     func configure(with options: CheckmarkCellOption) {
         var config = defaultContentConfiguration()
         config.text = options.text
+        config.textProperties.numberOfLines = 1
         contentConfiguration = config
         accessoryType = options.isCheckmarked ? .checkmark : .none
     }
@@ -30,7 +30,7 @@ class CheckmarkTableViewCell: UITableViewCell {
     func toggleCheckmark() {
         accessoryType = accessoryType == .none ? .checkmark : .none
     }
-
+    
 }
 
 private extension CheckmarkTableViewCell {

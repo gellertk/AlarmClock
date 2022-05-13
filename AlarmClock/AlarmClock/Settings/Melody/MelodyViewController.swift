@@ -36,6 +36,14 @@ class MelodyViewController: UIViewController {
             cell.configure(with: options)
             
             return cell
+        case .checkmarkedCell(let options):
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: LeftCheckmarkTableViewCell.reuseIdentifier, for: indexPath) as? LeftCheckmarkTableViewCell else {
+                return UITableViewCell()
+            }
+            
+            cell.configure(with: options)
+            
+            return cell
         default:
             return UITableViewCell()
         }
@@ -74,15 +82,38 @@ class MelodyViewController: UIViewController {
     }
 }
 
+class MelodyDataSource: UITableViewDiffableDataSource<MelodySection, CellType> {
+    
+    var sections: [MelodySection] = []
+    
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        
+        return sections[section].title
+    }
+    
+    override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+        if section == 1 {
+            return K.String.footerForShopSection
+        }
+        
+        return nil
+    }
+            
+}
+
 extension MelodyViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         switch sections[indexPath.section].items[indexPath.row] {
-        case .valueCell(let model):
-            model.handler()
-        case .defaultCell(let model):
-            model.handler()
+        case .valueCell(let options):
+            options.handler()
+        case .defaultCell(let options):
+            options.handler()
+        case .checkmarkedCell:
+            if let cell = tableView.cellForRow(at: indexPath) as? LeftCheckmarkTableViewCell {
+                //cell.toggleLeftCheckmark()
+            }
         default:
             break
         }
@@ -107,10 +138,73 @@ private extension MelodyViewController {
                                                         textColor: .systemOrange) { [weak self] in self?.toVibrationVC() })
             ]),
             MelodySection(title: "ПЕСНИ", items: [
-                .valueCell(options: ValueCellOption(text: "Пение Птиц Весной (Звуки Природы)",
-                                                    secondaryText: "") { [weak self] in self?.toVibrationVC() }),
-                .valueCell(options: ValueCellOption(text: "Выбор песни",
-                                                    secondaryText: "") { [weak self] in self?.toVibrationVC() })
+                .checkmarkedCell(options: CheckmarkCellOption(text: "Пение Птиц Весной (Звуки Природы)",
+                                                              isCheckmarked: true) { [weak self] in self?.toVibrationVC() }),
+                .checkmarkedCell(options: CheckmarkCellOption(text: "Выбор песни",
+                                                              isCheckmarked: false) { [weak self] in self?.toVibrationVC() })
+            ]),
+            MelodySection(title: "РИНГТОНЫ", items: [
+                .checkmarkedCell(options: CheckmarkCellOption(text: "Радар (по умолчанию)",
+                                                              isCheckmarked: false) { [weak self] in self?.toVibrationVC() }),
+                .checkmarkedCell(options: CheckmarkCellOption(text: "Апекс",
+                                                              isCheckmarked: false) { [weak self] in self?.toVibrationVC() }),
+                .checkmarkedCell(options: CheckmarkCellOption(text: "Вершина",
+                                                              isCheckmarked: false) { [weak self] in self?.toVibrationVC() }),
+                .checkmarkedCell(options: CheckmarkCellOption(text: "Вестник",
+                                                              isCheckmarked: false) { [weak self] in self?.toVibrationVC() }),
+                .checkmarkedCell(options: CheckmarkCellOption(text: "Волны",
+                                                              isCheckmarked: false) { [weak self] in self?.toVibrationVC() }),
+                .checkmarkedCell(options: CheckmarkCellOption(text: "Вступление",
+                                                              isCheckmarked: false) { [weak self] in self?.toVibrationVC() }),
+                .checkmarkedCell(options: CheckmarkCellOption(text: "Грезы",
+                                                              isCheckmarked: false) { [weak self] in self?.toVibrationVC() }),
+                .checkmarkedCell(options: CheckmarkCellOption(text: "Зыбь",
+                                                              isCheckmarked: false) { [weak self] in self?.toVibrationVC() }),
+                .checkmarkedCell(options: CheckmarkCellOption(text: "Иллюминация",
+                                                              isCheckmarked: false) { [weak self] in self?.toVibrationVC() }),
+                .checkmarkedCell(options: CheckmarkCellOption(text: "Космос",
+                                                              isCheckmarked: false) { [weak self] in self?.toVibrationVC() }),
+                .checkmarkedCell(options: CheckmarkCellOption(text: "Кристалы",
+                                                              isCheckmarked: false) { [weak self] in self?.toVibrationVC() }),
+                .checkmarkedCell(options: CheckmarkCellOption(text: "Маяк",
+                                                              isCheckmarked: false) { [weak self] in self?.toVibrationVC() }),
+                .checkmarkedCell(options: CheckmarkCellOption(text: "Медленно в гору",
+                                                              isCheckmarked: false) { [weak self] in self?.toVibrationVC() }),
+                .checkmarkedCell(options: CheckmarkCellOption(text: "Мерцание",
+                                                              isCheckmarked: false) { [weak self] in self?.toVibrationVC() }),
+                .checkmarkedCell(options: CheckmarkCellOption(text: "Отражение",
+                                                              isCheckmarked: false) { [weak self] in self?.toVibrationVC() }),
+                .checkmarkedCell(options: CheckmarkCellOption(text: "Перезвон",
+                                                              isCheckmarked: false) { [weak self] in self?.toVibrationVC() }),
+                .checkmarkedCell(options: CheckmarkCellOption(text: "Подъем",
+                                                              isCheckmarked: false) { [weak self] in self?.toVibrationVC() }),
+                .checkmarkedCell(options: CheckmarkCellOption(text: "Позывной",
+                                                              isCheckmarked: false) { [weak self] in self?.toVibrationVC() }),
+                .checkmarkedCell(options: CheckmarkCellOption(text: "Полуночник",
+                                                              isCheckmarked: false) { [weak self] in self?.toVibrationVC() }),
+                .checkmarkedCell(options: CheckmarkCellOption(text: "Прогулка у моря",
+                                                              isCheckmarked: false) { [weak self] in self?.toVibrationVC() }),
+                .checkmarkedCell(options: CheckmarkCellOption(text: "Свечение",
+                                                              isCheckmarked: false) { [weak self] in self?.toVibrationVC() }),
+                .checkmarkedCell(options: CheckmarkCellOption(text: "Сентя",
+                                                              isCheckmarked: false) { [weak self] in self?.toVibrationVC() }),
+                .checkmarkedCell(options: CheckmarkCellOption(text: "Скорей, скорей",
+                                                              isCheckmarked: false) { [weak self] in self?.toVibrationVC() }),
+                .checkmarkedCell(options: CheckmarkCellOption(text: "Созвездие",
+                                                              isCheckmarked: false) { [weak self] in self?.toVibrationVC() }),
+                .checkmarkedCell(options: CheckmarkCellOption(text: "Час потехи",
+                                                              isCheckmarked: false) { [weak self] in self?.toVibrationVC() }),
+                .checkmarkedCell(options: CheckmarkCellOption(text: "Шелк",
+                                                              isCheckmarked: false) { [weak self] in self?.toVibrationVC() }),
+                .checkmarkedCell(options: CheckmarkCellOption(text: "Электросхема",
+                                                              isCheckmarked: false) { [weak self] in self?.toVibrationVC() }),
+                .checkmarkedCell(options: CheckmarkCellOption(text: "Классические",
+                                                              isCheckmarked: false) { [weak self] in self?.toVibrationVC() })
+            ]),
+            
+            MelodySection(title: "", items: [
+                .checkmarkedCell(options: CheckmarkCellOption(text: "Нет",
+                                                              isCheckmarked: true) { [weak self] in self?.toVibrationVC() })
             ])
         ]
         dataSource.sections = sections
@@ -118,7 +212,6 @@ private extension MelodyViewController {
     
     func reloadData() {
         var snapshot = NSDiffableDataSourceSnapshot<MelodySection, CellType>()
-        
         for section in sections {
             snapshot.appendSections([section])
             snapshot.appendItems(section.items)

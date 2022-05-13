@@ -10,7 +10,7 @@ import UIKit
 class MelodyView: UIView {
     
     lazy var tableView: TableView = {
-        let cellTypes = [ValueTableViewCell.self, DefaultTableViewCell.self]
+        let cellTypes = [ValueTableViewCell.self, DefaultTableViewCell.self, LeftCheckmarkTableViewCell.self]
         let tableView = TableView(cellTypes: cellTypes)
         tableView.tableHeaderView = .init(frame: .init(x: 0, y: 0, width: 0, height: 20))
 

@@ -51,7 +51,6 @@ struct CheckmarkCellOption: Hashable {
     
     let id = UUID()
     var text: String
-    var isCheckmarkLeft: Bool
     var isCheckmarked: Bool
     let handler: (() -> ())?
 }

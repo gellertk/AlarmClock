@@ -42,6 +42,8 @@ struct K {
         static let userDefaultsStopwatchKey = "stopwatch"
         static let stopwatchStartTime = "00:00,00"
         static let defaultAlarmTitle = "Будильник"
+        static let footerForShopSection = "При этом будут загружены все рингтоны и предупреждения, купленные с помощью учетной записи " + userEmail + "."
+        static let userEmail = "gerry9@bk.ru"
     }
     
     struct Numeric {

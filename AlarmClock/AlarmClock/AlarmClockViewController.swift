@@ -115,3 +115,12 @@ extension AlarmClockViewController: UITableViewDelegate {
     }
     
 }
+
+class AlarmDataSource: UITableViewDiffableDataSource<AlarmSection, Alarm> {
+    
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        
+        return AlarmSection.allCases[section].rawValue
+    }
+    
+}
