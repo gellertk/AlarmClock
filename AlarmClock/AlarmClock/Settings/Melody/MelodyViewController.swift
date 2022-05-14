@@ -41,6 +41,11 @@ class MelodyViewController: UIViewController {
                 return UITableViewCell()
             }
             
+            var doneButtonConfiguration = self.doneButtonConfiguration()
+            doneButtonConfiguration.tintColor = .systemOrange
+//            cell.accessor
+//            cell.accessories = [ .customView(configuration: doneButtonConfiguration), .disclosureIndicator(displayed: .always) ]
+            
             cell.configure(with: options)
             
             return cell
@@ -80,6 +85,16 @@ class MelodyViewController: UIViewController {
             delegate?.update(alarm: alarm)
         }
     }
+    
+    private func doneButtonConfiguration() -> UICellAccessory.CustomViewConfiguration {
+        let symbolName = "checkmark"
+        let symbolConfiguration = UIImage.SymbolConfiguration(textStyle: .title1)
+        let image = UIImage(systemName: symbolName, withConfiguration: symbolConfiguration)
+        let button = UIButton()
+        button.setImage(image, for: .normal)
+        return UICellAccessory.CustomViewConfiguration(customView: button, placement: .leading(displayed: .always))
+    }
+    
 }
 
 class MelodyDataSource: UITableViewDiffableDataSource<MelodySection, CellType> {
@@ -98,7 +113,7 @@ class MelodyDataSource: UITableViewDiffableDataSource<MelodySection, CellType> {
         
         return nil
     }
-            
+    
 }
 
 extension MelodyViewController: UITableViewDelegate {

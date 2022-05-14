@@ -30,18 +30,18 @@ class LeftCheckmarkTableViewCell: UITableViewCell {
     func configure(with options: CheckmarkCellOption) {
         config.text = options.text
         config.textProperties.numberOfLines = 1
-        config.image = checkmarkImage
+        //config.image = checkmarkImage
         contentConfiguration = config
         setLeftCheckmark(options.isCheckmarked)
     }
     
     func setLeftCheckmark(_ isCheckmarked: Bool) {
-        if isCheckmarked {
-            config.imageProperties.tintColor = .systemOrange
-        } else {
-            config.imageProperties.tintColor = backgroundColor
-        }
-        contentConfiguration = config
+//        if isCheckmarked {
+//            config.imageProperties.tintColor = .systemOrange
+//        } else {
+//            config.imageProperties.tintColor = backgroundColor
+//        }
+//        contentConfiguration = config
     }
 
 }

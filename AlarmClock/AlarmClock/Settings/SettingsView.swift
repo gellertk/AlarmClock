@@ -20,13 +20,16 @@ class SettingsView: UIView {
         return datePicker
     }()
     
-    lazy var tableView: TableView = {
-        let cellTypes = [ValueTableViewCell.self,
-                         SwitchTableViewCell.self]
-        let tableView = TableView(cellTypes: cellTypes, isScrollEnabled: false)
-        tableView.tableHeaderView = .init(frame: .init(x: 0, y: 0, width: 0, height: CGFloat.leastNonzeroMagnitude))
+    lazy var collectionView: UICollectionView = {
+        let configuration = UICollectionLayoutListConfiguration(appearance: .insetGrouped)
+        let layout = UICollectionViewCompositionalLayout.list(using: configuration)
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+//        let cellTypes = [ValueTableViewCell.self,
+//                         SwitchTableViewCell.self]
+//        let tableView = TableView(cellTypes: cellTypes, isScrollEnabled: false)
+//        tableView.tableHeaderView = .init(frame: .init(x: 0, y: 0, width: 0, height: CGFloat.leastNonzeroMagnitude))
         
-        return tableView
+        return collectionView
     }()
     
     override init(frame: CGRect) {
@@ -46,7 +49,7 @@ private extension SettingsView {
         overrideUserInterfaceStyle = .dark
         backgroundColor = K.Color.disabledBackground
         [timeDatePicker,
-         tableView
+         collectionView
         ].forEach {
             addSubview($0)
         }
@@ -61,7 +64,7 @@ private extension SettingsView {
             $0.height.equalTo(220)
         }
         
-        tableView.snp.makeConstraints {
+        collectionView.snp.makeConstraints {
             $0.top.equalTo(timeDatePicker.snp.bottom)
             $0.leading.trailing.bottom.equalToSuperview()
         }
