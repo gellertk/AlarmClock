@@ -18,7 +18,6 @@ class AlarmClockViewController: UIViewController {
     private lazy var dataSource = AlarmDataSource(tableView: alarmClockView.alarmsTableView,
                                  cellProvider: { [weak self] (tableView, indexPath, alarm) -> UITableViewCell? in
         if let cell = self?.alarmClockView.alarmsTableView.dequeueReusableCell(withIdentifier: AlarmClockTableViewCell.reuseIdentifier) as? AlarmClockTableViewCell {
-       
             cell.configure(alarm: alarm, section: indexPath.section)
             
             return cell

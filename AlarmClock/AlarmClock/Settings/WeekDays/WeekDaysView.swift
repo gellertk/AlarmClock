@@ -9,7 +9,14 @@ import UIKit
 
 class WeekDaysView: UIView {
     
-    lazy var tableView = TableView(cellTypes: [CheckmarkTableViewCell.self], isScrollEnabled: false)
+    lazy var collectionView: UICollectionView = {
+        let configuration = UICollectionLayoutListConfiguration(appearance: .insetGrouped)
+        let layout = UICollectionViewCompositionalLayout.list(using: configuration)
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.isScrollEnabled = false
+        
+        return collectionView
+    }()
     
     override init(frame: CGRect) {
         super.init(frame: .zero)
@@ -28,7 +35,7 @@ private extension WeekDaysView {
         overrideUserInterfaceStyle = .dark
         backgroundColor = K.Color.disabledBackground
         [
-            tableView
+            collectionView
         ].forEach {
             addSubview($0)
         }
@@ -36,7 +43,7 @@ private extension WeekDaysView {
     }
     
     func setupConstraints() {
-        tableView.snp.makeConstraints {
+        collectionView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
     }

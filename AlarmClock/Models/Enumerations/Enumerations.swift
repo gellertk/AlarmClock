@@ -62,6 +62,15 @@ enum CircleButtonType {
     
 }
 
+enum CellTypeNew {
+    case standart
+    case value
+    case _switch
+    case checkmark
+    case leftCheckmark
+    case leftCheckmarkWithDisclosure
+}
+
 enum AlarmSection: String, CaseIterable {
     case main = "Сон | Пробуждение"
     case other = "Другие"
@@ -83,7 +92,7 @@ enum CellType: Hashable {
     }
     
     case defaultCell(options: DefaultCellOption)
-    case valueCell(options: ValueCellOption)
+    case valueCell(options: CellData)
     case checkmarkedCell(options: CheckmarkCellOption)
     case switchCell(options: SwitchCellOption)
 }

@@ -23,20 +23,52 @@ struct DefaultCellOption: Hashable {
     let handler: (() -> ())
 }
 
-struct ValueCellOption: Hashable {
+struct CellSection {
+    let title: String
+    let items: [CellData]
+}
+
+struct CellData: Hashable {
     
     func hash(into hasher: inout Hasher) {
         hasher.combine(id)
     }
     
-    static func == (lhs: ValueCellOption, rhs: ValueCellOption) -> Bool {
+    static func == (lhs: CellData, rhs: CellData) -> Bool {
         return lhs.id == rhs.id
     }
     
-    let id = UUID()
+    let cellType: CellTypeNew
+    let id: String
     var text: String
     var secondaryText: String
-    let handler: (() -> ())
+    let handler: (() -> ())?
+    
+    init(cellType: CellTypeNew, text: String, secondaryText: String, handler: @escaping () -> () ) {
+        self.cellType = cellType
+        self.text = text
+        self.id = text
+        self.secondaryText = secondaryText
+        self.handler = handler
+    }
+    
+    init(cellType: CellTypeNew, text: String, handler: @escaping () -> () ) {
+        self.cellType = cellType
+        self.text = text
+        self.id = text
+        self.handler = handler
+        
+        self.secondaryText = ""
+    }
+    
+    init(cellType: CellTypeNew, text: String) {
+        self.cellType = cellType
+        self.text = text
+        self.id = text
+        self.handler = nil
+        
+        self.secondaryText = ""
+    }
 }
 
 struct CheckmarkCellOption: Hashable {

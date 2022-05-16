@@ -11,20 +11,28 @@ protocol AlarmUpdateDelegate: AnyObject {
     func update(alarm: Alarm)
 }
 
-class SettingsViewController: UIViewController {
+fileprivate extension SettingsViewController {
     
-    private var settingCells: [CellType] = []
+    typealias CellRegistration = UICollectionView.CellRegistration<UICollectionViewListCell, CellData>
+    typealias DataSource = UICollectionViewDiffableDataSource<SettingsViewController.Section, CellData>
+    typealias Snapshot = NSDiffableDataSourceSnapshot<SettingsViewController.Section, CellData>
+    
+    enum Section: Hashable {
+        case main
+    }
+    
+}
+
+class SettingsViewController: UIViewController {
     
     var alarm: Alarm?
     
-    private let alarmSettingsView = SettingsView()
+    private var dataSource: DataSource?
+    private var updatedCellIndex: Int?
+    private var cellsData: [CellData] = []
     
-    private lazy var cellRegistration = UICollectionView.CellRegistration<UICollectionViewListCell, CellType>() { cell, indexPath, cellType in
+    private let settingsView = SettingsView()
         
-        var config = cell.defaultContentConfiguration()
-        config.text = settingCells[indexPath.row]
-    }
-    
     init(alarm: Alarm) {
         self.alarm = alarm
         super.init(nibName: nil, bundle: nil)
@@ -35,20 +43,88 @@ class SettingsViewController: UIViewController {
     }
     
     override func loadView() {
-        view = alarmSettingsView
+        view = settingsView
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Добавление"
         setupNavigationBarItems()
-        //setupDelegates()
-        fillCells()
+        setupDataSource()
     }
     
 }
 
 private extension SettingsViewController {
+    
+    func createValueCellRegistration() -> CellRegistration {
+        return CellRegistration() {[weak self] (cell, indexPath, item) in
+            var config = UIListContentConfiguration.valueCell()
+            config.text = item.text
+            config.secondaryText = self?.alarm?[indexPath.row]
+            cell.contentConfiguration = config
+            cell.accessories = [.disclosureIndicator()]
+        }
+    }
+    
+    func createSwitchCellRegistration() -> CellRegistration {
+        return CellRegistration() {[weak self] (cell, _, item) in
+            guard let alarm = self?.alarm else {
+                return
+            }
+            var config = cell.defaultContentConfiguration()
+            config.text = item.text
+            let repeatSignalSwitch = UISwitch()
+            repeatSignalSwitch.isOn = alarm.isRepeated
+            repeatSignalSwitch.addTarget(self, action: #selector(self?.toggleIsRepeated), for: .valueChanged)
+            cell.accessories = [.customView(configuration: .init(customView: repeatSignalSwitch,
+                                                                 placement: .trailing(displayed: .always)))]
+            cell.contentConfiguration = config
+        }
+    }
+    
+    func setupDataSource() {
+        
+        fillCellsData()
+        
+        let valueCellRegistration = createValueCellRegistration()
+        let switchCellRegistration = createSwitchCellRegistration()
+        
+        dataSource = DataSource(collectionView: settingsView.collectionView) { collectionView, indexPath, item in
+            switch item.cellType {
+            case .value:
+                return collectionView.dequeueConfiguredReusableCell(using: valueCellRegistration, for: indexPath, item: item)
+            case ._switch:
+                return collectionView.dequeueConfiguredReusableCell(using: switchCellRegistration, for: indexPath, item: item)
+            default:
+                return nil
+            }
+        }
+        
+        setEmptyHeader()
+        settingsView.collectionView.delegate = self
+        
+        guard let dataSource = dataSource else {
+            return
+        }
+        
+        var snapshot = Snapshot()
+        snapshot.appendSections([.main])
+        snapshot.appendItems(cellsData)
+        dataSource.apply(snapshot, animatingDifferences: false)
+    }
+    
+    func setEmptyHeader() {
+        settingsView.collectionView.register(EmptyHeaderView.self,
+                                                  forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
+                                                  withReuseIdentifier: EmptyHeaderView.reuseIdentifier)
+        
+        dataSource?.supplementaryViewProvider = { (collectionView, kind, indexPath)  in
+            return collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader,
+                                                                   withReuseIdentifier: EmptyHeaderView.reuseIdentifier,
+                                                                   for: indexPath) as? EmptyHeaderView
+        }
+    }
     
     func setupNavigationBarItems() {
         navigationItem.setLeftBarButton(UIBarButtonItem(title: "Отменить",
@@ -62,97 +138,56 @@ private extension SettingsViewController {
         
     }
     
-    //    func setupDelegates() {
-    //        alarmSettingsView.tableView.delegate = self
-    //        alarmSettingsView.tableView.dataSource = self
-    //    }
-    
-    func fillCells() {
+    func fillCellsData() {
         guard let alarm = alarm else {
             return
         }
         
-        settingCells = [
-            .valueCell(options: ValueCellOption(text: "Повтор",
-                                                secondaryText: alarm.formatedWeekDays()) { [weak self] in self?.toWeekDaysVC() }),
-            
-                .valueCell(options: ValueCellOption(text: "Название",
-                                                    secondaryText: alarm.formatedWeekDays()) { [weak self] in self?.toTitleVC() }),
-            
-                .valueCell(options: ValueCellOption(text: "Мелодия",
-                                                    secondaryText: alarm.formatedWeekDays()) { [weak self] in self?.toMelodyVC() }),
-            
-                .switchCell(options: SwitchCellOption(text: "Повторение сигнала",
-                                                      isOn: alarm.isRepeated) { [weak self] in self?.alarm?.isRepeated.toggle() } )
+        cellsData = [
+            CellData(cellType: .value,
+                     text: "Повтор",
+                     secondaryText: alarm.formatedWeekDays()) { [weak self] in self?.toWeekDaysVC()},
+            CellData(cellType: .value,
+                     text: "Название",
+                     secondaryText: alarm.title) { [weak self] in self?.toTitleVC() },
+            CellData(cellType: .value,
+                     text: "Мелодия",
+                     secondaryText: alarm.melody?.title ?? "Нет") { [weak self] in self?.toMelodyVC() },
+            CellData(cellType: ._switch,
+                     text: "Повторение сигнала")
         ]
         
     }
     
 }
 
-//extension SettingsViewController: UITableViewDelegate {
-//
-//    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//
-//        switch settingCells[indexPath.row] {
-//        case .valueCell(let model):
-//            model.handler()
-//        default:
-//            break
-//        }
-//
-//        tableView.deselectRow(at: indexPath, animated: true)
-//    }
-//
-//}
-
-//extension SettingsViewController: UITableViewDataSource {
-//
-//    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//
-//        return settingCells.count
-//    }
-//
-//    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//
-//        guard let alarm = alarm else {
-//            return UITableViewCell()
-//        }
-//
-//        switch settingCells[indexPath.row] {
-//        case .valueCell(var options):
-//            guard let cell = tableView.dequeueReusableCell(withIdentifier:
-//                                                            ValueTableViewCell.reuseIdentifier, for:
-//                                                            indexPath) as? ValueTableViewCell else {
-//                return UITableViewCell()
-//            }
-//            options.secondaryText = alarm[indexPath.row]
-//            cell.configure(with: options)
-//
-//            return cell
-//        case .switchCell(var options):
-//            guard let cell = tableView.dequeueReusableCell(withIdentifier:
-//                                                            SwitchTableViewCell.reuseIdentifier, for:
-//                                                            indexPath) as? SwitchTableViewCell else {
-//                return UITableViewCell()
-//            }
-//
-//            options.isOn = alarm.isRepeated
-//            cell.configure(with: options)
-//
-//            return cell
-//        default:
-//            return UITableViewCell()
-//        }
-//    }
-//
-//}
+extension SettingsViewController: UICollectionViewDelegate {
+    
+    func collectionView(_ collectionView: UICollectionView, shouldHighlightItemAt indexPath: IndexPath) -> Bool {
+        return indexPath.row != cellsData.count - 1
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        updatedCellIndex = indexPath.row
+        let cellData = cellsData[indexPath.row]
+        cellData.handler?()
+        collectionView.deselectItem(at: indexPath, animated: true)
+    }
+    
+}
 
 extension SettingsViewController: AlarmUpdateDelegate {
     
     func update(alarm: Alarm) {
+        guard let updatedCellIndex = updatedCellIndex,
+        let dataSource = dataSource else {
+            return
+        }
         self.alarm = alarm
-        alarmSettingsView.collectionView.reloadData()
+        cellsData[updatedCellIndex].secondaryText = alarm[updatedCellIndex]
+        var newSnapshot = dataSource.snapshot()
+        newSnapshot.reconfigureItems([cellsData[updatedCellIndex]])
+        dataSource.apply(newSnapshot, animatingDifferences: false)
     }
     
 }
@@ -165,6 +200,10 @@ private extension SettingsViewController {
     
     @objc func didTapSaveButton() {
         dismiss(animated: true)
+    }
+    
+    @objc func toggleIsRepeated() {
+        alarm?.isRepeated.toggle()
     }
     
     func toWeekDaysVC() {

@@ -17,6 +17,7 @@ struct Alarm: Hashable {
     var isRepeated: Bool
     let section: AlarmSection
     var melody: Melody?
+    var vibration: Vibration?
     
     init(title: String, time: Date, isEnabled: Bool, weekDays: [Int], isRepeated: Bool, section: AlarmSection, melody: Melody?) {
         self.title = title
@@ -26,6 +27,21 @@ struct Alarm: Hashable {
         self.section = section
         self.melody = melody
         self.weekDays = [:]
+        for index in 0...6 {
+            self.weekDays[index] = weekDays.contains { $0 == index }
+        }
+    }
+    
+    
+    init(title: String, time: Date, isEnabled: Bool, weekDays: [Int], isRepeated: Bool, section: AlarmSection, melody: Melody?, vibration: Vibration?) {
+        self.title = title
+        self.time = time
+        self.isEnabled = isEnabled
+        self.isRepeated = isRepeated
+        self.section = section
+        self.melody = melody
+        self.weekDays = [:]
+        self.vibration = vibration
         for index in 0...6 {
             self.weekDays[index] = weekDays.contains { $0 == index }
         }

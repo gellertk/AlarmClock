@@ -7,15 +7,26 @@
 
 import UIKit
 
+fileprivate extension WeekDaysViewController {
+    
+    typealias DataSource = UICollectionViewDiffableDataSource<Section, Int>
+    typealias CellRegistration = UICollectionView.CellRegistration<UICollectionViewListCell, Int>
+    typealias Snapshot = NSDiffableDataSourceSnapshot<WeekDaysViewController.Section, Int>
+    
+    enum Section {
+        case main
+    }
+    
+}
+
 class WeekDaysViewController: UIViewController {
     
     weak var delegate: AlarmUpdateDelegate?
     
+    private let weekDaysView = WeekDaysView()
+    
     private var alarm: Alarm?
-    
-    private let alarmWeekDaysView = WeekDaysView()
-    
-    private var cells: [CellType] = []
+    private var dataSource: DataSource!
     
     init(alarm: Alarm) {
         self.alarm = alarm
@@ -27,19 +38,39 @@ class WeekDaysViewController: UIViewController {
     }
     
     override func loadView() {
-        view = alarmWeekDaysView
+        view = weekDaysView
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Повтор"
-        setupDelegates()
-        fillCells()
+        configureDataSource()
     }
     
-    func setupDelegates() {
-        alarmWeekDaysView.tableView.delegate = self
-        alarmWeekDaysView.tableView.dataSource = self
+    func configureDataSource() {
+        let cellRegistration = CellRegistration() {[weak self] (cell, indexPath, item) in
+            guard let alarm = self?.alarm else {
+                return
+            }
+            var config = cell.defaultContentConfiguration()
+            config.text = item.toWeekDayFullString()
+            cell.tintColor = .systemOrange
+            if alarm.weekDays[item] ?? false {
+                cell.accessories = [.checkmark()]
+            }
+            cell.contentConfiguration = config
+        }
+        
+        dataSource = DataSource(collectionView: weekDaysView.collectionView, cellProvider: { collectionView, indexPath, itemIdentifier in
+            return collectionView.dequeueConfiguredReusableCell(using: cellRegistration, for: indexPath, item: itemIdentifier)
+        })
+        
+        weekDaysView.collectionView.delegate = self
+        
+        var snapshot = Snapshot()
+        snapshot.appendSections([.main])
+        snapshot.appendItems((0...6).map { $0 })
+        dataSource.apply(snapshot)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -54,65 +85,19 @@ class WeekDaysViewController: UIViewController {
     
 }
 
-extension WeekDaysViewController: UITableViewDelegate {
+extension WeekDaysViewController: UICollectionViewDelegate {
     
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if let cell = tableView.cellForRow(at: indexPath) as? CheckmarkTableViewCell {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if let cell = collectionView.cellForItem(at: indexPath) as? UICollectionViewListCell {
+            if cell.accessories.count == 0 {
+                cell.accessories = [.checkmark()]
+            } else {
+                cell.accessories = []
+            }
             alarm?.weekDays[indexPath.row]?.toggle()
-            cell.toggleCheckmark()
         }
-        tableView.deselectRow(at: indexPath, animated: true)
+        collectionView.deselectItem(at: indexPath, animated: true)
     }
     
 }
 
-extension WeekDaysViewController: UITableViewDataSource {
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
-        return 7
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
-        guard let alarm = alarm else {
-            return UITableViewCell()
-        }
-        
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: CheckmarkTableViewCell.reuseIdentifier, for: indexPath) as? CheckmarkTableViewCell else {
-            
-            return UITableViewCell()
-        }
-        
-        switch cells[indexPath.row] {
-        case .checkmarkedCell(var options):
-            options.isCheckmarked = alarm.weekDays[indexPath.row] ?? false
-            cell.configure(with: options)
-        default:
-            break
-        }
-        
-        return cell
-    }
-    
-}
-
-private extension WeekDaysViewController {
-    
-    func fillCells() {
-        
-        guard let alarm = alarm else {
-            return
-        }
-        
-        for index in 0...6 {
-            cells += [
-                .checkmarkedCell(options: CheckmarkCellOption(text: index.toWeekDayFullString(),
-                                                              isCheckmarked: alarm.weekDays[index] ?? false,
-                                                              handler: nil))
-            ]
-        }
-        
-    }
-    
-}

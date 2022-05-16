@@ -9,6 +9,10 @@
 /* Begin PBXBuildFile section */
 		CB01ACDC2822C14900727A58 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB01ACDB2822C14900727A58 /* SettingsViewController.swift */; };
 		CB01ACDF2822C16E00727A58 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB01ACDE2822C16E00727A58 /* SettingsView.swift */; };
+		CB06E2942832403400FEDBE6 /* EmptyHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB06E2932832403400FEDBE6 /* EmptyHeaderView.swift */; };
+		CB06E29828328D3200FEDBE6 /* CompositionalLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB06E29728328D3200FEDBE6 /* CompositionalLayout.swift */; };
+		CB06E29A2832D33D00FEDBE6 /* MelodyDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB06E2992832D33D00FEDBE6 /* MelodyDataSource.swift */; };
+		CB06E29C2832E9A400FEDBE6 /* TitleSupplementaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB06E29B2832E9A400FEDBE6 /* TitleSupplementaryView.swift */; };
 		CB0C191627B119430074976D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB0C191527B119430074976D /* AppDelegate.swift */; };
 		CB0C191827B119430074976D /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB0C191727B119430074976D /* SceneDelegate.swift */; };
 		CB0C191A27B119430074976D /* WorldClockViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB0C191927B119430074976D /* WorldClockViewController.swift */; };
@@ -28,7 +32,7 @@
 		CB2BE1CA27F05F2900137F6C /* TimerPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB2BE1C927F05F2900137F6C /* TimerPickerView.swift */; };
 		CB2BE1CF27F097EE00137F6C /* Enumerations.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB2BE1CE27F097EE00137F6C /* Enumerations.swift */; };
 		CB2BE1D127F0E4B300137F6C /* TimerPickerViewLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB2BE1D027F0E4B300137F6C /* TimerPickerViewLabel.swift */; };
-		CB2E4C2B2822DE0C008033F3 /* ValueTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB2E4C2A2822DE0C008033F3 /* ValueTableViewCell.swift */; };
+		CB2E4C2B2822DE0C008033F3 /* ValueCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB2E4C2A2822DE0C008033F3 /* ValueCollectionViewCell.swift */; };
 		CB53A7B7280CA7CE0088FBFC /* UIStackView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB53A7B6280CA7CE0088FBFC /* UIStackView+Extension.swift */; };
 		CB5BA76227F1E0DF00AECA3C /* TimerCircularBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB5BA76127F1E0DF00AECA3C /* TimerCircularBarView.swift */; };
 		CB6076A627D4FB43008333A8 /* LapsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB6076A527D4FB43008333A8 /* LapsTableViewCell.swift */; };
@@ -81,6 +85,10 @@
 		A58B681C33DFFE0BC1AFD14F /* Pods_AlarmClock.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AlarmClock.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CB01ACDB2822C14900727A58 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		CB01ACDE2822C16E00727A58 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		CB06E2932832403400FEDBE6 /* EmptyHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyHeaderView.swift; sourceTree = "<group>"; };
+		CB06E29728328D3200FEDBE6 /* CompositionalLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompositionalLayout.swift; sourceTree = "<group>"; };
+		CB06E2992832D33D00FEDBE6 /* MelodyDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MelodyDataSource.swift; sourceTree = "<group>"; };
+		CB06E29B2832E9A400FEDBE6 /* TitleSupplementaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleSupplementaryView.swift; sourceTree = "<group>"; };
 		CB0C191527B119430074976D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CB0C191727B119430074976D /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		CB0C191927B119430074976D /* WorldClockViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorldClockViewController.swift; sourceTree = "<group>"; };
@@ -101,7 +109,7 @@
 		CB2BE1C927F05F2900137F6C /* TimerPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerPickerView.swift; sourceTree = "<group>"; };
 		CB2BE1CE27F097EE00137F6C /* Enumerations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enumerations.swift; sourceTree = "<group>"; };
 		CB2BE1D027F0E4B300137F6C /* TimerPickerViewLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerPickerViewLabel.swift; sourceTree = "<group>"; };
-		CB2E4C2A2822DE0C008033F3 /* ValueTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValueTableViewCell.swift; sourceTree = "<group>"; };
+		CB2E4C2A2822DE0C008033F3 /* ValueCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValueCollectionViewCell.swift; sourceTree = "<group>"; };
 		CB53A7B6280CA7CE0088FBFC /* UIStackView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIStackView+Extension.swift"; sourceTree = "<group>"; };
 		CB5BA76127F1E0DF00AECA3C /* TimerCircularBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerCircularBarView.swift; sourceTree = "<group>"; };
 		CB6076A527D4FB43008333A8 /* LapsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LapsTableViewCell.swift; sourceTree = "<group>"; };
@@ -346,6 +354,7 @@
 			children = (
 				CB682F02282976EC00EFA3EE /* MelodyViewController.swift */,
 				CB682F052829773A00EFA3EE /* MelodyView.swift */,
+				CB06E2992832D33D00FEDBE6 /* MelodyDataSource.swift */,
 			);
 			path = Melody;
 			sourceTree = "<group>";
@@ -355,6 +364,9 @@
 			children = (
 				CBA774D527D6043F005CE96C /* CircleButtonView.swift */,
 				CB682F002829416000EFA3EE /* CustomTextField.swift */,
+				CB06E2932832403400FEDBE6 /* EmptyHeaderView.swift */,
+				CB06E29728328D3200FEDBE6 /* CompositionalLayout.swift */,
+				CB06E29B2832E9A400FEDBE6 /* TitleSupplementaryView.swift */,
 				CBD244DA282A5D8700EBC88F /* TableView.swift */,
 			);
 			path = Reusable;
@@ -393,7 +405,7 @@
 			isa = PBXGroup;
 			children = (
 				CBD2005C282D96DE005D12F4 /* DefaultTableViewCell.swift */,
-				CB2E4C2A2822DE0C008033F3 /* ValueTableViewCell.swift */,
+				CB2E4C2A2822DE0C008033F3 /* ValueCollectionViewCell.swift */,
 				CBD56AA0282BC4C8004CDD3A /* SwitchTableViewCell.swift */,
 				CBD20056282D2DB8005D12F4 /* CheckmarkTableViewCell.swift */,
 				CBD6239E282E67C200C16552 /* LeftCheckmarkTableViewCell.swift */,
@@ -568,7 +580,9 @@
 				CBCA7F5027BAC18000116516 /* WorldClock+CoreDataClass.swift in Sources */,
 				CB682F012829416000EFA3EE /* CustomTextField.swift in Sources */,
 				CBD6239F282E67C200C16552 /* LeftCheckmarkTableViewCell.swift in Sources */,
-				CB2E4C2B2822DE0C008033F3 /* ValueTableViewCell.swift in Sources */,
+				CB2E4C2B2822DE0C008033F3 /* ValueCollectionViewCell.swift in Sources */,
+				CB06E29828328D3200FEDBE6 /* CompositionalLayout.swift in Sources */,
+				CB06E2942832403400FEDBE6 /* EmptyHeaderView.swift in Sources */,
 				CB0C191627B119430074976D /* AppDelegate.swift in Sources */,
 				CBC5BD0B28205FA6003832B7 /* String+Extension.swift in Sources */,
 				CB7ABE4A27B3FFA800CD04B1 /* WorldClockTableViewCell.swift in Sources */,
@@ -584,6 +598,7 @@
 				CB0C193627B121900074976D /* WorldClockView.swift in Sources */,
 				CBDBB92927EF3C1900A65087 /* ClockFaceView.swift in Sources */,
 				CBD244D7282A535F00EBC88F /* UITableView+Extension.swift in Sources */,
+				CB06E29A2832D33D00FEDBE6 /* MelodyDataSource.swift in Sources */,
 				CBC7772127B4FF860072EE40 /* UserDefaults+Extension.swift in Sources */,
 				CB01ACDC2822C14900727A58 /* SettingsViewController.swift in Sources */,
 				CBD87C4527F9B5FD0040B35E /* UIScrollView+Extension.swift in Sources */,
@@ -595,6 +610,7 @@
 				CBF6CE0527BD612F00843FBA /* TimeZoneView.swift in Sources */,
 				CB0C194327B156340074976D /* Constant.swift in Sources */,
 				CBD2005D282D96DE005D12F4 /* DefaultTableViewCell.swift in Sources */,
+				CB06E29C2832E9A400FEDBE6 /* TitleSupplementaryView.swift in Sources */,
 				CB01ACDF2822C16E00727A58 /* SettingsView.swift in Sources */,
 				CBFB4CD6281DBD1C00A1B189 /* CALayer+Extension.swift in Sources */,
 			);

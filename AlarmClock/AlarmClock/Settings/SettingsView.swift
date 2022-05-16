@@ -21,16 +21,29 @@ class SettingsView: UIView {
     }()
     
     lazy var collectionView: UICollectionView = {
-        let configuration = UICollectionLayoutListConfiguration(appearance: .insetGrouped)
-        let layout = UICollectionViewCompositionalLayout.list(using: configuration)
+        let layout = createLayout()
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-//        let cellTypes = [ValueTableViewCell.self,
-//                         SwitchTableViewCell.self]
-//        let tableView = TableView(cellTypes: cellTypes, isScrollEnabled: false)
-//        tableView.tableHeaderView = .init(frame: .init(x: 0, y: 0, width: 0, height: CGFloat.leastNonzeroMagnitude))
+        collectionView.isScrollEnabled = false
         
         return collectionView
     }()
+    
+    private func createLayout() -> UICollectionViewCompositionalLayout {
+        let layout = UICollectionViewCompositionalLayout() { sectionIndex, layoutEnvironment in
+            var config = UICollectionLayoutListConfiguration(appearance: .insetGrouped)
+            config.headerMode = .supplementary
+            
+            let section = NSCollectionLayoutSection.list(using: config, layoutEnvironment: layoutEnvironment)
+            let headerSize = NSCollectionLayoutSize(widthDimension: .absolute(0.1), heightDimension: .absolute(0.1))
+            
+            let sectionHeader = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
+            section.boundarySupplementaryItems = [sectionHeader]
+            
+            return section
+        }
+        
+        return layout
+    }
     
     override init(frame: CGRect) {
         super.init(frame: .zero)

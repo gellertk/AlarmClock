@@ -19,7 +19,7 @@ class LeftCheckmarkTableViewCell: UITableViewCell {
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: .default,
-                   reuseIdentifier: ValueTableViewCell.reuseIdentifier)
+                   reuseIdentifier: "")
         setupView()
     }
     
