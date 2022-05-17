@@ -16,6 +16,7 @@
 * UIBasicAnimation
 
 **Collection feature**
+* No TableView (CollectionView with Compositional Layout)
 * UIDiffableDataSource
 * Modern Cell Configuration (contentConfiguration)
 
