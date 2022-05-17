@@ -62,7 +62,8 @@ class WeekDaysViewController: UIViewController {
         }
         
         dataSource = DataSource(collectionView: weekDaysView.collectionView, cellProvider: { collectionView, indexPath, itemIdentifier in
-            return collectionView.dequeueConfiguredReusableCell(using: cellRegistration, for: indexPath, item: itemIdentifier)
+            return collectionView.dequeueConfiguredReusableCell(using: cellRegistration,
+                                                                for: indexPath, item: itemIdentifier)
         })
         
         weekDaysView.collectionView.delegate = self
@@ -89,7 +90,7 @@ extension WeekDaysViewController: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if let cell = collectionView.cellForItem(at: indexPath) as? UICollectionViewListCell {
-            if cell.accessories.count == 0 {
+            if cell.accessories.isEmpty {
                 cell.accessories = [.checkmark()]
             } else {
                 cell.accessories = []

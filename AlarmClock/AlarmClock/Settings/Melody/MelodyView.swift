@@ -9,24 +9,35 @@ import UIKit
 
 class MelodyView: UIView {
     
-    lazy var collectionView: UICollectionView = {
-        let configuration = UICollectionLayoutListConfiguration(appearance: .insetGrouped)
-        let layout = UICollectionViewCompositionalLayout.list(using: configuration)
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-
-        return collectionView
-    }()
+    lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: createCompositionalLayout())
     
-//    private func createCompositionalLayout() -> UICollectionViewCompositionalLayout {
-//        let layout = UICollectionViewCompositionalLayout() { sectionIndex,  in 
-//            var configuration = UICollectionLayoutListConfiguration(appearance: .insetGrouped)
-//            configuration.headerMode = .supplementary
-//        }
-////        let configuration = UICollectionLayoutListConfiguration(appearance: .insetGrouped)
-////        let layout = UICollectionViewCompositionalLayout.list(using: configuration)
-//        return layout
-//    }
+    private func createCompositionalLayout() -> UICollectionViewCompositionalLayout {
+        let layout = UICollectionViewCompositionalLayout() { sectionIndex, layoutEnvironment in
+            var configuration = UICollectionLayoutListConfiguration(appearance: .insetGrouped)
+            configuration.headerMode = .supplementary
+            configuration.footerMode = .supplementary
+            
+            let section = NSCollectionLayoutSection.list(using: configuration, layoutEnvironment: layoutEnvironment)
+//            if sectionIndex != 0 || sectionIndex != 4 {
+//                let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1),
+//                                                        heightDimension: .absolute(44))
+//                let sectionHeader = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize,
+//                                                                                elementKind: UICollectionView.elementKindSectionHeader,
+//                                                                                alignment: .topLeading)
+//                let footerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1),
+//                                                        heightDimension: .absolute(44))
+//                let sectionFooter = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: footerSize,
+//                                                                                elementKind: UICollectionView.elementKindSectionFooter,
+//                                                                                alignment: .bottom)
+//                section.boundarySupplementaryItems = [sectionHeader, sectionFooter]
+//            }
+            
+            return section
+        }
         
+        return layout
+    }
+    
     override init(frame: CGRect) {
         super.init(frame: .zero)
         setupView()

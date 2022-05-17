@@ -9,6 +9,7 @@ import UIKit
 
 fileprivate extension MelodyViewController {
     
+    typealias DataSourceType = UICollectionViewDiffableDataSource<MelodyViewController.SectionType, CellData>
     typealias CellRegistrationType = UICollectionView.CellRegistration<UICollectionViewListCell, CellData>
     typealias SnapshotType = NSDiffableDataSourceSnapshot<SectionType, CellData>
     
@@ -16,21 +17,43 @@ fileprivate extension MelodyViewController {
 
 class MelodyViewController: UIViewController {
     
-    //static let headerElementKind = "header-element-kind"
-    
-    enum SectionType: String, CaseIterable {
+    enum SectionType: CaseIterable {
         case vibration
-        case shop = "МАГАЗИН"
-        case songs = "ПЕСНИ"
-        case ringtones = "РИНГТОНЫ"
+        case shop
+        case songs
+        case ringtones
         case no
+        
+        var headerTitle: String {
+            switch self {
+            case .shop:
+                return "\nМАГАЗИН"
+            case .songs:
+                return "ПЕСНИ"
+            case .ringtones:
+                return "РИНГТОНЫ"
+            case .vibration, .no:
+                return ""
+            }
+        }
+        
+        var footerTitle: String {
+            switch self {
+            case .shop:
+                return K.String.footerForShopSection
+            default:
+                return ""
+            }
+        }
+        
     }
     
     weak var delegate: AlarmUpdateDelegate?
     
     private var alarm: Alarm?
     private var cellsData: [SectionType: [CellData]] = [:]
-    private var dataSource: MelodyDataSource!
+    private var dataSource: DataSourceType!
+    private var settedCellIndexPath: IndexPath = IndexPath(item: 0, section: 4)
     
     private let melodyView = MelodyView()
     
@@ -68,14 +91,17 @@ class MelodyViewController: UIViewController {
 
 private extension MelodyViewController {
     
-    private func checkmarkConfiguration() -> UICellAccessory.CustomViewConfiguration {
+    private func checkmarkConfiguration(isCheckmarkShown: Bool) -> UICellAccessory.CustomViewConfiguration {
         let symbolName = "checkmark"
-        let symbolConfiguration = UIImage.SymbolConfiguration(textStyle: .title3)
+        let symbolConfiguration = UIImage.SymbolConfiguration(textStyle: .headline)
         let image = UIImage(systemName: symbolName, withConfiguration: symbolConfiguration)
         let button = UIButton()
         button.setImage(image, for: .normal)
         
-        return UICellAccessory.CustomViewConfiguration(customView: button, placement: .leading(displayed: .always))
+        var cellAccessory = UICellAccessory.CustomViewConfiguration(customView: button, placement: .leading(displayed: .always))
+        cellAccessory.isHidden = !isCheckmarkShown
+        
+        return cellAccessory
     }
     
     func createValueCellRegistration() -> CellRegistrationType {
@@ -100,22 +126,24 @@ private extension MelodyViewController {
     }
     
     func createLeftCheckmarkCellRegistration() -> CellRegistrationType {
-        return CellRegistrationType() {[weak self] cell, _, item in
+        return CellRegistrationType() { [weak self] cell, indexPath, item in
             guard let self = self else {
                 return
             }
+            let section = SectionType.allCases[indexPath.section]
+            let isCheckmarked = self.cellsData[section]?[indexPath.row].isChekmarked ?? false
             var config = UIListContentConfiguration.cell()
             config.text = item.text
             config.textProperties.numberOfLines = 1
             cell.contentConfiguration = config
-            var checkmark = self.checkmarkConfiguration()
+            var checkmark = self.checkmarkConfiguration(isCheckmarkShown: isCheckmarked)
             checkmark.tintColor = .systemOrange
             cell.accessories = [.customView(configuration: checkmark)]
         }
     }
     
-    func createLeftCheckmarkWitchDisclouserCellRegistration() -> CellRegistrationType {
-        return CellRegistrationType() {[weak self] cell, _, item in
+    func createLeftCheckmarkWitchDisclosureCellRegistration() -> CellRegistrationType {
+        return CellRegistrationType() { [weak self] cell, _, item in
             guard let self = self else {
                 return
             }
@@ -123,34 +151,34 @@ private extension MelodyViewController {
             config.text = item.text
             config.textProperties.numberOfLines = 1
             cell.contentConfiguration = config
-            var checkmark = self.checkmarkConfiguration()
+            var checkmark = self.checkmarkConfiguration(isCheckmarkShown: item.isChekmarked)
             checkmark.tintColor = .systemOrange
             cell.accessories = [.customView(configuration: checkmark), .disclosureIndicator()]
         }
     }
     
     func setupDataSource() {
-        let valueCellRegistration = createValueCellRegistration()
-        let systemCellRegistration = createSystemCellRegistration()
-        let leftCheckmarkedCellRegistration = createLeftCheckmarkCellRegistration()
-        //let leftCheckmarkWithDisclouser = createLeftCheckmarkWitchDisclouserCellRegistration()
+        let valueRegistration = createValueCellRegistration()
+        let systemRegistration = createSystemCellRegistration()
+        let leftCheckmarkRegistration = createLeftCheckmarkCellRegistration()
+        let leftCheckmarkWithDisclosureRegistration = createLeftCheckmarkWitchDisclosureCellRegistration()
         
-        dataSource = MelodyDataSource(collectionView: melodyView.collectionView) { collectionView, indexPath, itemIdentifier in
-            switch SectionType.allCases[indexPath.section] {
-            case .vibration:
-                return collectionView.dequeueConfiguredReusableCell(using: valueCellRegistration, for: indexPath, item: itemIdentifier)
-            case .shop:
-                return collectionView.dequeueConfiguredReusableCell(using: systemCellRegistration, for: indexPath, item: itemIdentifier)
-            case .songs:
-                return collectionView.dequeueConfiguredReusableCell(using: leftCheckmarkedCellRegistration, for: indexPath, item: itemIdentifier)
-            case .ringtones:
-                return collectionView.dequeueConfiguredReusableCell(using: leftCheckmarkedCellRegistration, for: indexPath, item: itemIdentifier)
-            case .no:
-                return collectionView.dequeueConfiguredReusableCell(using: valueCellRegistration, for: indexPath, item: itemIdentifier)
+        dataSource = DataSourceType(collectionView: melodyView.collectionView) { collectionView, indexPath, itemIdentifier in
+            switch itemIdentifier.cellType {
+            case .value:
+                return collectionView.dequeueConfiguredReusableCell(using: valueRegistration, for: indexPath, item: itemIdentifier)
+            case .system:
+                return collectionView.dequeueConfiguredReusableCell(using: systemRegistration, for: indexPath, item: itemIdentifier)
+            case .leftCheckmark:
+                return collectionView.dequeueConfiguredReusableCell(using: leftCheckmarkRegistration, for: indexPath, item: itemIdentifier)
+            case .leftCheckmarkWithDisclosure:
+                return collectionView.dequeueConfiguredReusableCell(using: leftCheckmarkWithDisclosureRegistration, for: indexPath, item: itemIdentifier)
+            default:
+                return nil
             }
         }
         
-        setEmptyHeader()
+        setupHeader()
         
         var snapshot = SnapshotType()
         for section in SectionType.allCases {
@@ -159,68 +187,97 @@ private extension MelodyViewController {
         }
         dataSource.apply(snapshot)
         
+        melodyView.collectionView.delegate = self
     }
     
-    func setEmptyHeader() {
-        let supplementaryRegistration = UICollectionView.SupplementaryRegistration<TitleSupplementaryView>(elementKind: UICollectionView.elementKindSectionHeader) {
-            (supplementaryView, string, indexPath) in
-            supplementaryView.label.text = SectionType.allCases[indexPath.section].rawValue
+    func setupHeader() {
+        let headerRegistration = UICollectionView.SupplementaryRegistration(elementKind: UICollectionView.elementKindSectionHeader) {
+            (cell: UICollectionViewListCell, _, indexPath) in
+            
+            var configuration = cell.defaultContentConfiguration()
+            configuration.text = SectionType.allCases[indexPath.section].headerTitle
+            
+            cell.contentConfiguration = configuration
         }
         
-        dataSource?.supplementaryViewProvider = { (collectionView, kind, indexPath)  in
-            return collectionView.dequeueConfiguredReusableSupplementary(using: supplementaryRegistration, for: indexPath)
+        let footerRegistration = UICollectionView.SupplementaryRegistration(elementKind: UICollectionView.elementKindSectionFooter) {
+            (cell: UICollectionViewListCell, _, indexPath) in
+            let section = SectionType.allCases[indexPath.section]
+            var configuration = cell.defaultContentConfiguration()
+            configuration.text = section.footerTitle
+            configuration.textProperties.font = configuration.textProperties.font.withSize(configuration.textProperties.font.pointSize - 0.3)
+            cell.contentConfiguration = configuration
         }
+        
+        dataSource?.supplementaryViewProvider = { (collectionView, kind, indexPath) in
+        
+            return collectionView.dequeueConfiguredReusableSupplementary(using: kind == UICollectionView.elementKindSectionHeader ?
+                                                                         headerRegistration : footerRegistration, for: indexPath)
+        }
+        
     }
     
     func fillCells() {
         cellsData = [
-            .vibration: [CellData(cellType: .value,
+                .vibration: [CellData(cellType: .value,
                                   text: "Вибрация",
                                   secondaryText: alarm?.vibration?.title ?? "Не выбрана") { [weak self] in self?.toVibrationVC() }],
             
-                .shop: [CellData(cellType: .standart, text: "Магазин звуков") { [weak self] in self?.toVibrationVC() },
-                        CellData(cellType: .standart, text: "Загрузить купленные звуки") { [weak self] in self?.toVibrationVC() }],
+                .shop: [CellData(cellType: .system, text: "Магазин звуков") { [weak self] in self?.toVibrationVC() },
+                        CellData(cellType: .system, text: "Загрузить купленные звуки") { [weak self] in self?.toVibrationVC() }],
             
                 .songs: [CellData(cellType: .leftCheckmark, text: "Пение птиц Весной (Звуки Природы)"),
-                         CellData(cellType: .leftCheckmarkWithDisclosure, text: "Выбор песни") { [weak self] in self?.toVibrationVC() }],
-            
-                .ringtones: [CellData(cellType: .leftCheckmark, text: "Радар (по умолчанию)"),
-                             CellData(cellType: .leftCheckmark, text: "Апекс"),
-                             CellData(cellType: .leftCheckmark, text: "Вершина"),
-                             CellData(cellType: .leftCheckmark, text: "Вестник"),
-                             CellData(cellType: .leftCheckmark, text: "Волны"),
-                             CellData(cellType: .leftCheckmark, text: "Вступление"),
-                             CellData(cellType: .leftCheckmark, text: "Грезы"),
-                             CellData(cellType: .leftCheckmark, text: "Зыбь"),
-                             CellData(cellType: .leftCheckmark, text: "Иллюминация"),
-                             CellData(cellType: .leftCheckmark, text: "Космос"),
-                             CellData(cellType: .leftCheckmark, text: "Кристаллы"),
-                             CellData(cellType: .leftCheckmark, text: "Маяк"),
-                             CellData(cellType: .leftCheckmark, text: "Медленно в гору"),
-                             CellData(cellType: .leftCheckmark, text: "Мерцание"),
-                             CellData(cellType: .leftCheckmark, text: "Обрыв"),
-                             CellData(cellType: .leftCheckmark, text: "Отражение"),
-                             CellData(cellType: .leftCheckmark, text: "Перезвон"),
-                             CellData(cellType: .leftCheckmark, text: "Подъем"),
-                             CellData(cellType: .leftCheckmark, text: "Позывной"),
-                             CellData(cellType: .leftCheckmark, text: "Полуночник"),
-                             CellData(cellType: .leftCheckmark, text: "Прогулка у моря"),
-                             CellData(cellType: .leftCheckmark, text: "Свечение"),
-                             CellData(cellType: .leftCheckmark, text: "Сентя"),
-                             CellData(cellType: .leftCheckmark, text: "Скорей, скорей"),
-                             CellData(cellType: .leftCheckmark, text: "Созвездие"),
-                             CellData(cellType: .leftCheckmark, text: "Час потехи"),
-                             CellData(cellType: .leftCheckmark, text: "Шелк"),
-                             CellData(cellType: .leftCheckmark, text: "Электросхема"),
-                             CellData(cellType: .leftCheckmarkWithDisclosure, text: "Классические") { [weak self] in self?.toVibrationVC() }
-                            ],
-            
-                .no: [CellData(cellType: .leftCheckmark, text: "Нет")]
+                         CellData(cellType: .leftCheckmarkWithDisclosure, text: "Выбор песни") { [weak self] in self?.toAppleMusic() }]
         ]
+        
+        var ringtonesCell = K.String.defaultRingtones.map { CellData(cellType: .leftCheckmark, text: $0) }
+        ringtonesCell.append(CellData(cellType: .leftCheckmarkWithDisclosure, text: "Классические") { [weak self] in self?.toVibrationVC() })
+        
+        cellsData[.ringtones] = ringtonesCell
+        cellsData[.no] = [CellData(cellType: .leftCheckmark, text: "Нет")]
     }
     
     func toVibrationVC() {
+        guard let alarm = alarm else {
+            return
+        }
+        let vibrationVC = VibrationViewController(alarm: alarm)
+        navigationController?.pushViewController(vibrationVC, animated: true)
+    }
+    
+    func toAppleMusic() {
+        let urlString = "music://music.apple.com/browse"
+        if let url = URL(string: urlString) {
+            UIApplication.shared.open(url)
+        }
+    }
+    
+}
+
+extension MelodyViewController: UICollectionViewDelegate {
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let section = SectionType.allCases[indexPath.section]
+        guard let cellData = cellsData[section]?[indexPath.row] else {
+            return
+        }
+        if cellData.cellType == .leftCheckmark {
+            let removableSection = SectionType.allCases[settedCellIndexPath.section]
+            cellsData[removableSection]?[settedCellIndexPath.row].isChekmarked = false
+            cellsData[section]?[indexPath.row].isChekmarked = true
+            var newSnapshot = dataSource.snapshot()
+            guard let removableCell = cellsData[removableSection]?[settedCellIndexPath.row],
+                  let settedCell = cellsData[section]?[indexPath.row] else {
+                return
+            }
+            newSnapshot.reconfigureItems([removableCell, settedCell])
+            dataSource.apply(newSnapshot, animatingDifferences: false)
+            settedCellIndexPath = indexPath
+        }
         
+        cellData.handler?()
+        
+        collectionView.deselectItem(at: indexPath, animated: true)
     }
     
 }

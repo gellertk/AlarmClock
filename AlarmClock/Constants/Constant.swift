@@ -25,7 +25,7 @@ struct K {
         static let disabledBackground: UIColor         = .init(red: 28, green: 28, blue: 30)
         static let staticTableViewBackground: UIColor  = .init(red: 44, green: 44, blue: 47)
     }
-
+    
     struct Collection {
         static let worldClockCities = [
             "Москва",
@@ -44,6 +44,43 @@ struct K {
         static let defaultAlarmTitle = "Будильник"
         static let footerForShopSection = "При этом будут загружены все рингтоны и предупреждения, купленные с помощью учетной записи " + userEmail + "."
         static let userEmail = "gerry9@bk.ru"
+        static let defaultRingtones = ["Радар (по умолчанию)",
+                                       "Апекс",
+                                       "Вершина",
+                                       "Вестник",
+                                       "Волны",
+                                       "Вступление",
+                                       "Грезы",
+                                       "Зыбь",
+                                       "Иллюминация",
+                                       "Космос",
+                                       "Кристаллы",
+                                       "Маяк",
+                                       "Медленно в гору",
+                                       "Мерцание",
+                                       "Обрыв",
+                                       "Отражение",
+                                       "Перезвон",
+                                       "Подъем",
+                                       "Позывной",
+                                       "Полуночник",
+                                       "Прогулка у моря",
+                                       "Свечение",
+                                       "Сентя",
+                                       "Скорей, скорей",
+                                       "Созвездие",
+                                       "Час потехи",
+                                       "Шелк",
+                                       "Электросхема"]
+        
+        static let defaultVibrations = ["Акцент",
+                                        "Быстро",
+                                        "Живо",
+                                        "Сердцебиение",
+                                        "Сигнал SOS",
+                                        "Симфония",
+                                        "Стаккато",
+                                        "Тревога"]
     }
     
     struct Numeric {
@@ -80,5 +117,5 @@ struct K {
         static let secondsClockFace = UIImage(named: "secondsClockFace")
         static let minutesClockFace = UIImage(named: "minutesClockFace")
     }
-
+    
 }

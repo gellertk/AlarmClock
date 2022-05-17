@@ -62,8 +62,9 @@ enum CircleButtonType {
     
 }
 
-enum CellTypeNew {
+enum CellType {
     case standart
+    case system
     case value
     case _switch
     case checkmark
@@ -74,27 +75,6 @@ enum CellTypeNew {
 enum AlarmSection: String, CaseIterable {
     case main = "Сон | Пробуждение"
     case other = "Другие"
-}
-
-enum CellType: Hashable {
-    
-    func hash(into hasher: inout Hasher) {
-        switch self {
-        case .valueCell(let options):
-            hasher.combine(options)
-        case .checkmarkedCell(let options):
-            hasher.combine(options)
-        case .switchCell(let options):
-            hasher.combine(options)
-        case .defaultCell(options: let options):
-            hasher.combine(options)
-        }
-    }
-    
-    case defaultCell(options: DefaultCellOption)
-    case valueCell(options: CellData)
-    case checkmarkedCell(options: CheckmarkCellOption)
-    case switchCell(options: SwitchCellOption)
 }
 
 
