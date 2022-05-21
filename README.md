@@ -25,6 +25,9 @@
 * Hashable
 * Associated values
 
-<img src="https://user-images.githubusercontent.com/54902273/169668123-36c9c2ac-fa9d-4652-9908-8213e4095e0b.gif" width="350" height="700" />
+<p float="left">
+<img src="https://user-images.githubusercontent.com/54902273/169668032-7730742a-d51c-4e67-a15d-873f884bf81b.gif" width="350" height="700" />
+<img src="https://user-images.githubusercontent.com/54902273/169668271-3ff0685b-42a3-4153-a931-46ee3e151c2b.gif" width="350" height="700" />
+</p>
 
 **Status: In Development**
