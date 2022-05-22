@@ -15,7 +15,6 @@ class VibrationView: UIView {
         let layout = UICollectionViewCompositionalLayout() { sectionIndex, layoutEnvironment in
             var configuration = UICollectionLayoutListConfiguration(appearance: .insetGrouped)
             configuration.headerMode = .supplementary
-            
             let section = NSCollectionLayoutSection.list(using: configuration, layoutEnvironment: layoutEnvironment)
             
             return section
@@ -38,6 +37,7 @@ class VibrationView: UIView {
 private extension VibrationView {
     
     func setupView() {
+        overrideUserInterfaceStyle = .dark
         backgroundColor = K.Color.disabledBackground
         [collectionView].forEach {
             addSubview($0)

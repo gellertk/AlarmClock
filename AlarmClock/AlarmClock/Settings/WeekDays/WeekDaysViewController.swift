@@ -9,9 +9,9 @@ import UIKit
 
 fileprivate extension WeekDaysViewController {
     
-    typealias DataSource = UICollectionViewDiffableDataSource<Section, Int>
-    typealias CellRegistration = UICollectionView.CellRegistration<UICollectionViewListCell, Int>
-    typealias Snapshot = NSDiffableDataSourceSnapshot<WeekDaysViewController.Section, Int>
+    typealias DataSourceType = UICollectionViewDiffableDataSource<Section, Int>
+    typealias CellRegistrationType = UICollectionView.CellRegistration<DefaultListCell, Int>
+    typealias SnapshotType = NSDiffableDataSourceSnapshot<WeekDaysViewController.Section, Int>
     
     enum Section {
         case main
@@ -26,7 +26,7 @@ class WeekDaysViewController: UIViewController {
     private let weekDaysView = WeekDaysView()
     
     private var alarm: Alarm?
-    private var dataSource: DataSource!
+    private var dataSource: DataSourceType!
     
     init(alarm: Alarm) {
         self.alarm = alarm
@@ -48,27 +48,26 @@ class WeekDaysViewController: UIViewController {
     }
     
     func configureDataSource() {
-        let cellRegistration = CellRegistration() {[weak self] (cell, indexPath, item) in
+        let cellRegistration = CellRegistrationType() { [weak self] cell, indexPath, item in
             guard let alarm = self?.alarm else {
                 return
             }
-            var config = cell.defaultContentConfiguration()
-            config.text = item.toWeekDayFullString()
-            cell.tintColor = .systemOrange
             if alarm.weekDays[item] ?? false {
                 cell.accessories = [.checkmark()]
             }
-            cell.contentConfiguration = config
+            cell.configure(text: item.toWeekDayFullString())
         }
         
-        dataSource = DataSource(collectionView: weekDaysView.collectionView, cellProvider: { collectionView, indexPath, itemIdentifier in
+        dataSource = DataSourceType(collectionView: weekDaysView.collectionView, cellProvider: {
+            collectionView, indexPath, itemIdentifier in
             return collectionView.dequeueConfiguredReusableCell(using: cellRegistration,
-                                                                for: indexPath, item: itemIdentifier)
+                                                                for: indexPath,
+                                                                item: itemIdentifier)
         })
         
         weekDaysView.collectionView.delegate = self
         
-        var snapshot = Snapshot()
+        var snapshot = SnapshotType()
         snapshot.appendSections([.main])
         snapshot.appendItems((0...6).map { $0 })
         dataSource.apply(snapshot)

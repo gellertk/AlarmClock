@@ -68,8 +68,8 @@ enum CellType {
     case value
     case _switch
     case checkmark
-    case leftCheckmark
-    case leftCheckmarkWithDisclosure
+    case leadingCheckmark
+    case leadingCheckmarkWithDisclosure
 }
 
 enum AlarmSection: String, CaseIterable {

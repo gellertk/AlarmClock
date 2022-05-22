@@ -7,19 +7,21 @@
 
 import UIKit
 
+typealias CellRegistrationType = UICollectionView.CellRegistration<DefaultListCell, CellData>
+typealias LeadingCheckmarkCellRegistrationType = UICollectionView.CellRegistration<LeadingCheckmarkListCell, CellData>
+
 protocol AlarmUpdateDelegate: AnyObject {
     func update(alarm: Alarm)
 }
 
 fileprivate extension SettingsViewController {
     
-    typealias CellRegistration = UICollectionView.CellRegistration<UICollectionViewListCell, CellData>
-    typealias DataSource = UICollectionViewDiffableDataSource<SettingsViewController.Section, CellData>
-    typealias Snapshot = NSDiffableDataSourceSnapshot<SettingsViewController.Section, CellData>
-    
     enum Section: Hashable {
         case main
     }
+    
+    typealias DataSourceType = UICollectionViewDiffableDataSource<Section, CellData>
+    typealias SnapshotType = NSDiffableDataSourceSnapshot<Section, CellData>
     
 }
 
@@ -27,7 +29,7 @@ class SettingsViewController: UIViewController {
     
     var alarm: Alarm?
     
-    private var dataSource: DataSource?
+    private var dataSource: DataSourceType?
     private var updatedCellIndex: Int?
     private var cellsData: [CellData] = []
     
@@ -49,53 +51,52 @@ class SettingsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Добавление"
-        setupNavigationBarItems()
+        fillCellsData()
         setupDataSource()
+        setupNavigationBarItems()
     }
     
 }
 
 private extension SettingsViewController {
     
-    func createValueCellRegistration() -> CellRegistration {
-        return CellRegistration() {[weak self] (cell, indexPath, item) in
-            var config = UIListContentConfiguration.valueCell()
-            config.text = item.text
-            config.secondaryText = self?.alarm?[indexPath.row]
-            cell.contentConfiguration = config
+    func createValueCellRegistration() -> CellRegistrationType {
+        return CellRegistrationType() { cell, _, item in
+            cell.configure(text: item.text, secondaryText: item.secondaryText)
             cell.accessories = [.disclosureIndicator()]
         }
     }
     
-    func createSwitchCellRegistration() -> CellRegistration {
-        return CellRegistration() {[weak self] (cell, _, item) in
+    func createSwitchCellRegistration() -> CellRegistrationType {
+        return CellRegistrationType() { [weak self] (cell, _, item) in
             guard let alarm = self?.alarm else {
                 return
             }
-            var config = cell.defaultContentConfiguration()
-            config.text = item.text
+            cell.configure(text: item.text)
+            cell.accessories = [.disclosureIndicator()]
             let repeatSignalSwitch = UISwitch()
             repeatSignalSwitch.isOn = alarm.isRepeated
             repeatSignalSwitch.addTarget(self, action: #selector(self?.toggleIsRepeated), for: .valueChanged)
             cell.accessories = [.customView(configuration: .init(customView: repeatSignalSwitch,
                                                                  placement: .trailing(displayed: .always)))]
-            cell.contentConfiguration = config
         }
     }
     
     func setupDataSource() {
-        
-        fillCellsData()
-        
+                
         let valueCellRegistration = createValueCellRegistration()
         let switchCellRegistration = createSwitchCellRegistration()
         
-        dataSource = DataSource(collectionView: settingsView.collectionView) { collectionView, indexPath, item in
+        dataSource = DataSourceType(collectionView: settingsView.collectionView) { collectionView, indexPath, item in
             switch item.cellType {
             case .value:
-                return collectionView.dequeueConfiguredReusableCell(using: valueCellRegistration, for: indexPath, item: item)
+                return collectionView.dequeueConfiguredReusableCell(using: valueCellRegistration,
+                                                                    for: indexPath,
+                                                                    item: item)
             case ._switch:
-                return collectionView.dequeueConfiguredReusableCell(using: switchCellRegistration, for: indexPath, item: item)
+                return collectionView.dequeueConfiguredReusableCell(using: switchCellRegistration,
+                                                                    for: indexPath,
+                                                                    item: item)
             default:
                 return nil
             }
@@ -104,14 +105,10 @@ private extension SettingsViewController {
         setEmptyHeader()
         settingsView.collectionView.delegate = self
         
-        guard let dataSource = dataSource else {
-            return
-        }
-        
-        var snapshot = Snapshot()
+        var snapshot = SnapshotType()
         snapshot.appendSections([.main])
         snapshot.appendItems(cellsData)
-        dataSource.apply(snapshot, animatingDifferences: false)
+        dataSource?.apply(snapshot, animatingDifferences: false)
     }
     
     func setEmptyHeader() {
@@ -119,7 +116,8 @@ private extension SettingsViewController {
                                                   forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
                                                   withReuseIdentifier: EmptyHeaderView.reuseIdentifier)
         
-        dataSource?.supplementaryViewProvider = { (collectionView, kind, indexPath)  in
+        dataSource?.supplementaryViewProvider = { (collectionView, kind, indexPath) in
+            
             return collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader,
                                                                    withReuseIdentifier: EmptyHeaderView.reuseIdentifier,
                                                                    for: indexPath) as? EmptyHeaderView
@@ -210,7 +208,6 @@ private extension SettingsViewController {
         guard let alarm = alarm else {
             return
         }
-        
         let weekDaysVC = WeekDaysViewController(alarm: alarm)
         weekDaysVC.delegate = self
         navigationController?.pushViewController(weekDaysVC,
@@ -221,8 +218,7 @@ private extension SettingsViewController {
         guard let alarm = alarm else {
             return
         }
-        
-        let titleVC = AlarmTitleViewController(alarm: alarm)
+        let titleVC = TitleViewController(alarm: alarm)
         titleVC.delegate = self
         navigationController?.pushViewController(titleVC,
                                                  animated: true)
@@ -232,7 +228,6 @@ private extension SettingsViewController {
         guard let alarm = alarm else {
             return
         }
-        
         let melodyVC = MelodyViewController(alarm: alarm)
         melodyVC.delegate = self
         navigationController?.pushViewController(melodyVC,

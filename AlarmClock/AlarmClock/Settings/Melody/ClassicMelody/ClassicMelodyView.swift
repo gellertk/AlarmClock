@@ -1,23 +1,21 @@
 //
-//  WorldClockView.swift
+//  ClassicMelodyView.swift
 //  AlarmClock
 //
-//  Created by Кирилл  Геллерт on 07.02.2022.
+//  Created by Кирилл  Геллерт on 21.05.2022.
 //
 
 import UIKit
-import SnapKit
 
-class WorldClockView: UIView {
-    
+class ClassicMelodyView: UIView {
+
     lazy var collectionView: UICollectionView = {
-        let configuration = UICollectionLayoutListConfiguration(appearance: .plain)
+        let configuration = UICollectionLayoutListConfiguration(appearance: .insetGrouped)
         let layout = UICollectionViewCompositionalLayout.list(using: configuration)
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-
-        return collectionView
+        
+        return UICollectionView(frame: .zero, collectionViewLayout: layout)
     }()
-
+        
     override init(frame: CGRect) {
         super.init(frame: .zero)
         setupView()
@@ -29,10 +27,14 @@ class WorldClockView: UIView {
 
 }
 
-private extension WorldClockView {
+private extension ClassicMelodyView {
     
     func setupView() {
-        addSubview(collectionView)
+        overrideUserInterfaceStyle = .dark
+        backgroundColor = K.Color.disabledBackground
+        [collectionView].forEach {
+            addSubview($0)
+        }
         setupConstraints()
     }
     

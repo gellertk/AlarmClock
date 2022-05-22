@@ -16,21 +16,7 @@ class MelodyView: UIView {
             var configuration = UICollectionLayoutListConfiguration(appearance: .insetGrouped)
             configuration.headerMode = .supplementary
             configuration.footerMode = .supplementary
-            
             let section = NSCollectionLayoutSection.list(using: configuration, layoutEnvironment: layoutEnvironment)
-//            if sectionIndex != 0 || sectionIndex != 4 {
-//                let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1),
-//                                                        heightDimension: .absolute(44))
-//                let sectionHeader = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize,
-//                                                                                elementKind: UICollectionView.elementKindSectionHeader,
-//                                                                                alignment: .topLeading)
-//                let footerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1),
-//                                                        heightDimension: .absolute(44))
-//                let sectionFooter = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: footerSize,
-//                                                                                elementKind: UICollectionView.elementKindSectionFooter,
-//                                                                                alignment: .bottom)
-//                section.boundarySupplementaryItems = [sectionHeader, sectionFooter]
-//            }
             
             return section
         }
@@ -52,6 +38,7 @@ class MelodyView: UIView {
 private extension MelodyView {
     
     func setupView() {
+        overrideUserInterfaceStyle = .dark
         backgroundColor = K.Color.disabledBackground
         [collectionView].forEach {
             addSubview($0)

@@ -7,13 +7,13 @@
 
 import UIKit
 
-class AlarmTitleViewController: UIViewController {
+class TitleViewController: UIViewController {
     
     weak var delegate: AlarmUpdateDelegate?
     
     private var alarm: Alarm?
 
-    private lazy var alarmTitleView = AlarmTitleView(title: alarm?.title ?? "")
+    private lazy var titleView = TitleView(title: alarm?.title ?? "")
     
     init(alarm: Alarm) {
         self.alarm = alarm
@@ -25,7 +25,7 @@ class AlarmTitleViewController: UIViewController {
     }
     
     override func loadView() {
-        view = alarmTitleView
+        view = titleView
     }
     
     override func viewDidLoad() {
@@ -36,7 +36,7 @@ class AlarmTitleViewController: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         if isMovingFromParent {
-            alarm?.title = alarmTitleView.getTitle()
+            alarm?.title = titleView.getTitle()
             guard let alarm = alarm else {
                 return
             }

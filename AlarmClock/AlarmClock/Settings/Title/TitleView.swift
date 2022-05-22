@@ -8,7 +8,7 @@
 import UIKit
 import SnapKit
 
-class AlarmTitleView: UIView {
+class TitleView: UIView {
     
     private let scrollView: UIScrollView = {
         let scrollView = UIScrollView()
@@ -25,6 +25,7 @@ class AlarmTitleView: UIView {
         textField.becomeFirstResponder()
         textField.layer.cornerRadius = K.Numeric.defaultCornerRadius
         textField.tintColor = .systemOrange
+        textField.overrideUserInterfaceStyle = .dark
         
         return textField
     }()
@@ -53,7 +54,7 @@ class AlarmTitleView: UIView {
     
 }
 
-private extension AlarmTitleView {
+private extension TitleView {
     
     func setupView() {
         backgroundColor = K.Color.disabledBackground

@@ -1,13 +1,13 @@
 //
-//  Melody.swift
+//  Vibration.swift
 //  AlarmClock
 //
-//  Created by Кирилл  Геллерт on 09.05.2022.
+//  Created by Кирилл  Геллерт on 22.05.2022.
 //
 
 import Foundation
 
-class Melody: Hashable {
+class Vibration: Hashable {
     
     let id = UUID()
     let title: String
@@ -21,7 +21,7 @@ class Melody: Hashable {
         hasher.combine(title)
     }
     
-    static func == (lhs: Melody, rhs: Melody) -> Bool {
+    static func == (lhs: Vibration, rhs: Vibration) -> Bool {
         return lhs.id == rhs.id
     }
     

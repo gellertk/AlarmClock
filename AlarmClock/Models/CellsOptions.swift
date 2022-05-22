@@ -12,7 +12,7 @@ struct CellSection {
     let items: [CellData]
 }
 
-struct CellData: Hashable {
+class CellData: Hashable {
     
     func hash(into hasher: inout Hasher) {
         hasher.combine(id)
@@ -24,7 +24,7 @@ struct CellData: Hashable {
     
     let cellType: CellType
     let id: String
-    var isChekmarked: Bool
+    var isCheckmarked: Bool
     var text: String
     var secondaryText: String
     let handler: (() -> ())?
@@ -35,7 +35,7 @@ struct CellData: Hashable {
         self.id = text
         self.secondaryText = secondaryText
         self.handler = handler
-        self.isChekmarked = false
+        self.isCheckmarked = false
     }
     
     init(cellType: CellType, text: String, handler: @escaping () -> () ) {
@@ -43,7 +43,7 @@ struct CellData: Hashable {
         self.text = text
         self.id = text
         self.handler = handler
-        self.isChekmarked = false
+        self.isCheckmarked = false
         
         self.secondaryText = ""
     }
@@ -52,7 +52,7 @@ struct CellData: Hashable {
         self.cellType = cellType
         self.text = text
         self.id = text
-        self.isChekmarked = false
+        self.isCheckmarked = false
         
         self.handler = nil
         self.secondaryText = ""
@@ -62,7 +62,7 @@ struct CellData: Hashable {
         self.cellType = cellType
         self.text = text
         self.id = text
-        self.isChekmarked = isCheckmarked
+        self.isCheckmarked = isCheckmarked
         
         self.handler = nil
         self.secondaryText = ""

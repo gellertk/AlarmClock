@@ -21,8 +21,7 @@ class SettingsView: UIView {
     }()
     
     lazy var collectionView: UICollectionView = {
-        let layout = createLayout()
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: createLayout())
         collectionView.isScrollEnabled = false
         
         return collectionView

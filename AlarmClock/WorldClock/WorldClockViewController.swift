@@ -16,8 +16,8 @@ class WorldClockViewController: UIViewController {
     
     private lazy var worldClockView: WorldClockView = {
         let view = WorldClockView()
-        view.worldClockTableView.delegate = self
-        view.worldClockTableView.dataSource = self
+        //view.collectionView.delegate = self
+        //view.collectionView.dataSource = self
         
         return view
     }()
@@ -54,13 +54,13 @@ class WorldClockViewController: UIViewController {
         for city in K.Collection.worldClockCities {
             let worldClock = CoreDataManager.sharedWorldClock.createWorldClock(city)
             worldClocks.insert(worldClock, at: 0)
-            worldClockView.worldClockTableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
+            //worldClockView.collectionView.insertRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
         }
     }
     
     @objc func didTapEditButton() {
         UIView.animate(withDuration: 0.3) {
-            self.worldClockView.worldClockTableView.isEditing.toggle()
+            self.worldClockView.collectionView.isEditing.toggle()
         }
     }
     
@@ -94,15 +94,15 @@ private extension WorldClockViewController {
     }
     
     @objc func updateTimer() {
-        guard let visibleRowsIndexPaths = worldClockView.worldClockTableView.indexPathsForVisibleRows else {
-            return
-        }
-        
-        for indexPath in visibleRowsIndexPaths {
-            if let cell = worldClockView.worldClockTableView.cellForRow(at: indexPath) as? WorldClockTableViewCell {
-                cell.timeLabel.text = Date().toHoursMinutes()
-            }
-        }
+//        guard let visibleRowsIndexPaths = worldClockView.collectionView.indexPathsForVisibleRows else {
+//            return
+//        }
+//
+//        for indexPath in visibleRowsIndexPaths {
+//            if let cell = worldClockView.collectionView.cellForRow(at: indexPath) as? WorldClockTableViewCell {
+//                cell.timeLabel.text = Date().toHoursMinutes()
+//            }
+//        }
     }
     
 }
