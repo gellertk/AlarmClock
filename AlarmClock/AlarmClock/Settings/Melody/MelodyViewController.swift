@@ -52,9 +52,12 @@ class MelodyViewController: UIViewController {
     private var alarm: Alarm?
     private var cellsData: [Section: [CellData]] = [:]
     private var dataSource: DataSourceType!
-    private var lastCheckmarkedIndexPath: IndexPath?
+    private var lastCheckmarkedCellIndexPath: IndexPath?
+    private var sectionCheckmarkedCellIndexPath: IndexPath?
     
     private let melodyView = MelodyView()
+    private let ringtones = Melody.getRingtones()
+    private let songs = Melody.getSongs()
     
     init(alarm: Alarm) {
         self.alarm = alarm
@@ -82,7 +85,7 @@ class MelodyViewController: UIViewController {
             guard let alarm = alarm else {
                 return
             }
-            delegate?.update(alarm: alarm)
+            delegate?.update(with: alarm)
         }
     }
     
@@ -173,7 +176,7 @@ private extension MelodyViewController {
             var configuration = cell.defaultContentConfiguration()
             configuration.text = section.footerTitle
             configuration.textProperties.font =
-                    configuration.textProperties.font.withSize(configuration.textProperties.font.pointSize - 0.3)
+            configuration.textProperties.font.withSize(configuration.textProperties.font.pointSize - 0.3)
             cell.contentConfiguration = configuration
         }
         
@@ -188,28 +191,58 @@ private extension MelodyViewController {
     
     func fillCells() {
         cellsData = [
-                .vibration: [CellData(cellType: .value,
+            .vibration: [CellData(cellType: .value,
                                   text: "Вибрация",
                                   secondaryText: alarm?.vibration?.title ?? "Не выбрана") {
                                       [weak self] in self?.toVibrationVC()
                                   }],
             
                 .shop: [CellData(cellType: .system, text: "Магазин звуков"),
-                        CellData(cellType: .system, text: "Загрузить купленные звуки")],
-            
-                .songs: [CellData(cellType: .leadingCheckmark, text: "Пение птиц Весной (Звуки Природы)"),
-                         CellData(cellType: .leadingCheckmarkWithDisclosure, text: "Выбор песни") {
-                             [weak self] in self?.toAppleMusic()
-                         }]
+                        CellData(cellType: .system, text: "Загрузить купленные звуки")]
         ]
         
-        var ringtonesCell = K.String.defaultRingtones.map { CellData(cellType: .leadingCheckmark, text: $0) }
-        ringtonesCell.append(CellData(cellType: .leadingCheckmarkWithDisclosure, text: "Классические") {
-            [weak self] in self?.toClassicMelodyVC()
+        cellsData[.songs] = []
+        for (index, song) in songs.enumerated() {
+            if song == alarm?.melody,
+               let sectionIndex = Section.allCases.firstIndex(of: .songs) {
+                lastCheckmarkedCellIndexPath = IndexPath(item: index, section: sectionIndex)
+            }
+            cellsData[.songs]?.append(CellData(cellType: .leadingCheckmark,
+                                               text: song.title,
+                                               isCheckmarked: alarm?.melody?.title == song.title))
+        }
+        cellsData[.songs]?.append(CellData(cellType: .leadingCheckmarkWithDisclosure, text: "Выбор песни") {
+            [weak self] in self?.toAppleMusic()
         })
         
-        cellsData[.ringtones] = ringtonesCell
-        cellsData[.no] = [CellData(cellType: .leadingCheckmark, text: "Нет")]
+        //RINGTONES
+        cellsData[.ringtones] = []
+        for (index, melody) in ringtones.enumerated() {
+            if let sectionIndex = Section.allCases.firstIndex(of: .ringtones),
+               melody == alarm?.melody {
+                lastCheckmarkedCellIndexPath = IndexPath(item: index, section: sectionIndex)
+            }
+            cellsData[.ringtones]?.append(CellData(cellType: .leadingCheckmark,
+                                                   text: melody.title,
+                                                   isCheckmarked: alarm?.melody == melody))
+        }
+        
+        cellsData[.ringtones]?.append(CellData(cellType: .leadingCheckmarkWithDisclosure,
+                                               text: "Классические",
+                                               isCheckmarked: alarm?.melody?.type == .classicRingtone) {
+            [weak self] in self?.toClassicMelodyVC()
+        })
+        if alarm?.melody?.type == .classicRingtone,
+           let sectionIndex = Section.allCases.firstIndex(of: .ringtones) {
+            lastCheckmarkedCellIndexPath = IndexPath(item: ringtones.count, section: sectionIndex)
+        }
+        
+        //NO
+        cellsData[.no] = [CellData(cellType: .leadingCheckmark, text: "Нет", isCheckmarked: alarm?.melody == nil)]
+        if let sectionIndex = Section.allCases.firstIndex(of: .no),
+           alarm?.melody == nil {
+            lastCheckmarkedCellIndexPath = IndexPath(item: 0, section: sectionIndex)
+        }
     }
     
     func toVibrationVC() {
@@ -217,6 +250,7 @@ private extension MelodyViewController {
             return
         }
         let vibrationVC = VibrationViewController(alarm: alarm)
+        vibrationVC.delegate = self
         navigationController?.pushViewController(vibrationVC, animated: true)
     }
     
@@ -224,8 +258,9 @@ private extension MelodyViewController {
         guard let alarm = alarm else {
             return
         }
-        let vibrationVC = ClassicMelodyViewController(alarm: alarm)
-        navigationController?.pushViewController(vibrationVC, animated: true)
+        let classicMelodysVC = ClassicMelodyViewController(alarm: alarm)
+        classicMelodysVC.delegate = self
+        navigationController?.pushViewController(classicMelodysVC, animated: true)
     }
     
     func toAppleMusic() {
@@ -248,7 +283,7 @@ extension MelodyViewController: UICollectionViewDelegate {
         var newSnapshot = dataSource.snapshot()
         if !currentCell.isCheckmarked, currentCell.cellType == .leadingCheckmark {
             currentCell.isCheckmarked = true
-            if let lastCheckmarkedIndexPath = lastCheckmarkedIndexPath {
+            if let lastCheckmarkedIndexPath = lastCheckmarkedCellIndexPath {
                 let uncheckmarkedSection = Section.allCases[lastCheckmarkedIndexPath.section]
                 if let uncheckmarkedCell = cellsData[uncheckmarkedSection]?[lastCheckmarkedIndexPath.row] {
                     uncheckmarkedCell.isCheckmarked = false
@@ -257,13 +292,61 @@ extension MelodyViewController: UICollectionViewDelegate {
             } else {
                 newSnapshot.reconfigureItems([currentCell])
             }
-            lastCheckmarkedIndexPath = indexPath
+            lastCheckmarkedCellIndexPath = indexPath
+            if let ringtone = ringtones.first(where: { $0.title == currentCell.text }) {
+                alarm?.melody = ringtone
+            } else {
+                alarm?.melody = songs.first { $0.title == currentCell.text }
+            }
         }
         dataSource.apply(newSnapshot, animatingDifferences: false)
-
         currentCell.handler?()
-
+        
+        sectionCheckmarkedCellIndexPath = indexPath
         collectionView.deselectItem(at: indexPath, animated: true)
+    }
+    
+}
+
+extension MelodyViewController: AlarmUpdateDelegate {
+    
+    func update(with alarm: Alarm) {
+        if self.alarm?.melody != alarm.melody {
+            guard let uncheckmarkedIndexPath = lastCheckmarkedCellIndexPath,
+                  let checkmarkedIndexPath = sectionCheckmarkedCellIndexPath else {
+                return
+            }
+            let uncheckmarkedSection = Section.allCases[uncheckmarkedIndexPath.section]
+            let checkmarkedSection = Section.allCases[checkmarkedIndexPath.section]
+            
+            if let uncheckmarkedCell = cellsData[uncheckmarkedSection]?[uncheckmarkedIndexPath.row],
+               let checkmarkedCell = cellsData[checkmarkedSection]?[checkmarkedIndexPath.row],
+               uncheckmarkedCell != checkmarkedCell {
+                uncheckmarkedCell.isCheckmarked = false
+                checkmarkedCell.isCheckmarked = true
+                updateSnapshot(with: [uncheckmarkedCell, checkmarkedCell])
+                lastCheckmarkedCellIndexPath = sectionCheckmarkedCellIndexPath
+            }
+        } else if self.alarm?.vibration != alarm.vibration {
+            guard let updatedIndexPath = sectionCheckmarkedCellIndexPath else {
+                return
+            }
+            let updatedSection = Section.allCases[updatedIndexPath.section]
+            
+            if let updatedCell = cellsData[updatedSection]?[updatedIndexPath.row] {
+                updatedCell.secondaryText = alarm.vibration?.title ?? "Не выбрана"
+                updateSnapshot(with: [updatedCell])
+                lastCheckmarkedCellIndexPath = sectionCheckmarkedCellIndexPath
+            }
+        }
+        
+        self.alarm = alarm
+    }
+    
+    func updateSnapshot(with updatedCells: [CellData]) {
+        var newSnapshot = dataSource.snapshot()
+        newSnapshot.reconfigureItems(updatedCells)
+        dataSource.apply(newSnapshot, animatingDifferences: false)
     }
     
 }

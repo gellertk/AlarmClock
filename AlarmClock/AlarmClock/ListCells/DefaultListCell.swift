@@ -22,10 +22,14 @@ class DefaultListCell: UICollectionViewListCell {
         config.text = text
         config.secondaryText = secondaryText
         config.textProperties.numberOfLines = 1
+        config.textProperties.lineBreakMode = .byTruncatingTail
+        config.secondaryTextProperties.numberOfLines = 1
+        config.secondaryTextProperties.lineBreakMode = .byTruncatingTail
+        config.prefersSideBySideTextAndSecondaryText = true
         config.textProperties.color = textColor
         contentConfiguration = config
         tintColor = .systemOrange
-        layoutMargins = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 12)
+        layoutMargins = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 20)
     }
     
 }

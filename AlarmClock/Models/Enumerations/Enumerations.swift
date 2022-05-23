@@ -72,9 +72,4 @@ enum CellType {
     case leadingCheckmarkWithDisclosure
 }
 
-enum AlarmSection: String, CaseIterable {
-    case main = "Сон | Пробуждение"
-    case other = "Другие"
-}
-
 

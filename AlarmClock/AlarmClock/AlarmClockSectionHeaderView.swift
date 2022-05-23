@@ -28,7 +28,7 @@ class AlarmClockSectionHeaderView: UIView {
     }
     
     func set(section: Int) {
-        let stringPart = AlarmSection.allCases[section].rawValue
+        let stringPart = Alarm.Section.allCases[section].rawValue
         if section == 0 {
             let imagePart = NSTextAttachment(image: K.SystemImage.bed)
             let attachmentString = NSAttributedString(attachment: imagePart)

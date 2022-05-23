@@ -10,15 +10,15 @@ import UIKit
 fileprivate extension VibrationViewController {
     
     enum Section: CaseIterable {
-        case synhronize
+        //case synhronize
         case standart
         case user
         case no
         
         var headerTitle: String {
             switch self {
-            case .synhronize:
-                return "\n"
+//            case .synhronize:
+//                return "\n"
             case .standart:
                 return "\nСТАНДАРТНЫЕ"
             case .user:
@@ -36,12 +36,15 @@ fileprivate extension VibrationViewController {
 
 class VibrationViewController: UIViewController {
     
+    weak var delegate: AlarmUpdateDelegate?
+    
     private var alarm: Alarm?
     private var cellsData: [Section: [CellData]] = [:]
     private var dataSource: DataSourceType!
-    private var lastCheckmarkedIndexPath: IndexPath?
+    private var lastCheckmarkedCellIndexPath: IndexPath?
     
     private let vibrationView = VibrationView()
+    private let vibrations = Vibration.getDefaultVibrations()
     
     init(alarm: Alarm) {
         self.alarm = alarm
@@ -62,16 +65,38 @@ class VibrationViewController: UIViewController {
         fillCells()
         setupDataSource()
     }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        if isMovingFromParent {
+            guard let alarm = alarm else {
+                return
+            }
+            delegate?.update(with: alarm)
+        }
+    }
 
 }
 
 private extension VibrationViewController {
     
     func fillCells() {
-        cellsData[.synhronize] = [CellData(cellType: .checkmark, text: "Синхронизировано (По умолчанию)", isCheckmarked: false)]
-        cellsData[.standart] = K.String.defaultVibrations.map { CellData(cellType: .checkmark, text: $0) }
+        cellsData[.standart] = []
+        for (index, vibration) in vibrations.enumerated() {
+            if let sectionIndex = Section.allCases.firstIndex(of: .standart),
+               vibration == alarm?.vibration {
+                lastCheckmarkedCellIndexPath = IndexPath(item: index, section: sectionIndex)
+            }
+            cellsData[.standart]?.append(CellData(cellType: .checkmark,
+                                                   text: vibration.title,
+                                                   isCheckmarked: alarm?.vibration == vibration))
+        }
         cellsData[.user] = [CellData(cellType: .value, text: "Создать вибрацию")]
-        cellsData[.no] = [CellData(cellType: .checkmark, text: "Не выбрана")]
+        cellsData[.no] = [CellData(cellType: .checkmark, text: "Не выбрана", isCheckmarked: alarm?.vibration == nil)]
+        if let sectionIndex = Section.allCases.firstIndex(of: .no),
+           alarm?.vibration == nil {
+            lastCheckmarkedCellIndexPath = IndexPath(item: 0, section: sectionIndex)
+        }
     }
     
     func createCheckmarkCellRegistration() -> CellRegistrationType {
@@ -92,7 +117,8 @@ private extension VibrationViewController {
         let checkmarkCellRegistration = createCheckmarkCellRegistration()
         let valueCellRegistration = createValueCellRegistration()
         
-        dataSource = DataSourceType(collectionView: vibrationView.collectionView) { collectionView, indexPath, itemIdentifier in
+        dataSource = DataSourceType(collectionView: vibrationView.collectionView) {
+            collectionView, indexPath, itemIdentifier in
             switch itemIdentifier.cellType {
             case .checkmark:
                 return collectionView.dequeueConfiguredReusableCell(using: checkmarkCellRegistration,
@@ -149,7 +175,7 @@ extension VibrationViewController: UICollectionViewDelegate {
         var newSnapshot = dataSource.snapshot()
         if !currentCell.isCheckmarked, currentCell.cellType == .checkmark {
             currentCell.isCheckmarked = true
-            if let lastCheckmarkedIndexPath = lastCheckmarkedIndexPath {
+            if let lastCheckmarkedIndexPath = lastCheckmarkedCellIndexPath {
                 let uncheckmarkedSection = Section.allCases[lastCheckmarkedIndexPath.section]
                 if let uncheckmarkedCell = cellsData[uncheckmarkedSection]?[lastCheckmarkedIndexPath.row] {
                     uncheckmarkedCell.isCheckmarked = false
@@ -158,7 +184,8 @@ extension VibrationViewController: UICollectionViewDelegate {
             } else {
                 newSnapshot.reconfigureItems([currentCell])
             }
-            lastCheckmarkedIndexPath = indexPath
+            lastCheckmarkedCellIndexPath = indexPath
+            alarm?.vibration = vibrations.first { $0.title == currentCell.text }
         }
         dataSource.apply(newSnapshot, animatingDifferences: false)
         

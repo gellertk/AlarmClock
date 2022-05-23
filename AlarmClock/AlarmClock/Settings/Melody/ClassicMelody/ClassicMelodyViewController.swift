@@ -21,12 +21,15 @@ fileprivate extension ClassicMelodyViewController {
 
 class ClassicMelodyViewController: UIViewController {
     
+    weak var delegate: AlarmUpdateDelegate?
+    
     private var alarm: Alarm?
     private var cellsData: [Section: [CellData]] = [:]
     private var dataSource: DataSourceType!
     private var lastCheckmarkedIndexPath: IndexPath?
     
     private let classicMelodyView = ClassicMelodyView()
+    private let classicMelodys = Melody.getClassicRingtones()
     
     init(alarm: Alarm) {
         self.alarm = alarm
@@ -48,12 +51,30 @@ class ClassicMelodyViewController: UIViewController {
         setupDataSource()
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        if isMovingFromParent {
+            guard let alarm = alarm else {
+                return
+            }
+            delegate?.update(with: alarm)
+        }
+    }
+    
 }
 
 private extension ClassicMelodyViewController {
     
     func fillCells() {
-        cellsData[.main] = K.String.classicMelodys.map { CellData(cellType: .leadingCheckmark, text: $0) }
+        cellsData[.main] = []
+        for (index, classicMelody) in classicMelodys.enumerated() {
+            if classicMelody == alarm?.melody {
+                lastCheckmarkedIndexPath = IndexPath(item: index, section: 0)
+            }
+            cellsData[.main]?.append(CellData(cellType: .leadingCheckmark,
+                                                   text: classicMelody.title,
+                                                   isCheckmarked: alarm?.melody == classicMelody))
+        }
     }
     
     func createLeadingCheckmarkCellRegistration() -> LeadingCheckmarkCellRegistrationType {
@@ -105,6 +126,7 @@ extension ClassicMelodyViewController: UICollectionViewDelegate {
                 newSnapshot.reconfigureItems([currentCell])
             }
             lastCheckmarkedIndexPath = indexPath
+            alarm?.melody = classicMelodys.first { $0.title == currentCell.text }
         }
         dataSource.apply(newSnapshot, animatingDifferences: false)
         

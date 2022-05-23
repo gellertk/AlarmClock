@@ -79,7 +79,7 @@ class WeekDaysViewController: UIViewController {
             guard let alarm = alarm else {
                 return
             }
-            delegate?.update(alarm: alarm)
+            delegate?.update(with: alarm)
         }
     }
     

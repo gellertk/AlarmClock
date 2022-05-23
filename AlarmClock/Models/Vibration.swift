@@ -17,12 +17,22 @@ class Vibration: Hashable {
     }
     
     func hash(into hasher: inout Hasher) {
-        hasher.combine(id)
         hasher.combine(title)
     }
     
     static func == (lhs: Vibration, rhs: Vibration) -> Bool {
-        return lhs.id == rhs.id
+        return lhs.title == rhs.title
     }
     
+    static func getDefaultVibrations() -> [Vibration] {
+        return ["Акцент",
+                "Быстро",
+                "Живо",
+                "Сердцебиение",
+                "Сигнал SOS",
+                "Симфония",
+                "Стаккато",
+                "Тревога"].map { Vibration($0) }
+    }
+        
 }

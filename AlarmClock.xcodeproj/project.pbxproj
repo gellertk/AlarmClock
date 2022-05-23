@@ -10,7 +10,6 @@
 		CB01ACDC2822C14900727A58 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB01ACDB2822C14900727A58 /* SettingsViewController.swift */; };
 		CB01ACDF2822C16E00727A58 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB01ACDE2822C16E00727A58 /* SettingsView.swift */; };
 		CB06E2942832403400FEDBE6 /* EmptyHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB06E2932832403400FEDBE6 /* EmptyHeaderView.swift */; };
-		CB06E29828328D3200FEDBE6 /* CompositionalLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB06E29728328D3200FEDBE6 /* CompositionalLayout.swift */; };
 		CB0C191627B119430074976D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB0C191527B119430074976D /* AppDelegate.swift */; };
 		CB0C191827B119430074976D /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB0C191727B119430074976D /* SceneDelegate.swift */; };
 		CB0C191A27B119430074976D /* WorldClockViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB0C191927B119430074976D /* WorldClockViewController.swift */; };
@@ -53,18 +52,19 @@
 		CBBDCE8B2833E521004690A3 /* VibrationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBBDCE8A2833E521004690A3 /* VibrationView.swift */; };
 		CBC5BD0528205C07003832B7 /* Alarm.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBC5BD0428205C07003832B7 /* Alarm.swift */; };
 		CBC5BD0B28205FA6003832B7 /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBC5BD0A28205FA6003832B7 /* String+Extension.swift */; };
-		CBC5BD0D2820625D003832B7 /* AlarmClockTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBC5BD0C2820625D003832B7 /* AlarmClockTableViewCell.swift */; };
+		CBC5BD0D2820625D003832B7 /* ConstrainableListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBC5BD0C2820625D003832B7 /* ConstrainableListCell.swift */; };
 		CBC7772127B4FF860072EE40 /* UserDefaults+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBC7772027B4FF860072EE40 /* UserDefaults+Extension.swift */; };
 		CBC7772327B503F60072EE40 /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBC7772227B503F60072EE40 /* Date+Extension.swift */; };
 		CBCA7F5027BAC18000116516 /* WorldClock+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBCA7F4E27BAC18000116516 /* WorldClock+CoreDataClass.swift */; };
 		CBCA7F5127BAC18000116516 /* WorldClock+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBCA7F4F27BAC18000116516 /* WorldClock+CoreDataProperties.swift */; };
-		CBD20059282D9333005D12F4 /* CellsOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBD20058282D9333005D12F4 /* CellsOptions.swift */; };
+		CBD20059282D9333005D12F4 /* CellData.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBD20058282D9333005D12F4 /* CellData.swift */; };
 		CBD244D7282A535F00EBC88F /* UITableView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBD244D6282A535F00EBC88F /* UITableView+Extension.swift */; };
 		CBD244D9282A5D6200EBC88F /* UITableViewCell+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBD244D8282A5D6200EBC88F /* UITableViewCell+Extension.swift */; };
 		CBD244DB282A5D8700EBC88F /* TableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBD244DA282A5D8700EBC88F /* TableView.swift */; };
 		CBD57A5B2839762600DA8F2F /* ClassicMelodyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBD57A5A2839762600DA8F2F /* ClassicMelodyViewController.swift */; };
 		CBD57A5E2839767000DA8F2F /* ClassicMelodyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBD57A5D2839767000DA8F2F /* ClassicMelodyView.swift */; };
 		CBD87C4527F9B5FD0040B35E /* UIScrollView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBD87C4427F9B5FD0040B35E /* UIScrollView+Extension.swift */; };
+		CBDBADFB283C130D00B840AD /* Dictionary+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBDBADFA283C130C00B840AD /* Dictionary+Extension.swift */; };
 		CBDBB92727EF3A3A00A65087 /* DigitalFormatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBDBB92627EF3A3A00A65087 /* DigitalFormatView.swift */; };
 		CBDBB92927EF3C1900A65087 /* ClockFaceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBDBB92827EF3C1900A65087 /* ClockFaceView.swift */; };
 		CBE22FA8283A2FDB0034CBF6 /* Vibration.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE22FA7283A2FDB0034CBF6 /* Vibration.swift */; };
@@ -86,7 +86,6 @@
 		CB01ACDB2822C14900727A58 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		CB01ACDE2822C16E00727A58 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		CB06E2932832403400FEDBE6 /* EmptyHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyHeaderView.swift; sourceTree = "<group>"; };
-		CB06E29728328D3200FEDBE6 /* CompositionalLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompositionalLayout.swift; sourceTree = "<group>"; };
 		CB0C191527B119430074976D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CB0C191727B119430074976D /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		CB0C191927B119430074976D /* WorldClockViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorldClockViewController.swift; sourceTree = "<group>"; };
@@ -130,12 +129,12 @@
 		CBBDCE8A2833E521004690A3 /* VibrationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VibrationView.swift; sourceTree = "<group>"; };
 		CBC5BD0428205C07003832B7 /* Alarm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alarm.swift; sourceTree = "<group>"; };
 		CBC5BD0A28205FA6003832B7 /* String+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
-		CBC5BD0C2820625D003832B7 /* AlarmClockTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmClockTableViewCell.swift; sourceTree = "<group>"; };
+		CBC5BD0C2820625D003832B7 /* ConstrainableListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConstrainableListCell.swift; sourceTree = "<group>"; };
 		CBC7772027B4FF860072EE40 /* UserDefaults+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserDefaults+Extension.swift"; sourceTree = "<group>"; };
 		CBC7772227B503F60072EE40 /* Date+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extension.swift"; sourceTree = "<group>"; };
 		CBCA7F4E27BAC18000116516 /* WorldClock+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WorldClock+CoreDataClass.swift"; sourceTree = "<group>"; };
 		CBCA7F4F27BAC18000116516 /* WorldClock+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WorldClock+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		CBD20058282D9333005D12F4 /* CellsOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellsOptions.swift; sourceTree = "<group>"; };
+		CBD20058282D9333005D12F4 /* CellData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellData.swift; sourceTree = "<group>"; };
 		CBD244D6282A535F00EBC88F /* UITableView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+Extension.swift"; sourceTree = "<group>"; };
 		CBD244D8282A5D6200EBC88F /* UITableViewCell+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableViewCell+Extension.swift"; sourceTree = "<group>"; };
 		CBD244DA282A5D8700EBC88F /* TableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableView.swift; sourceTree = "<group>"; };
@@ -143,6 +142,7 @@
 		CBD57A5A2839762600DA8F2F /* ClassicMelodyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassicMelodyViewController.swift; sourceTree = "<group>"; };
 		CBD57A5D2839767000DA8F2F /* ClassicMelodyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassicMelodyView.swift; sourceTree = "<group>"; };
 		CBD87C4427F9B5FD0040B35E /* UIScrollView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIScrollView+Extension.swift"; sourceTree = "<group>"; };
+		CBDBADFA283C130C00B840AD /* Dictionary+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Dictionary+Extension.swift"; sourceTree = "<group>"; };
 		CBDBB92627EF3A3A00A65087 /* DigitalFormatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DigitalFormatView.swift; sourceTree = "<group>"; };
 		CBDBB92827EF3C1900A65087 /* ClockFaceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClockFaceView.swift; sourceTree = "<group>"; };
 		CBE22FA7283A2FDB0034CBF6 /* Vibration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Vibration.swift; sourceTree = "<group>"; };
@@ -249,7 +249,6 @@
 				CB0C192D27B1203B0074976D /* AlarmClockViewController.swift */,
 				CB0C193827B121AC0074976D /* AlarmClockView.swift */,
 				CB24BC292821C53600B4FCB5 /* AlarmClockSectionHeaderView.swift */,
-				CBC5BD0C2820625D003832B7 /* AlarmClockTableViewCell.swift */,
 				CB01ACDD2822C14E00727A58 /* Settings */,
 			);
 			path = AlarmClock;
@@ -303,7 +302,7 @@
 				CBC5BD0428205C07003832B7 /* Alarm.swift */,
 				CB682F07282979A200EFA3EE /* Melody.swift */,
 				CBE22FA7283A2FDB0034CBF6 /* Vibration.swift */,
-				CBD20058282D9333005D12F4 /* CellsOptions.swift */,
+				CBD20058282D9333005D12F4 /* CellData.swift */,
 				CB2BE1CD27F097C100137F6C /* Enumerations */,
 			);
 			path = Models;
@@ -367,7 +366,6 @@
 				CBA774D527D6043F005CE96C /* CircleButtonView.swift */,
 				CB682F002829416000EFA3EE /* CustomTextField.swift */,
 				CB06E2932832403400FEDBE6 /* EmptyHeaderView.swift */,
-				CB06E29728328D3200FEDBE6 /* CompositionalLayout.swift */,
 				CBD244DA282A5D8700EBC88F /* TableView.swift */,
 			);
 			path = Reusable;
@@ -406,6 +404,7 @@
 				CBFB4CD3281D4FDB00A1B189 /* UIColor+Extension.swift */,
 				CB53A7B6280CA7CE0088FBFC /* UIStackView+Extension.swift */,
 				CB6647EE27F5C76A004B0819 /* CAShapeLayer+Extension.swift */,
+				CBDBADFA283C130C00B840AD /* Dictionary+Extension.swift */,
 				CBFB4CD5281DBD1C00A1B189 /* CALayer+Extension.swift */,
 			);
 			path = Extensions;
@@ -425,6 +424,7 @@
 			children = (
 				CBE22FA9283A32260034CBF6 /* LeadingCheckmarkListCell.swift */,
 				CBE22FAD283ABEBD0034CBF6 /* DefaultListCell.swift */,
+				CBC5BD0C2820625D003832B7 /* ConstrainableListCell.swift */,
 			);
 			path = ListCells;
 			sourceTree = "<group>";
@@ -564,9 +564,9 @@
 			files = (
 				CBD57A5B2839762600DA8F2F /* ClassicMelodyViewController.swift in Sources */,
 				CB2BE1CA27F05F2900137F6C /* TimerPickerView.swift in Sources */,
-				CBC5BD0D2820625D003832B7 /* AlarmClockTableViewCell.swift in Sources */,
+				CBC5BD0D2820625D003832B7 /* ConstrainableListCell.swift in Sources */,
 				CBFB4CD4281D4FDB00A1B189 /* UIColor+Extension.swift in Sources */,
-				CBD20059282D9333005D12F4 /* CellsOptions.swift in Sources */,
+				CBD20059282D9333005D12F4 /* CellData.swift in Sources */,
 				CB2BE1CF27F097EE00137F6C /* Enumerations.swift in Sources */,
 				CB682EFD2829036600EFA3EE /* TitleView.swift in Sources */,
 				CB6647EF27F5C76A004B0819 /* CAShapeLayer+Extension.swift in Sources */,
@@ -598,12 +598,12 @@
 				CB24BC2A2821C53600B4FCB5 /* AlarmClockSectionHeaderView.swift in Sources */,
 				CBCA7F5027BAC18000116516 /* WorldClock+CoreDataClass.swift in Sources */,
 				CB682F012829416000EFA3EE /* CustomTextField.swift in Sources */,
-				CB06E29828328D3200FEDBE6 /* CompositionalLayout.swift in Sources */,
 				CB06E2942832403400FEDBE6 /* EmptyHeaderView.swift in Sources */,
 				CB0C191627B119430074976D /* AppDelegate.swift in Sources */,
 				CBE22FA8283A2FDB0034CBF6 /* Vibration.swift in Sources */,
 				CBC5BD0B28205FA6003832B7 /* String+Extension.swift in Sources */,
 				CB7ABE4A27B3FFA800CD04B1 /* WorldClockTableViewCell.swift in Sources */,
+				CBDBADFB283C130D00B840AD /* Dictionary+Extension.swift in Sources */,
 				CB0C193027B120AD0074976D /* StopwatchViewController.swift in Sources */,
 				CB98011C282533010087F2A9 /* UINavigationController+Extension.swift in Sources */,
 				CB0C194027B121DF0074976D /* TimerView.swift in Sources */,

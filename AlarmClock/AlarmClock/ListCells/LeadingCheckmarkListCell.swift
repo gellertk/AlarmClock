@@ -28,6 +28,7 @@ class LeadingCheckmarkListCell: UICollectionViewListCell {
         var config = UIListContentConfiguration.cell()
         config.text = text
         config.textProperties.numberOfLines = 1
+        config.secondaryTextProperties.numberOfLines = 1
         contentConfiguration = config
         self.isCheckmarked = isCheckmarked
     }

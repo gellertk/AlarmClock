@@ -9,22 +9,19 @@ import UIKit
 
 class AlarmClockViewController: UIViewController {
     
+    typealias DataSourceType = UICollectionViewDiffableDataSource<Alarm.Section, CellData>
+    typealias SnapshotType = NSDiffableDataSourceSnapshot<Alarm.Section, CellData>
+    
     override var preferredStatusBarStyle: UIStatusBarStyle {
         .lightContent
     }
     
     private let alarmClockView = AlarmClockView()
     
-    private lazy var dataSource = AlarmDataSource(tableView: alarmClockView.alarmsTableView,
-                                 cellProvider: { [weak self] (tableView, indexPath, alarm) -> UITableViewCell? in
-        if let cell = self?.alarmClockView.alarmsTableView.dequeueReusableCell(withIdentifier: AlarmClockTableViewCell.reuseIdentifier) as? AlarmClockTableViewCell {
-            cell.configure(alarm: alarm, section: indexPath.section)
-            
-            return cell
-        }
-        
-        return nil
-    })
+    private var dataSource: DataSourceType?
+    private var updatedCellIndex: Int?
+    private var cellsData: [CellData] = []
+    private var alarms = Alarm.getAlarms()
     
     override func loadView() {
         view = alarmClockView
@@ -33,18 +30,87 @@ class AlarmClockViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Будильник"
+        fillCellsData()
+        setupDataSource()
         setupNavigationBarItems()
-        setupDelegates()
-        reloadTableViewData()
     }
+    
+    func fillCellsData() {
+        alarms.forEach {
+            cellsData.append(CellData(cellType: ._switch, text: $0.time.toHoursMinutes(), secondaryText: $0.title))
+        }
+    }
+    
+    func createCellRegistration() -> CellRegistrationType {
+        return CellRegistrationType() { cell, _, item in
+            cell.configure(text: item.text)
+            cell.accessories = item.isCheckmarked ? [.checkmark()] : []
+        }
+    }
+    
+    func setupDataSource() {
+        let cellRegistration = createCellRegistration()
+        
+        dataSource = DataSourceType(collectionView: alarmClockView.collectionView) {
+            collectionView, indexPath, item in
+            switch item.cellType {
+                //cellRegistration
+            case .checkmark:
+                return collectionView.dequeueConfiguredReusableCell(using: cellRegistration,
+                                                                    for: indexPath,
+                                                                    item: item)
+            case .value:
+                return collectionView.dequeueConfiguredReusableCell(using: cellRegistration,
+                                                                    for: indexPath,
+                                                                    item: item)
+            default:
+                return nil
+            }
+        }
+        
+        setupHeader()
+        
+        var snapshot = SnapshotType()
+        for section in Alarm.Section.allCases {
+            snapshot.appendSections([section])
+            snapshot.appendItems(cell)
+        }
+//        Section.allCases.forEach {
+//            if let cells = cellsData[$0]  {
+//                snapshot.appendSections([$0])
+//                snapshot.appendItems(cells)
+//            }
+//        }
+        dataSource?.apply(snapshot)
+        
+        alarmClockView.collectionView.delegate = self
+    }
+    
+    func setupHeader() {
+        
+        guard let dataSource = dataSource else {
+            return
+        }
+        
+        let headerRegistration = UICollectionView.SupplementaryRegistration(elementKind: UICollectionView.elementKindSectionHeader) { (cell: UICollectionViewListCell, elementKind, indexPath) in
+            var configuration = cell.defaultContentConfiguration()
+            //configuration.text = Section.allCases[indexPath.section].headerTitle
+            
+            cell.contentConfiguration = configuration
+        }
+        
+        dataSource.supplementaryViewProvider = { (collectionView, _, indexPath) in
+            
+            return collectionView.dequeueConfiguredReusableSupplementary(using: headerRegistration, for: indexPath)
+        }
+        
+    }
+    
+    
     
 }
 
 private extension AlarmClockViewController {
-    
-    func setupDelegates() {
-        alarmClockView.alarmsTableView.delegate = self
-    }
     
     func setupNavigationBarItems() {
         navigationItem.setLeftBarButton(UIBarButtonItem(title: "Править",
@@ -59,7 +125,7 @@ private extension AlarmClockViewController {
     
     @objc private func didTapEditButton() {
         UIView.animate(withDuration: 0.3) {
-            self.alarmClockView.alarmsTableView.isEditing.toggle()
+            self.alarmClockView.collectionView.isEditing.toggle()
             //            self.alarmClockView.alarmsTableView.layoutMargins = UIEdgeInsets(top: 0,
             //                                                                        left: 20,
             //                                                                        bottom: 0,
@@ -71,55 +137,24 @@ private extension AlarmClockViewController {
     }
     
     @objc func didTapAddButton() {
-        present(UINavigationController(rootViewController: SettingsViewController(alarm: Alarm.createDefault()), withLargeTitle: false), animated: true)
+        present(UINavigationController(rootViewController: SettingsViewController(alarm: Alarm.createCommonAlarm()),
+                                       withLargeTitle: false), animated: true)
     }
     
     func reloadTableViewData() {
-        var snapshot = NSDiffableDataSourceSnapshot<AlarmSection, Alarm>()
-        for category in AlarmSection.allCases {
-            let items = Alarm.getAlarms().filter { $0.section == category }
-            snapshot.appendSections([category])
-            snapshot.appendItems(items)
-        }
-        DispatchQueue.main.async {
-            self.dataSource.apply(snapshot, animatingDifferences: false)
-        }
+//        var snapshot = SnapshotType()
+//        for category in Section.allCases {
+//            let items = Alarm.getAlarms().filter { $0.section == category }
+//            snapshot.appendSections([category])
+//            snapshot.appendItems(items)
+//        }
+//        dataSource.apply(snapshot, animatingDifferences: false)
     }
     
 }
 
-extension AlarmClockViewController: UITableViewDelegate {
+extension AlarmClockViewController: UICollectionViewDelegate {
     
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let sectionView = AlarmClockSectionHeaderView()
-        sectionView.set(section: section)
-        
-        return sectionView
-    }
     
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 100
-    }
-    
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 40
-    }
-    
-    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
-        if indexPath.section == 0 {
-            return .none
-        } else {
-            return .delete
-        }
-    }
-    
-}
-
-class AlarmDataSource: UITableViewDiffableDataSource<AlarmSection, Alarm> {
-    
-    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        
-        return AlarmSection.allCases[section].rawValue
-    }
     
 }

@@ -11,7 +11,7 @@ typealias CellRegistrationType = UICollectionView.CellRegistration<DefaultListCe
 typealias LeadingCheckmarkCellRegistrationType = UICollectionView.CellRegistration<LeadingCheckmarkListCell, CellData>
 
 protocol AlarmUpdateDelegate: AnyObject {
-    func update(alarm: Alarm)
+    func update(with alarm: Alarm)
 }
 
 fileprivate extension SettingsViewController {
@@ -144,7 +144,7 @@ private extension SettingsViewController {
         cellsData = [
             CellData(cellType: .value,
                      text: "Повтор",
-                     secondaryText: alarm.formatedWeekDays()) { [weak self] in self?.toWeekDaysVC()},
+                     secondaryText: alarm.weekDays.toWeekDaysFormat()) { [weak self] in self?.toWeekDaysVC()},
             CellData(cellType: .value,
                      text: "Название",
                      secondaryText: alarm.title) { [weak self] in self?.toTitleVC() },
@@ -176,9 +176,9 @@ extension SettingsViewController: UICollectionViewDelegate {
 
 extension SettingsViewController: AlarmUpdateDelegate {
     
-    func update(alarm: Alarm) {
+    func update(with alarm: Alarm) {
         guard let updatedCellIndex = updatedCellIndex,
-        let dataSource = dataSource else {
+              let dataSource = dataSource else {
             return
         }
         self.alarm = alarm

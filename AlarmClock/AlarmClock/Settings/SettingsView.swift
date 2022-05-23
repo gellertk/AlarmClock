@@ -32,10 +32,14 @@ class SettingsView: UIView {
             var config = UICollectionLayoutListConfiguration(appearance: .insetGrouped)
             config.headerMode = .supplementary
             
-            let section = NSCollectionLayoutSection.list(using: config, layoutEnvironment: layoutEnvironment)
-            let headerSize = NSCollectionLayoutSize(widthDimension: .absolute(0.1), heightDimension: .absolute(0.1))
+            let section = NSCollectionLayoutSection.list(using: config,
+                                                         layoutEnvironment: layoutEnvironment)
+            let headerSize = NSCollectionLayoutSize(widthDimension: .absolute(0.1),
+                                                    heightDimension: .absolute(0.1))
             
-            let sectionHeader = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
+            let sectionHeader = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize,
+                                                                            elementKind: UICollectionView.elementKindSectionHeader,
+                                                                            alignment: .top)
             section.boundarySupplementaryItems = [sectionHeader]
             
             return section
