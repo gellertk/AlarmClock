@@ -66,7 +66,7 @@ enum CellType {
     case standart
     case system
     case value
-    case _switch
+    case withSwitch
     case checkmark
     case leadingCheckmark
     case leadingCheckmarkWithDisclosure

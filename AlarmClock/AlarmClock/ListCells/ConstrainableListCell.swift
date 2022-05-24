@@ -100,12 +100,12 @@ private extension ConstrainableListCell {
     
     func setupView() {
         backgroundColor = .black
-        [
-            listContentView
-        ].forEach {
-            contentView.addSubview($0)
-        }
-        setupConstraints()
+//        [
+//            listContentView
+//        ].forEach {
+//            contentView.addSubview($0)
+//        }
+        //setupConstraints()
     }
     
     func setupConstraints() {

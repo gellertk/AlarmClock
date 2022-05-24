@@ -84,10 +84,10 @@ final class TimerClass: Codable {
     
     private func startTimer() {
         timer = Timer.scheduledTimer(timeInterval: K.Numeric.timeInterval,
-                                     target: self,
-                                     selector: #selector(didTimeChange),
-                                     userInfo: nil,
-                                     repeats: true)
+                                         target: self,
+                                         selector: #selector(didTimeChange),
+                                         userInfo: nil,
+                                         repeats: true)
         RunLoop.current.add(timer ?? Timer(), forMode: .common)
     }
     

@@ -93,7 +93,7 @@ private extension SettingsViewController {
                 return collectionView.dequeueConfiguredReusableCell(using: valueCellRegistration,
                                                                     for: indexPath,
                                                                     item: item)
-            case ._switch:
+            case .withSwitch:
                 return collectionView.dequeueConfiguredReusableCell(using: switchCellRegistration,
                                                                     for: indexPath,
                                                                     item: item)
@@ -151,7 +151,7 @@ private extension SettingsViewController {
             CellData(cellType: .value,
                      text: "Мелодия",
                      secondaryText: alarm.melody?.title ?? "Нет") { [weak self] in self?.toMelodyVC() },
-            CellData(cellType: ._switch,
+            CellData(cellType: .withSwitch,
                      text: "Повторение сигнала")
         ]
         
