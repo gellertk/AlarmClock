@@ -27,7 +27,9 @@ fileprivate extension SettingsViewController {
 
 class SettingsViewController: UIViewController {
     
-    var alarm: Alarm?
+    weak var delegate: AlarmUpdateDelegate?
+    
+    private var alarm: Alarm?
     
     private var dataSource: DataSourceType?
     private var updatedCellIndex: Int?
@@ -197,6 +199,10 @@ private extension SettingsViewController {
     }
     
     @objc func didTapSaveButton() {
+        guard let alarm = alarm else {
+            return
+        }
+        delegate?.update(with: alarm)
         dismiss(animated: true)
     }
     

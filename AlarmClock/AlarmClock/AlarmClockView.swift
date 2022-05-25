@@ -7,37 +7,59 @@
 
 import UIKit
 
+protocol AlarmClockViewDelegate: AnyObject {
+    func deleteAlarm(at indexPath: IndexPath)
+}
+
 class AlarmClockView: UIView {
+    
+    weak var delegate: AlarmClockViewDelegate?
+    private let firstItemIndexPath = IndexPath(row: 0, section: 0)
     
     lazy var collectionView: UICollectionView = {
         let collectionView = UICollectionView(frame: bounds, collectionViewLayout: createCompositionalLayout())
-        collectionView.allowsSelection = false
         collectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        //collectionView.contentInset = UIEdgeInsets(top: -20, left: 0, bottom: 0, right: 0)
-        collectionView.automaticallyAdjustsScrollIndicatorInsets = false
-        
+        collectionView.showsVerticalScrollIndicator = false
+
         return collectionView
     }()
     
     private func createCompositionalLayout() -> UICollectionViewCompositionalLayout {
 
         let layout = UICollectionViewCompositionalLayout() { sectionIndex, layoutEnvironment in
-            var config = UICollectionLayoutListConfiguration(appearance: .plain)
+            var config = UICollectionLayoutListConfiguration(appearance: .grouped)
             config.headerMode = .supplementary
+
+            config.trailingSwipeActionsConfigurationProvider = { indexPath in
+                
+                let delete = UIContextualAction(style: .destructive, title: "Удалить") { [weak self] action, view, completion in
+                    self?.delegate?.deleteAlarm(at: indexPath)
+                    completion(true)
+                }
+                if indexPath == self.firstItemIndexPath {
+                    
+                    return nil
+                }
+                
+                return UISwipeActionsConfiguration(actions: [delete])
+            }
+
+            config.itemSeparatorHandler = { (indexPath, sectionSeparatorConfiguration) in
+                var configuration = sectionSeparatorConfiguration
+                
+                let inset = NSDirectionalEdgeInsets(top: 0, leading: 15, bottom: 0, trailing: 0)
+                
+                configuration.bottomSeparatorInsets = inset
+                configuration.topSeparatorInsets = inset
+                
+                return configuration
+            }
             
             let section = NSCollectionLayoutSection.list(using: config, layoutEnvironment: layoutEnvironment)
-//            let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1),
-//                                                    heightDimension: .estimated(100))
-//
-//            let sectionHeader = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize,
-//                                                                           elementKind: UICollectionView.elementKindSectionHeader,
-//                                                                            alignment: .top)
 
-            //section.boundarySupplementaryItems = [sectionHeader]
-            
             return section
         }
-
+        
         return layout
     }
     

@@ -36,7 +36,7 @@ class WorldClockViewController: UIViewController {
                                                         style: .plain,
                                                         target: self,
                                                         action: #selector(didTapEditButton)), animated: false)
-        navigationItem.setRightBarButton(UIBarButtonItem(image: K.SystemImage.plus,
+        navigationItem.setRightBarButton(UIBarButtonItem(image: UIImage.plus,
                                                          style: .plain,
                                                          target: self,
                                                          action: #selector(didTapAddButton)), animated: false)

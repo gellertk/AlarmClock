@@ -70,6 +70,7 @@ enum CellType {
     case checkmark
     case leadingCheckmark
     case leadingCheckmarkWithDisclosure
+    case header
 }
 
 

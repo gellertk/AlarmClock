@@ -9,18 +9,19 @@ import UIKit
 
 class AlarmClockViewController: UIViewController {
     
-    typealias DataSourceType = UICollectionViewDiffableDataSource<Alarm.Section, CellData>
-    typealias SnapshotType = NSDiffableDataSourceSnapshot<Alarm.Section, CellData>
+    typealias CustomCellRegistrationType = UICollectionView.CellRegistration<CustomListCell, Alarm>
+    typealias DataSourceType = UICollectionViewDiffableDataSource<Alarm.Section, Alarm>
+    typealias SnapshotType = NSDiffableDataSourceSnapshot<Alarm.Section, Alarm>
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         .lightContent
     }
     
     private let alarmClockView = AlarmClockView()
+    private let firstItemIndexPath = IndexPath(row: 0, section: 0)
     
     private var dataSource: DataSourceType?
     private var updatedCellIndex: Int?
-    private var cellsData: [Alarm.Section: [CellData]] = [:]
     private var alarms = Alarm.getAlarms()
     
     override func loadView() {
@@ -30,34 +31,37 @@ class AlarmClockViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Будильник"
-        fillCellsData()
         setupDataSource()
         setupNavigationBarItems()
     }
     
-    func fillCellsData() {
-        cellsData[.main] = []
-        cellsData[.other] = []
-        alarms.forEach { alarm in
-            cellsData[alarm.section]?.append(CellData(cellType: .withSwitch,
-                                                      text: alarm.time.toHoursMinutes(),
-                                                      secondaryText: alarm.title))
-        }
+    override func setEditing(_ editing: Bool, animated: Bool) {
+        super.setEditing(editing, animated:animated)
+        alarmClockView.collectionView.isEditing = editing
     }
     
-    func createCellRegistration() -> CellRegistrationType {
-        return CellRegistrationType() { cell, _, item in
-            //cell.configure(text: item.text)
-            var contentConfig = UIListContentConfiguration.subtitleCell()
-            contentConfig.text = item.text
-            contentConfig.secondaryText = item.secondaryText
-            contentConfig.textProperties.font = UIFont.systemFont(
-                ofSize: 50,
-                weight: .light)
-            cell.contentConfiguration = contentConfig
-            cell.backgroundView = UIView()
+}
+
+private extension AlarmClockViewController {
+    
+    func createCellRegistration() -> CustomCellRegistrationType {
+        return CustomCellRegistrationType() { [unowned self] cell, indexPath, item in
             
-            cell.accessories = item.isCheckmarked ? [.checkmark()] : []
+            cell.configure(with: item)
+            if indexPath == firstItemIndexPath {
+                let changeButton = cell.changeButton
+                let customView = UICellAccessory.CustomViewConfiguration(customView: changeButton,
+                                                                         placement: .trailing())
+                cell.accessories = [.customView(configuration: customView)]
+            } else {
+                let _switch = UISwitch()
+                _switch.isOn = item.isEnabled
+                let customView = UICellAccessory.CustomViewConfiguration(customView: _switch,
+                                                                         placement: .trailing(displayed: .whenNotEditing))
+                cell.accessories = [.delete(),
+                                    .customView(configuration: customView),
+                                    .disclosureIndicator(displayed: .whenEditing, options: .init())]
+            }
         }
     }
     
@@ -66,94 +70,123 @@ class AlarmClockViewController: UIViewController {
         
         dataSource = DataSourceType(collectionView: alarmClockView.collectionView) {
             collectionView, indexPath, item in
-            switch item.cellType {
-            case .withSwitch:
-                return collectionView.dequeueConfiguredReusableCell(using: cellRegistration,
-                                                                    for: indexPath,
-                                                                    item: item)
-            default:
-                return nil
-            }
+            
+            return collectionView.dequeueConfiguredReusableCell(using: cellRegistration,
+                                                                for: indexPath,
+                                                                item: item)
         }
         
-        setupHeader()
-        
-        var snapshot = SnapshotType()
-        for section in Alarm.Section.allCases {
-            if let items = cellsData[section] {
-                snapshot.appendSections([section])
-                snapshot.appendItems(items)
-            }
-        }
-        
-        dataSource?.apply(snapshot)
-        alarmClockView.collectionView.delegate = self
+        setupSectionHeaders()
+        applySnapshot()
+        setupDelegates()
     }
     
-    func setupHeader() {
+    func setupSectionHeaders() {
         
         let headerRegistration = UICollectionView.SupplementaryRegistration
         <AlarmSectionHeaderReusableView>(elementKind: UICollectionView.elementKindSectionHeader) {
             supplementaryView, string, indexPath in
-            supplementaryView.titleLabel.text = Alarm.Section.allCases[indexPath.section].rawValue
+            let sectionTitle = Alarm.Section.allCases[indexPath.section].rawValue
+            if indexPath.section == 0 {
+                supplementaryView.configureLabel(with: sectionTitle, and: UIImage.bed)
+            } else {
+                supplementaryView.configureLabel(with: sectionTitle)
+            }
         }
-
+        
         dataSource?.supplementaryViewProvider = { (collectionView, _, indexPath) in
-
-            let header = collectionView.dequeueConfiguredReusableSupplementary(using: headerRegistration,
-                                                                               for: indexPath)
-
-            return header
+            
+            return collectionView.dequeueConfiguredReusableSupplementary(using: headerRegistration,
+                                                                         for: indexPath)
         }
         
     }
     
-}
-
-private extension AlarmClockViewController {
+    func applySnapshot() {
+        var snapshot = SnapshotType()
+        for section in Alarm.Section.allCases {
+            snapshot.appendSections([section])
+            snapshot.appendItems(alarms.filter { $0.section == section })
+        }
+        
+        dataSource?.apply(snapshot)
+    }
+    
+    func delete(at indexPath: IndexPath) {
+        guard let dataSource = dataSource else {
+            return
+        }
+        var snapshot = dataSource.snapshot()
+        if let identifier = dataSource.itemIdentifier(for: indexPath) {
+            snapshot.deleteItems([identifier])
+        }
+        dataSource.apply(snapshot)
+    }
+    
+    func setupDelegates() {
+        alarmClockView.collectionView.delegate = self
+        alarmClockView.delegate = self
+    }
     
     func setupNavigationBarItems() {
-        navigationItem.setLeftBarButton(UIBarButtonItem(title: "Править",
-                                                        style: .plain,
-                                                        target: self,
-                                                        action: #selector(didTapEditButton)), animated: false)
-        navigationItem.setRightBarButton(UIBarButtonItem(image: K.SystemImage.plus,
-                                                         style: .plain,
-                                                         target: self,
-                                                         action: #selector(didTapAddButton)), animated: false)
-    }
-    
-    @objc private func didTapEditButton() {
-        UIView.animate(withDuration: 0.3) {
-            self.alarmClockView.collectionView.isEditing.toggle()
-            //            self.alarmClockView.alarmsTableView.layoutMargins = UIEdgeInsets(top: 0,
-            //                                                                        left: 20,
-            //                                                                        bottom: 0,
-            //                                                                        right: 0)
+        navigationItem.leftBarButtonItem = editButtonItem
+        navigationItem.leftBarButtonItem?.primaryAction = UIAction(title: "Править") { [unowned self] _ in
+            setEditing(!isEditing, animated: true)
+            navigationItem.leftBarButtonItem?.title = isEditing ? "Готово" : "Править"
         }
         
-        //alarmClockView.alarmsTableView.allowsSelection.toggle()
-    }
-    
-    @objc func didTapAddButton() {
-        present(UINavigationController(rootViewController: SettingsViewController(alarm: Alarm.createCommonAlarm()),
-                                       withLargeTitle: false), animated: true)
-    }
-    
-    func reloadTableViewData() {
-        //        var snapshot = SnapshotType()
-        //        for category in Section.allCases {
-        //            let items = Alarm.getAlarms().filter { $0.section == category }
-        //            snapshot.appendSections([category])
-        //            snapshot.appendItems(items)
-        //        }
-        //        dataSource.apply(snapshot, animatingDifferences: false)
+        navigationItem.rightBarButtonItem = UIBarButtonItem(systemItem: .add)
+        navigationItem.rightBarButtonItem?.primaryAction = UIAction() { [unowned self] _ in
+            let settingsVC = SettingsViewController(alarm: Alarm.createDefaultAlarm())
+            settingsVC.delegate = self
+            present(UINavigationController(rootViewController: settingsVC,
+                                           withCustomization: true),
+                    animated: true)
+        }
+        
     }
     
 }
 
 extension AlarmClockViewController: UICollectionViewDelegate {
     
+    func collectionView(_ collectionView: UICollectionView,
+                        shouldSelectItemAt indexPath: IndexPath) -> Bool {
+        
+        return indexPath != firstItemIndexPath
+    }
     
+    func collectionView(_ collectionView: UICollectionView,
+                        didSelectItemAt indexPath: IndexPath) {
+        
+        let settingsVC = SettingsViewController(alarm: alarms[indexPath.row + 1])
+        present(UINavigationController(rootViewController: settingsVC,
+                                       withCustomization: true),
+                animated: true)
+        
+        //collectionView.deselectItem(at: indexPath, animated: false)
+    }
+    
+}
+
+extension AlarmClockViewController: AlarmClockViewDelegate {
+    
+    func deleteAlarm(at indexPath: IndexPath) {
+        delete(at: indexPath)
+    }
+    
+}
+
+extension AlarmClockViewController: AlarmUpdateDelegate {
+    
+    func update(with alarm: Alarm) {
+        alarms.append(alarm)
+        guard let dataSource = dataSource else {
+            return
+        }
+        var snapshot = dataSource.snapshot()
+        snapshot.appendItems([alarm], toSection: .other)
+        dataSource.apply(snapshot)
+    }
     
 }

@@ -21,8 +21,8 @@ class MainTabBarController: UITabBarController {
     private func setup() {
         
         setViewControllers([
-            UINavigationController(rootViewController: WorldClockViewController(), withLargeTitle: true),
-            UINavigationController(rootViewController: AlarmClockViewController(), withLargeTitle: true),
+            UINavigationController(rootViewController: WorldClockViewController(), withCustomization: true, prefersLargeTitle: true),
+            UINavigationController(rootViewController: AlarmClockViewController(), withCustomization: true, prefersLargeTitle: true),
             StopwatchViewController(),
             TimerViewController()
         ], animated: true)
@@ -30,10 +30,10 @@ class MainTabBarController: UITabBarController {
         if let items = tabBar.items {
             
             let titlesAndImages: KeyValuePairs = [
-                "Мировые часы": K.SystemImage.worldClock,
-                "Будильник": K.SystemImage.alarmClock,
-                "Секундомер": K.SystemImage.stopwatch,
-                "Таймер": K.SystemImage.timer
+                "Мировые часы": UIImage.worldClock,
+                "Будильник": UIImage.alarmClock,
+                "Секундомер": UIImage.stopwatch,
+                "Таймер": UIImage.timer
             ]
             
             for index in titlesAndImages.indices {

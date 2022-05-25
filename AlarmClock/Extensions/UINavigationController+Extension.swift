@@ -9,12 +9,13 @@ import UIKit
 
 extension UINavigationController {
     
-    convenience init(rootViewController: UIViewController, withLargeTitle: Bool) {
+    convenience init(rootViewController: UIViewController, withCustomization: Bool, prefersLargeTitle: Bool = false) {
         self.init(rootViewController: rootViewController)
-        setupDefault(withLargeTitle)
+        navigationBar.prefersLargeTitles = prefersLargeTitle
+        customize()
     }
     
-    func setupDefault(_ withLargeTitle: Bool) {
+    func customize() {
         let backButton = UIBarButtonItem()
         backButton.title = "Назад"
         navigationBar.topItem?.backBarButtonItem = backButton
@@ -23,8 +24,6 @@ extension UINavigationController {
         navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
         navigationBar.tintColor = .systemOrange
         navigationBar.barStyle = .black
-        
-        navigationBar.prefersLargeTitles = withLargeTitle
     }
     
 }

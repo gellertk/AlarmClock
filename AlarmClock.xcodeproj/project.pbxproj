@@ -51,7 +51,7 @@
 		CBBDCE8B2833E521004690A3 /* VibrationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBBDCE8A2833E521004690A3 /* VibrationView.swift */; };
 		CBC5BD0528205C07003832B7 /* Alarm.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBC5BD0428205C07003832B7 /* Alarm.swift */; };
 		CBC5BD0B28205FA6003832B7 /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBC5BD0A28205FA6003832B7 /* String+Extension.swift */; };
-		CBC5BD0D2820625D003832B7 /* ConstrainableListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBC5BD0C2820625D003832B7 /* ConstrainableListCell.swift */; };
+		CBC5BD0D2820625D003832B7 /* CustomListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBC5BD0C2820625D003832B7 /* CustomListCell.swift */; };
 		CBC7772127B4FF860072EE40 /* UserDefaults+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBC7772027B4FF860072EE40 /* UserDefaults+Extension.swift */; };
 		CBC7772327B503F60072EE40 /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBC7772227B503F60072EE40 /* Date+Extension.swift */; };
 		CBCA7F5027BAC18000116516 /* WorldClock+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBCA7F4E27BAC18000116516 /* WorldClock+CoreDataClass.swift */; };
@@ -62,6 +62,8 @@
 		CBD244DB282A5D8700EBC88F /* TableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBD244DA282A5D8700EBC88F /* TableView.swift */; };
 		CBD57A5B2839762600DA8F2F /* ClassicMelodyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBD57A5A2839762600DA8F2F /* ClassicMelodyViewController.swift */; };
 		CBD57A5E2839767000DA8F2F /* ClassicMelodyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBD57A5D2839767000DA8F2F /* ClassicMelodyView.swift */; };
+		CBD714D6283E8820006351BA /* UIImage+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBD714D5283E8820006351BA /* UIImage+Extension.swift */; };
+		CBD714D8283E88AD006351BA /* UILabel+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBD714D7283E88AD006351BA /* UILabel+Extension.swift */; };
 		CBD87C4527F9B5FD0040B35E /* UIScrollView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBD87C4427F9B5FD0040B35E /* UIScrollView+Extension.swift */; };
 		CBD9CDF3283CD90B000F83A2 /* AlarmSectionHeaderReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBD9CDF2283CD90B000F83A2 /* AlarmSectionHeaderReusableView.swift */; };
 		CBDBADFB283C130D00B840AD /* Dictionary+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBDBADFA283C130C00B840AD /* Dictionary+Extension.swift */; };
@@ -128,7 +130,7 @@
 		CBBDCE8A2833E521004690A3 /* VibrationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VibrationView.swift; sourceTree = "<group>"; };
 		CBC5BD0428205C07003832B7 /* Alarm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alarm.swift; sourceTree = "<group>"; };
 		CBC5BD0A28205FA6003832B7 /* String+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
-		CBC5BD0C2820625D003832B7 /* ConstrainableListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConstrainableListCell.swift; sourceTree = "<group>"; };
+		CBC5BD0C2820625D003832B7 /* CustomListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomListCell.swift; sourceTree = "<group>"; };
 		CBC7772027B4FF860072EE40 /* UserDefaults+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserDefaults+Extension.swift"; sourceTree = "<group>"; };
 		CBC7772227B503F60072EE40 /* Date+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extension.swift"; sourceTree = "<group>"; };
 		CBCA7F4E27BAC18000116516 /* WorldClock+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WorldClock+CoreDataClass.swift"; sourceTree = "<group>"; };
@@ -140,6 +142,8 @@
 		CBD3FB0227BE9FD200F718E3 /* AlarmClock.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AlarmClock.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CBD57A5A2839762600DA8F2F /* ClassicMelodyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassicMelodyViewController.swift; sourceTree = "<group>"; };
 		CBD57A5D2839767000DA8F2F /* ClassicMelodyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassicMelodyView.swift; sourceTree = "<group>"; };
+		CBD714D5283E8820006351BA /* UIImage+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Extension.swift"; sourceTree = "<group>"; };
+		CBD714D7283E88AD006351BA /* UILabel+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+Extension.swift"; sourceTree = "<group>"; };
 		CBD87C4427F9B5FD0040B35E /* UIScrollView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIScrollView+Extension.swift"; sourceTree = "<group>"; };
 		CBD9CDF2283CD90B000F83A2 /* AlarmSectionHeaderReusableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmSectionHeaderReusableView.swift; sourceTree = "<group>"; };
 		CBDBADFA283C130C00B840AD /* Dictionary+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Dictionary+Extension.swift"; sourceTree = "<group>"; };
@@ -397,11 +401,13 @@
 				CB98011B282533010087F2A9 /* UINavigationController+Extension.swift */,
 				CBD244D6282A535F00EBC88F /* UITableView+Extension.swift */,
 				CBD244D8282A5D6200EBC88F /* UITableViewCell+Extension.swift */,
+				CBD714D5283E8820006351BA /* UIImage+Extension.swift */,
 				CBC5BD0A28205FA6003832B7 /* String+Extension.swift */,
 				CBC7772227B503F60072EE40 /* Date+Extension.swift */,
 				CBA774D927D6767B005CE96C /* TimeInterval+Extension.swift */,
 				CB98012128254FA70087F2A9 /* Int+Extension.swift */,
 				CBFB4CD3281D4FDB00A1B189 /* UIColor+Extension.swift */,
+				CBD714D7283E88AD006351BA /* UILabel+Extension.swift */,
 				CB53A7B6280CA7CE0088FBFC /* UIStackView+Extension.swift */,
 				CB6647EE27F5C76A004B0819 /* CAShapeLayer+Extension.swift */,
 				CBDBADFA283C130C00B840AD /* Dictionary+Extension.swift */,
@@ -424,7 +430,7 @@
 			children = (
 				CBE22FA9283A32260034CBF6 /* LeadingCheckmarkListCell.swift */,
 				CBE22FAD283ABEBD0034CBF6 /* DefaultListCell.swift */,
-				CBC5BD0C2820625D003832B7 /* ConstrainableListCell.swift */,
+				CBC5BD0C2820625D003832B7 /* CustomListCell.swift */,
 			);
 			path = ListCells;
 			sourceTree = "<group>";
@@ -564,7 +570,7 @@
 			files = (
 				CBD57A5B2839762600DA8F2F /* ClassicMelodyViewController.swift in Sources */,
 				CB2BE1CA27F05F2900137F6C /* TimerPickerView.swift in Sources */,
-				CBC5BD0D2820625D003832B7 /* ConstrainableListCell.swift in Sources */,
+				CBC5BD0D2820625D003832B7 /* CustomListCell.swift in Sources */,
 				CBFB4CD4281D4FDB00A1B189 /* UIColor+Extension.swift in Sources */,
 				CBD20059282D9333005D12F4 /* CellData.swift in Sources */,
 				CB2BE1CF27F097EE00137F6C /* Enumerations.swift in Sources */,
@@ -588,6 +594,7 @@
 				CBE22FAE283ABEBD0034CBF6 /* DefaultListCell.swift in Sources */,
 				CB682F03282976EC00EFA3EE /* MelodyViewController.swift in Sources */,
 				CB0C191A27B119430074976D /* WorldClockViewController.swift in Sources */,
+				CBD714D8283E88AD006351BA /* UILabel+Extension.swift in Sources */,
 				CB0C193227B120E90074976D /* TimerViewController.swift in Sources */,
 				CB682EFA2829030000EFA3EE /* TitleViewController.swift in Sources */,
 				CBBDCE8B2833E521004690A3 /* VibrationView.swift in Sources */,
@@ -625,6 +632,7 @@
 				CBD57A5E2839767000DA8F2F /* ClassicMelodyView.swift in Sources */,
 				CBEFCF2627E8567500BA0E05 /* UserDefaultsSettings.swift in Sources */,
 				CB0C193927B121AC0074976D /* AlarmClockView.swift in Sources */,
+				CBD714D6283E8820006351BA /* UIImage+Extension.swift in Sources */,
 				CBF6CE0527BD612F00843FBA /* TimeZoneView.swift in Sources */,
 				CB0C194327B156340074976D /* Constant.swift in Sources */,
 				CB01ACDF2822C16E00727A58 /* SettingsView.swift in Sources */,

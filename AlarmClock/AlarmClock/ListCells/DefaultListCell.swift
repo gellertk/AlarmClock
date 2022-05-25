@@ -27,9 +27,10 @@ class DefaultListCell: UICollectionViewListCell {
         config.secondaryTextProperties.lineBreakMode = .byTruncatingTail
         config.prefersSideBySideTextAndSecondaryText = true
         config.textProperties.color = textColor
+        config.axesPreservingSuperviewLayoutMargins = []
+
         contentConfiguration = config
         tintColor = .systemOrange
-        layoutMargins = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 20)
     }
     
 }

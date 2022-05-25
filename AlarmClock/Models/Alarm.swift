@@ -46,7 +46,7 @@ struct Alarm: Hashable {
         }
     }
     
-    static func createCommonAlarm() -> Alarm {
+    static func createDefaultAlarm() -> Alarm {
         return Alarm(section: .other,
                      title: "Будильник",
                      time: Date(),
@@ -67,16 +67,16 @@ struct Alarm: Hashable {
                   melody: nil),
             Alarm(section: .other,
                   title: "Будильник",
-                  time: "17:15".toDate(),
+                  time: "10:29".toDate(),
                   isEnabled: true,
-                  weekDays: [],
+                  weekDays: [0, 1, 2, 3, 4, 5, 6],
                   isRepeated: true,
                   melody: nil),
             Alarm(section: .other,
                   title: "Будильник2",
-                  time: "20:00".toDate(),
+                  time: "19:00".toDate(),
                   isEnabled: false,
-                  weekDays: [],
+                  weekDays: [1, 5],
                   isRepeated: true,
                   melody: nil),
             Alarm(section: .other,
@@ -84,8 +84,8 @@ struct Alarm: Hashable {
                   time: "23:10".toDate(),
                   isEnabled: false,
                   weekDays: [],
-                  isRepeated: true,
-                  melody: nil)
+                  isRepeated: false,
+                  melody: Melody("Пение Птиц", type: .song))
         ]
     }
     
