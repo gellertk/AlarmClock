@@ -49,6 +49,8 @@ class WeekDaysViewController: UIViewController {
     
     func configureDataSource() {
         let cellRegistration = CellRegistrationType() { [weak self] cell, indexPath, item in
+            //var content = UIListContentConfiguration.subtitleCell()
+            
             guard let alarm = self?.alarm else {
                 return
             }

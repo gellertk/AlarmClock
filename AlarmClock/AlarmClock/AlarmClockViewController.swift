@@ -45,23 +45,9 @@ class AlarmClockViewController: UIViewController {
 private extension AlarmClockViewController {
     
     func createCellRegistration() -> CustomCellRegistrationType {
-        return CustomCellRegistrationType() { [unowned self] cell, indexPath, item in
+        return CustomCellRegistrationType() { cell, indexPath, item in
             
             cell.configure(with: item)
-            if indexPath == firstItemIndexPath {
-                let changeButton = cell.changeButton
-                let customView = UICellAccessory.CustomViewConfiguration(customView: changeButton,
-                                                                         placement: .trailing())
-                cell.accessories = [.customView(configuration: customView)]
-            } else {
-                let _switch = UISwitch()
-                _switch.isOn = item.isEnabled
-                let customView = UICellAccessory.CustomViewConfiguration(customView: _switch,
-                                                                         placement: .trailing(displayed: .whenNotEditing))
-                cell.accessories = [.delete(),
-                                    .customView(configuration: customView),
-                                    .disclosureIndicator(displayed: .whenEditing, options: .init())]
-            }
         }
     }
     
@@ -88,7 +74,7 @@ private extension AlarmClockViewController {
             supplementaryView, string, indexPath in
             let sectionTitle = Alarm.Section.allCases[indexPath.section].rawValue
             if indexPath.section == 0 {
-                supplementaryView.configureLabel(with: sectionTitle, and: UIImage.bed)
+                supplementaryView.configureLabel(with: sectionTitle, and: .bed)
             } else {
                 supplementaryView.configureLabel(with: sectionTitle)
             }

@@ -20,6 +20,7 @@ struct Alarm: Hashable {
     var title: String
     var isEnabled: Bool
     var isRepeated: Bool
+    let isMainAlarm: Bool
     var melody: Melody?
     var vibration: Vibration?
     var weekDays: [Int: Bool]
@@ -28,6 +29,7 @@ struct Alarm: Hashable {
          title: String,
          time: Date,
          isEnabled: Bool,
+         isMainAlarm: Bool,
          weekDays: [Int],
          isRepeated: Bool,
          melody: Melody? = nil,
@@ -38,6 +40,7 @@ struct Alarm: Hashable {
         self.time = time
         self.isEnabled = isEnabled
         self.isRepeated = isRepeated
+        self.isMainAlarm = isMainAlarm
         self.melody = melody
         self.vibration = vibration
         self.weekDays = [:]
@@ -51,6 +54,7 @@ struct Alarm: Hashable {
                      title: "Будильник",
                      time: Date(),
                      isEnabled: true,
+                     isMainAlarm: false,
                      weekDays: [],
                      isRepeated: true,
                      melody: nil)
@@ -62,6 +66,7 @@ struct Alarm: Hashable {
                   title: "Завтра утром",
                   time: "09:30".toDate(),
                   isEnabled: true,
+                  isMainAlarm: true,
                   weekDays: [],
                   isRepeated: true,
                   melody: nil),
@@ -69,6 +74,7 @@ struct Alarm: Hashable {
                   title: "Будильник",
                   time: "10:29".toDate(),
                   isEnabled: true,
+                  isMainAlarm: false,
                   weekDays: [0, 1, 2, 3, 4, 5, 6],
                   isRepeated: true,
                   melody: nil),
@@ -76,6 +82,7 @@ struct Alarm: Hashable {
                   title: "Будильник2",
                   time: "19:00".toDate(),
                   isEnabled: false,
+                  isMainAlarm: false,
                   weekDays: [1, 5],
                   isRepeated: true,
                   melody: nil),
@@ -83,6 +90,7 @@ struct Alarm: Hashable {
                   title: "Будильниковский",
                   time: "23:10".toDate(),
                   isEnabled: false,
+                  isMainAlarm: false,
                   weekDays: [],
                   isRepeated: false,
                   melody: Melody("Пение Птиц", type: .song))

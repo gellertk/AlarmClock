@@ -9,31 +9,28 @@ import UIKit
 
 class CustomListCell: UICollectionViewListCell {
     
-//    private func defaultListContentConfiguration() -> UIListContentConfiguration { return .subtitleCell() }
-//    private lazy var listContentView = UIListContentView(configuration: defaultListContentConfiguration())
-    
     private let timeLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 62, weight: .light)
         label.adjustsFontSizeToFitWidth = true
         label.textColor = .white
-
+        
         return label
     }()
-
+    
     private let titleLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 15, weight: .regular)
         label.textColor = .white
-
+        
         return label
     }()
     
-    private lazy var availabilitySwitch: UISwitch = {
-        let uiSwitch = UISwitch()
-        uiSwitch.addTarget(self, action: #selector(didChangeAvailabilitySwitch), for: .valueChanged)
+    private lazy var _switch: UISwitch = {
+        let _switch = UISwitch()
+        _switch.addTarget(self, action: #selector(didChangeAvailabilitySwitch), for: .valueChanged)
         
-        return uiSwitch
+        return _switch
     }()
     
     lazy var changeButton: UIButton = {
@@ -60,7 +57,21 @@ class CustomListCell: UICollectionViewListCell {
     
     func configure(with alarm: Alarm) {
         timeLabel.text = alarm.time.toHoursMinutes()
-        titleLabel.text = alarm.title
+        titleLabel.text = "\(alarm.title), \(alarm.weekDays.toWeekDaysFormat(forAlarmList: true))"
+        if alarm.isMainAlarm {
+            let customView = UICellAccessory.CustomViewConfiguration(customView: changeButton,
+                                                                     placement: .trailing())
+            accessories = [.customView(configuration: customView)]
+        } else {
+            _switch.isOn = alarm.isEnabled
+            let customView = UICellAccessory.CustomViewConfiguration(customView: _switch,
+                                                                     placement: .trailing(displayed: .whenNotEditing))
+            accessories = [.delete(),
+                                .customView(configuration: customView),
+                                .disclosureIndicator(displayed: .whenEditing, options: .init())]
+            setupAvailability(alarm.isEnabled)
+        }
+        
     }
     
 }
@@ -76,21 +87,16 @@ private extension CustomListCell {
     }
     
     func setupAvailability(_ isEnabled: Bool) {
-        if isEnabled {
-            titleLabel.textColor = .white
-            timeLabel.textColor = .white
-        } else {
-            titleLabel.textColor = K.Color.disabledText
-            timeLabel.textColor = K.Color.disabledText
-        }
+        titleLabel.textColor = isEnabled ? .white : K.Color.disabledText
+        timeLabel.textColor = isEnabled ? .white : K.Color.disabledText
     }
     
     func setupView() {
         backgroundView = UIView()
         [
-         timeLabel,
-         titleLabel,
-         
+            timeLabel,
+            titleLabel,
+            
         ].forEach {
             contentView.addSubview($0)
         }
@@ -98,7 +104,7 @@ private extension CustomListCell {
     }
     
     func setupConstraints() {
-
+        
         timeLabel.snp.makeConstraints {
             $0.leading.equalToSuperview().offset(15)
             $0.top.equalTo(contentView).offset(5)
@@ -109,7 +115,7 @@ private extension CustomListCell {
             $0.top.equalTo(timeLabel.snp.bottom)
             $0.bottom.equalTo(contentView).offset(-10)
         }
-
+        
     }
     
 }
