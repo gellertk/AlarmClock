@@ -10,47 +10,32 @@ import SnapKit
 
 class TimeZoneViewController: UIViewController {
     
-    private lazy var timeZoneView: UIView = {
-        let view = TimeZoneView()
-        view.timeZoneTableView.tableHeaderView = searchController.searchBar
-        
-        return view
-    }()
-    
-    private lazy var searchController: UISearchController = {
-        let searchController = UISearchController()
-        searchController.searchBar.delegate = self
-        searchController.searchBar.placeholder = "Поиск"
-        searchController.searchBar.setShowsCancelButton(true, animated: false)
-        searchController.searchBar.isTranslucent = false
-        searchController.delegate = self
-        
-        return searchController
-    }()
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        setupView()
-    }
-    
-    private func setupView() {
-        navigationItem.title = "Выбрать город"
-        navigationItem.hidesSearchBarWhenScrolling = false
-        navigationItem.searchController = searchController
-     
-        view.addSubview(timeZoneView)
-        setupConstraints()
-    }
-    
-    private func setupConstraints() {
-        timeZoneView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
-        }
-    }
-    
-    @objc private func didTapCancelButton() {
-        
-    }
+//    typealias CustomCellRegistrationType = UICollectionView.CellRegistration<CustomListCell, Alarm>
+//    typealias DataSourceType = UICollectionViewDiffableDataSource<Alarm.Section, Alarm>
+//    typealias SnapshotType = NSDiffableDataSourceSnapshot<Alarm.Section, Alarm>
+//    
+//    private let alarmClockView = AlarmClockView()
+//    private let firstItemIndexPath = IndexPath(row: 0, section: 0)
+//    
+//    private var dataSource: DataSourceType?
+//    private var updatedCellIndex: Int?
+//    private var alarms = Alarm.getAlarms()
+//    
+//    override func loadView() {
+//        view = alarmClockView
+//    }
+//    
+//    override func viewDidLoad() {
+//        super.viewDidLoad()
+//        title = "Будильник"
+//        setupDataSource()
+//        setupNavigationBarItems()
+//    }
+//    
+//    override func setEditing(_ editing: Bool, animated: Bool) {
+//        super.setEditing(editing, animated:animated)
+//        alarmClockView.collectionView.isEditing = editing
+//    }
     
 }
 

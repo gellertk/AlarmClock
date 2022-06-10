@@ -57,7 +57,12 @@ class CustomListCell: UICollectionViewListCell {
     
     func configure(with alarm: Alarm) {
         timeLabel.text = alarm.time.toHoursMinutes()
-        titleLabel.text = "\(alarm.title), \(alarm.weekDays.toWeekDaysFormat(forAlarmList: true))"
+        let weekDaysString = alarm.weekDays.toWeekDaysFormat(forAlarmList: true)
+        if !weekDaysString.isEmpty {
+            titleLabel.text = "\(alarm.title), \(weekDaysString)"
+        } else {
+            titleLabel.text = "\(alarm.title)"
+        }
         if alarm.isMainAlarm {
             let customView = UICellAccessory.CustomViewConfiguration(customView: changeButton,
                                                                      placement: .trailing())

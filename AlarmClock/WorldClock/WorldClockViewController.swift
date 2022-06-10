@@ -6,133 +6,141 @@
 //
 
 import UIKit
-import SnapKit
 
 class WorldClockViewController: UIViewController {
     
-    private var timer: Timer?
+    enum Section {
+        case main
+    }
     
-    private var worldClocks: [WorldClock] = []
+    typealias CustomCellRegistrationType = UICollectionView.CellRegistration<CustomListCell, WorldClock>
+    typealias DataSourceType = UICollectionViewDiffableDataSource<Section, WorldClock>
+    typealias SnapshotType = NSDiffableDataSourceSnapshot<Section, WorldClock>
     
-    private lazy var worldClockView: WorldClockView = {
-        let view = WorldClockView()
-        //view.collectionView.delegate = self
-        //view.collectionView.dataSource = self
-        
-        return view
-    }()
+    private let mainView = WorldClockView()
+    
+    private var dataSource: DataSourceType?
+    private var worldClocks = Alarm.getAlarms()
+    
+    override func loadView() {
+        view = mainView
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Мировые часы"
-        setupTimer()
-        setupView()
+        setupDataSource()
         setupNavigationBarItems()
-        fillWorldClocks()
     }
     
-    private func setupNavigationBarItems() {
-        navigationItem.setLeftBarButton(UIBarButtonItem(title: "Править",
-                                                        style: .plain,
-                                                        target: self,
-                                                        action: #selector(didTapEditButton)), animated: false)
-        navigationItem.setRightBarButton(UIBarButtonItem(image: UIImage.plus,
-                                                         style: .plain,
-                                                         target: self,
-                                                         action: #selector(didTapAddButton)), animated: false)
-    }
-    
-    private func fillWorldClocks() {
-        if UserDefaults.isFirstLaunch() {
-            createDefaultWorldClocks()
-        } else {
-            worldClocks = CoreDataManager.sharedWorldClock.fetchWorldClocks()
-        }
-    }
-    
-    private func createDefaultWorldClocks() {
-        for city in K.Collection.worldClockCities {
-            let worldClock = CoreDataManager.sharedWorldClock.createWorldClock(city)
-            worldClocks.insert(worldClock, at: 0)
-            //worldClockView.collectionView.insertRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
-        }
-    }
-    
-    @objc func didTapEditButton() {
-        UIView.animate(withDuration: 0.3) {
-            self.worldClockView.collectionView.isEditing.toggle()
-        }
-    }
-    
-    @objc func didTapAddButton(_ sender: UIBarButtonItem) {
-        present(TimeZoneViewController(), animated: true)
-    }
-    
-    private func setupView() {
-        view.addSubview(worldClockView)
-        setupConstraints()
-    }
-    
-    private func setupConstraints() {
-        worldClockView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
-        }
+    override func setEditing(_ editing: Bool, animated: Bool) {
+        super.setEditing(editing, animated:animated)
+        mainView.collectionView.isEditing = editing
     }
     
 }
 
 private extension WorldClockViewController {
     
-    func setupTimer() {
-        if timer == nil {
-            timer = Timer.scheduledTimer(timeInterval: 1.0,
-                                         target: self,
-                                         selector: #selector(updateTimer),
-                                         userInfo: nil,
-                                         repeats: true)
+    func createCellRegistration() -> CustomCellRegistrationType {
+        return CustomCellRegistrationType() { cell, indexPath, item in
+            
+            //cell.configure(with: item)
         }
     }
     
-    @objc func updateTimer() {
-//        guard let visibleRowsIndexPaths = worldClockView.collectionView.indexPathsForVisibleRows else {
-//            return
-//        }
-//
-//        for indexPath in visibleRowsIndexPaths {
-//            if let cell = worldClockView.collectionView.cellForRow(at: indexPath) as? WorldClockTableViewCell {
-//                cell.timeLabel.text = Date().toHoursMinutes()
-//            }
-//        }
+    func setupDataSource() {
+        let cellRegistration = createCellRegistration()
+        
+        dataSource = DataSourceType(collectionView: mainView.collectionView) {
+            collectionView, indexPath, item in
+            
+            return collectionView.dequeueConfiguredReusableCell(using: cellRegistration,
+                                                                for: indexPath,
+                                                                item: item)
+        }
+        
+        applySnapshot()
+        setupDelegates()
+    }
+    
+    func applySnapshot() {
+        var snapshot = SnapshotType()
+        snapshot.appendSections([.main])
+        snapshot.appendItems(alarms)
+        
+        dataSource?.apply(snapshot)
+    }
+    
+    func delete(at indexPath: IndexPath) {
+        guard let dataSource = dataSource else {
+            return
+        }
+        var snapshot = dataSource.snapshot()
+        if let identifier = dataSource.itemIdentifier(for: indexPath) {
+            snapshot.deleteItems([identifier])
+        }
+        dataSource.apply(snapshot)
+    }
+    
+    func setupDelegates() {
+        mainView.collectionView.delegate = self
+        //mainView.delegate = self
+    }
+    
+    func setupNavigationBarItems() {
+        navigationItem.leftBarButtonItem = editButtonItem
+        navigationItem.leftBarButtonItem?.primaryAction = UIAction(title: "Править") { [unowned self] _ in
+            setEditing(!isEditing, animated: true)
+            navigationItem.leftBarButtonItem?.title = isEditing ? "Готово" : "Править"
+        }
+        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(systemItem: .add)
+        navigationItem.rightBarButtonItem?.primaryAction = UIAction() { [unowned self] _ in
+            let settingsVC = SettingsViewController(alarm: Alarm.createDefaultAlarm())
+            settingsVC.delegate = self
+            present(UINavigationController(rootViewController: settingsVC,
+                                           prefersLargeTitle: false),
+                    animated: true)
+        }
+        
     }
     
 }
 
-extension WorldClockViewController: UITableViewDelegate, UITableViewDataSource {
+extension WorldClockViewController: UICollectionViewDelegate {
     
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func collectionView(_ collectionView: UICollectionView,
+                        didSelectItemAt indexPath: IndexPath) {
         
-        return worldClocks.count
+        let settingsVC = SettingsViewController(alarm: alarms[indexPath.row + 1])
+        present(UINavigationController(rootViewController: settingsVC,
+                                       prefersLargeTitle: false),
+                animated: true)
+        
+        collectionView.deselectItem(at: indexPath, animated: true)
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: WorldClockTableViewCell.reuseIdentifier, for: indexPath) as? WorldClockTableViewCell else {
-            
-            return UITableViewCell()
+}
+
+extension WorldClockViewController: AlarmClockViewDelegate {
+    
+    func deleteAlarm(at indexPath: IndexPath) {
+        delete(at: indexPath)
+    }
+    
+}
+
+extension WorldClockViewController: AlarmUpdateDelegate {
+    
+    func update(with alarm: Alarm) {
+        alarms.append(alarm)
+        guard let dataSource = dataSource else {
+            return
         }
-        cell.setupData(worldClocks[indexPath.row])
-        
-        return cell
-    }
-    
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        
-        return 95
-    }
-    
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            
-        }
+        var snapshot = dataSource.snapshot()
+        snapshot.appendItems([alarm], toSection: .other)
+        dataSource.apply(snapshot)
     }
     
 }

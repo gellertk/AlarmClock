@@ -35,7 +35,7 @@ fileprivate extension VibrationViewController {
 }
 
 class VibrationViewController: UIViewController {
-    
+     
     weak var delegate: AlarmUpdateDelegate?
     
     private var alarm: Alarm?

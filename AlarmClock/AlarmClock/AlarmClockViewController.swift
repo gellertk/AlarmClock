@@ -13,15 +13,10 @@ class AlarmClockViewController: UIViewController {
     typealias DataSourceType = UICollectionViewDiffableDataSource<Alarm.Section, Alarm>
     typealias SnapshotType = NSDiffableDataSourceSnapshot<Alarm.Section, Alarm>
     
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        .lightContent
-    }
-    
     private let alarmClockView = AlarmClockView()
     private let firstItemIndexPath = IndexPath(row: 0, section: 0)
     
     private var dataSource: DataSourceType?
-    private var updatedCellIndex: Int?
     private var alarms = Alarm.getAlarms()
     
     override func loadView() {
@@ -126,7 +121,7 @@ private extension AlarmClockViewController {
             let settingsVC = SettingsViewController(alarm: Alarm.createDefaultAlarm())
             settingsVC.delegate = self
             present(UINavigationController(rootViewController: settingsVC,
-                                           withCustomization: true),
+                                           prefersLargeTitle: false),
                     animated: true)
         }
         
@@ -147,10 +142,10 @@ extension AlarmClockViewController: UICollectionViewDelegate {
         
         let settingsVC = SettingsViewController(alarm: alarms[indexPath.row + 1])
         present(UINavigationController(rootViewController: settingsVC,
-                                       withCustomization: true),
+                                       prefersLargeTitle: false),
                 animated: true)
         
-        //collectionView.deselectItem(at: indexPath, animated: false)
+        collectionView.deselectItem(at: indexPath, animated: true)
     }
     
 }

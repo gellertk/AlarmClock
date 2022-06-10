@@ -9,16 +9,14 @@ import UIKit
 
 extension UINavigationController {
     
-    convenience init(rootViewController: UIViewController, withCustomization: Bool, prefersLargeTitle: Bool = false) {
+    convenience init(rootViewController: UIViewController, prefersLargeTitle: Bool = false) {
         self.init(rootViewController: rootViewController)
         navigationBar.prefersLargeTitles = prefersLargeTitle
-        customize()
-    }
-    
-    func customize() {
-        let backButton = UIBarButtonItem()
-        backButton.title = "Назад"
-        navigationBar.topItem?.backBarButtonItem = backButton
+        if prefersLargeTitle {
+            let backButton = UIBarButtonItem()
+            backButton.title = "Назад"
+            navigationBar.topItem?.backBarButtonItem = backButton
+        }
         
         navigationBar.largeTitleTextAttributes = [.foregroundColor: UIColor.white]
         navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]

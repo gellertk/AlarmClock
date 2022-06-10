@@ -19,5 +19,4 @@ extension UILabel {
         self.attributedText = completeText
     }
     
-    
 }

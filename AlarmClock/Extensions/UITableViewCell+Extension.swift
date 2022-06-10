@@ -2,7 +2,7 @@
 //  UITableViewCell+Extension.swift
 //  AlarmClock
 //
-//  Created by Кирилл  Геллерт on 10.05.2022.
+//  Created by Кирилл  Геллерт on 10.06.2022.
 //
 
 import UIKit
