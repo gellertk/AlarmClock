@@ -21,7 +21,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
 
     func sceneDidEnterBackground(_ scene: UIScene) {
-        CoreDataManager.sharedWorldClock.save()
+        CoreDataManager.shared.save()
         //CoreDataManager.sharedAlarms.save()
     }
 

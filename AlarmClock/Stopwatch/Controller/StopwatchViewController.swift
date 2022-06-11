@@ -76,10 +76,10 @@ private extension StopwatchViewController {
             switch lapTime {
             case stopwatch.lapTimes.dropLast().min():
                 
-                return K.Color.fasterLapText
+                return .customGreen
             case stopwatch.lapTimes.dropLast().max():
                 
-                return K.Color.slowestLapText
+                return .customRed
             default:
                 break
             }

@@ -13,19 +13,17 @@ class TitleView: UIView {
     private let scrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.showsVerticalScrollIndicator = false
-        scrollView.backgroundColor = K.Color.disabledBackground
         
         return scrollView
     }()
     
     private let textField: CustomTextField = {
         let textField = CustomTextField()
-        textField.backgroundColor = K.Color.staticTableViewBackground
+        textField.backgroundColor = .customGray
         textField.clearButtonMode = .whileEditing
-        textField.becomeFirstResponder()
         textField.layer.cornerRadius = K.Numeric.defaultCornerRadius
         textField.tintColor = .systemOrange
-        textField.overrideUserInterfaceStyle = .dark
+        textField.becomeFirstResponder()
         
         return textField
     }()
@@ -57,7 +55,7 @@ class TitleView: UIView {
 private extension TitleView {
     
     func setupView() {
-        backgroundColor = K.Color.disabledBackground
+        backgroundColor = .customBlack
         addSubview(scrollView)
         scrollView.addSubview(textField)
         setupConstraints()

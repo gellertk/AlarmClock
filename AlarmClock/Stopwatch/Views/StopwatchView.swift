@@ -25,7 +25,7 @@ class StopwatchView: UIView {
     
     private lazy var scrollViewElements = [digitalFormatView, clockFaceView]
     
-    private(set) lazy var scrollView: UIScrollView = {
+    lazy var scrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.isPagingEnabled = true
         scrollView.showsHorizontalScrollIndicator = false
@@ -48,26 +48,26 @@ class StopwatchView: UIView {
         return button
     }()
     
-    private(set) lazy var pageControl: UIPageControl = {
+    lazy var pageControl: UIPageControl = {
         let pageControl = UIPageControl()
         pageControl.numberOfPages = scrollViewElements.count
         
         return pageControl
     }()
     
-    private(set) lazy var lapsTableView: UITableView = {
+    lazy var lapsTableView: UITableView = {
         let tableView = UITableView()
-        tableView.backgroundColor = .black
-        tableView.separatorColor = K.Color.tableSeparator
+        tableView.separatorColor = .customWhite1
         tableView.register(LapsTableViewCell.self, forCellReuseIdentifier: LapsTableViewCell.reuseIdentifier)
         tableView.showsVerticalScrollIndicator = false
+        tableView.backgroundColor = .black
         
         return tableView
     }()
     
     private lazy var separatorView: UIView = {
         let view = UIView()
-        view.backgroundColor = K.Color.tableSeparator
+        view.backgroundColor = .customWhite1
         
         return view
     }()
@@ -86,24 +86,7 @@ class StopwatchView: UIView {
         fillScrollView()
     }
     
-    private func fillScrollView() {
-        let scrollViewElementHeight = pageControl.frame.origin.y - 1
-        scrollView.contentSize = CGSize(width: frame.size.width * CGFloat(scrollViewElements.count),
-                                        height: scrollViewElementHeight)
-        
-        for (index, element) in scrollViewElements.enumerated() {
-            let xOffset = frame.size.width * CGFloat(index)
-            
-            scrollView.addSubview(element)
-            element.snp.makeConstraints {
-                $0.top.width.equalToSuperview()
-                $0.height.equalTo(scrollViewElementHeight)
-                $0.leading.equalToSuperview().offset(xOffset)
-            }
-        }
-    }
-    
-    public func updateStopwatchLabels(mainTime: TimeInterval, lapTime: TimeInterval) {
+    func updateStopwatchLabels(mainTime: TimeInterval, lapTime: TimeInterval) {
         guard let stopwatchViewControllerDelegate = stopwatchViewControllerDelegate else {
             return
         }
@@ -174,7 +157,7 @@ private extension StopwatchView {
         }
     }
     
-    private func setupButtons(by type: InterfaceType) {
+    func setupButtons(by type: InterfaceType) {
         switch type {
         case .stopwatchInitial:
             setupInitialInterface()
@@ -186,20 +169,37 @@ private extension StopwatchView {
         }
     }
     
-    private func setupRunningInterface() {
+    func setupRunningInterface() {
         lapAndResetButton.setup(by: .lapEnabled)
         startAndStopButton.setup(by: .stop)
     }
     
-    private func setupPauseInterface() {
+    func setupPauseInterface() {
         lapAndResetButton.setup(by: .reset)
         startAndStopButton.setup(by: .startStopwatch)
     }
     
-    private func setupInitialInterface() {
+    func setupInitialInterface() {
         lapAndResetButton.setup(by: .lapDisabled)
         startAndStopButton.setup(by: .startStopwatch)
         digitalFormatView.timeLabel.text = K.String.stopwatchStartTime
+    }
+    
+    func fillScrollView() {
+        let scrollViewElementHeight = pageControl.frame.origin.y - 1
+        scrollView.contentSize = CGSize(width: frame.size.width * CGFloat(scrollViewElements.count),
+                                        height: scrollViewElementHeight)
+        
+        for (index, element) in scrollViewElements.enumerated() {
+            let xOffset = frame.size.width * CGFloat(index)
+            
+            scrollView.addSubview(element)
+            element.snp.makeConstraints {
+                $0.top.width.equalToSuperview()
+                $0.height.equalTo(scrollViewElementHeight)
+                $0.leading.equalToSuperview().offset(xOffset)
+            }
+        }
     }
     
 }

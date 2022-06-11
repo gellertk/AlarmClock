@@ -12,7 +12,6 @@ class TimeZoneView: UIView {
     
     public lazy var timeZoneTableView: UITableView = {
         let tableView = UITableView()
-        tableView.backgroundColor = .black
         tableView.register(TimeZoneTableViewCell.self, forCellReuseIdentifier: TimeZoneTableViewCell.reuseIdentifier)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.dataSource = self

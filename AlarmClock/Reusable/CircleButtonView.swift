@@ -135,16 +135,16 @@ private extension CircleButtonView {
     
     func setupAsStart() {
         button.setTitle(type?.title ?? "", for: .normal)
-        button.setTitleColor(K.Color.startButtonText, for: .normal)
-        button.backgroundColor = K.Color.startButtonBackground
-        layer.borderColor = K.Color.startButtonBackground.cgColor
+        button.setTitleColor(.customSystemGreen, for: .normal)
+        button.backgroundColor = .customGreen1
+        layer.borderColor = UIColor.customGreen1.cgColor
     }
     
     func setupAsStop() {
         button.setTitle(type?.title ?? "", for: .normal)
-        button.setTitleColor(K.Color.stopButtonText, for: .normal)
-        button.backgroundColor = K.Color.stopButtonBackground
-        layer.borderColor = K.Color.stopButtonBackground.cgColor
+        button.setTitleColor(.customRed2, for: .normal)
+        button.backgroundColor = .customRed1
+        layer.borderColor = UIColor.customRed1.cgColor
     }
     
     func setupAsPause() {
@@ -156,16 +156,16 @@ private extension CircleButtonView {
     
     func setupDisabled() {
         button.setTitle(type?.title ?? "", for: .normal)
-        button.setTitleColor(K.Color.disabledButtonText, for: .normal)
-        button.backgroundColor = K.Color.disabledBackground
-        layer.borderColor = K.Color.disabledBackground.cgColor
+        button.setTitleColor(.customWhite, for: .normal)
+        button.backgroundColor = .customBlack
+        layer.borderColor = UIColor.customBlack.cgColor
     }
     
     func setupEnabled() {
         button.setTitle(type?.title ?? "", for: .normal)
         button.setTitleColor(.white, for: .normal)
-        button.backgroundColor = K.Color.enabledButtonBackground
-        layer.borderColor = K.Color.enabledButtonBackground.cgColor
+        button.backgroundColor = .customBlack
+        layer.borderColor = UIColor.customBlack.cgColor
     }
     
 }

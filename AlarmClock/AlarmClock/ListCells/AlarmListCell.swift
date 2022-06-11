@@ -7,7 +7,7 @@
 
 import UIKit
 
-class CustomListCell: UICollectionViewListCell {
+class AlarmListCell: UICollectionViewListCell {
     
     private let timeLabel: UILabel = {
         let label = UILabel()
@@ -33,7 +33,7 @@ class CustomListCell: UICollectionViewListCell {
         return _switch
     }()
     
-    lazy var changeButton: UIButton = {
+    private lazy var changeButton: UIButton = {
         var configuration = UIButton.Configuration.gray()
         configuration.cornerStyle = .capsule
         let attributes: [NSAttributedString.Key: Any] = [
@@ -81,19 +81,15 @@ class CustomListCell: UICollectionViewListCell {
     
 }
 
-private extension CustomListCell {
+private extension AlarmListCell {
     
     @objc func didChangeAvailabilitySwitch(_ sender: UISwitch) {
         setupAvailability(sender.isOn)
     }
     
-    @objc func didTapChangeButton(_ sender: UISwitch) {
-        
-    }
-    
     func setupAvailability(_ isEnabled: Bool) {
-        titleLabel.textColor = isEnabled ? .white : K.Color.disabledText
-        timeLabel.textColor = isEnabled ? .white : K.Color.disabledText
+        titleLabel.textColor = isEnabled ? .white : .customGray2
+        timeLabel.textColor = isEnabled ? .white : .customGray2
     }
     
     func setupView() {

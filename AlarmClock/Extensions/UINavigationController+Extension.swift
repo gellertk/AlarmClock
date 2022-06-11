@@ -9,6 +9,10 @@ import UIKit
 
 extension UINavigationController {
     
+    open override var preferredStatusBarStyle: UIStatusBarStyle {
+        .lightContent
+    }
+    
     convenience init(rootViewController: UIViewController, prefersLargeTitle: Bool = false) {
         self.init(rootViewController: rootViewController)
         navigationBar.prefersLargeTitles = prefersLargeTitle
@@ -21,7 +25,7 @@ extension UINavigationController {
         navigationBar.largeTitleTextAttributes = [.foregroundColor: UIColor.white]
         navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
         navigationBar.tintColor = .systemOrange
-        navigationBar.barStyle = .black
+        overrideUserInterfaceStyle = .dark
     }
     
 }

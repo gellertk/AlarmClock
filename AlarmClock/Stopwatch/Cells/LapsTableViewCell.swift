@@ -43,9 +43,9 @@ class LapsTableViewCell: UITableViewCell {
 private extension LapsTableViewCell {
     
     func setupView() {
+        backgroundColor = .black
         isUserInteractionEnabled = false
         separatorInset = .zero
-        backgroundColor = .black
         [lapLabel, timeLabel].forEach {
             
             contentView.addSubview($0)

@@ -10,7 +10,7 @@ import CoreData
 
 class CoreDataManager {
     
-    static let sharedWorldClock = CoreDataManager(modelName: "WorldClock")
+    static let shared = CoreDataManager(modelName: "WorldClock")
     //static let sharedAlarms = CoreDataManager(modelName: "Alarm")
     
     let persistentContainer: NSPersistentContainer

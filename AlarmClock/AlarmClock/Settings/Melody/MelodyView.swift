@@ -9,7 +9,12 @@ import UIKit
 
 class MelodyView: UIView {
     
-    lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: createCompositionalLayout())
+    lazy var collectionView: UICollectionView = {
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: createCompositionalLayout())
+        collectionView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
+        
+        return collectionView
+    }()
     
     private func createCompositionalLayout() -> UICollectionViewCompositionalLayout {
         let layout = UICollectionViewCompositionalLayout() { sectionIndex, layoutEnvironment in
@@ -26,30 +31,11 @@ class MelodyView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: .zero)
-        setupView()
+        addSubview(collectionView)
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-}
-
-private extension MelodyView {
-    
-    func setupView() {
-        overrideUserInterfaceStyle = .dark
-        backgroundColor = K.Color.disabledBackground
-        [collectionView].forEach {
-            addSubview($0)
-        }
-        setupConstraints()
-    }
-    
-    func setupConstraints() {
-        collectionView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
-        }
     }
     
 }

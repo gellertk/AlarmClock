@@ -35,7 +35,6 @@ class DigitalFormatView: UIView {
 private extension DigitalFormatView {
     
     func setupView() {
-        backgroundColor = .black
         addSubview(timeLabel)
         setupConstraints()
     }

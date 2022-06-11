@@ -46,7 +46,7 @@ class TimerCircularBarView: UIView {
     
     private let endTimeLabel: UILabel = {
         let label = UILabel()
-        label.textColor = K.Color.enabledButtonBackground
+        label.textColor = .customGray
         label.font = .systemFont(ofSize: 19, weight: .regular)
         
         return label
@@ -72,7 +72,7 @@ class TimerCircularBarView: UIView {
     
     func setupEndTimeLabel(timeLeft: TimeInterval = 0, paused: Bool = false) {
         if paused {
-            endTimeLabel.textColor = K.Color.disabledBackground
+            endTimeLabel.textColor = .customGray1
         } else {
             let endTime = "  \((Date() + timeLeft).toHoursMinutes())"
             let imageAttachment = NSTextAttachment(image: UIImage.bell)
@@ -91,7 +91,6 @@ class TimerCircularBarView: UIView {
 private extension TimerCircularBarView {
     
     func setupView() {
-        backgroundColor = .black
         [shapeView,
          timeLabel,
          endTimeLabel

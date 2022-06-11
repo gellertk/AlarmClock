@@ -9,7 +9,7 @@ import UIKit
 
 class AlarmClockViewController: UIViewController {
     
-    typealias CustomCellRegistrationType = UICollectionView.CellRegistration<CustomListCell, Alarm>
+    typealias CustomCellRegistrationType = UICollectionView.CellRegistration<AlarmListCell, Alarm>
     typealias DataSourceType = UICollectionViewDiffableDataSource<Alarm.Section, Alarm>
     typealias SnapshotType = NSDiffableDataSourceSnapshot<Alarm.Section, Alarm>
     
@@ -31,7 +31,7 @@ class AlarmClockViewController: UIViewController {
     }
     
     override func setEditing(_ editing: Bool, animated: Bool) {
-        super.setEditing(editing, animated:animated)
+        super.setEditing(editing, animated: animated)
         alarmClockView.collectionView.isEditing = editing
     }
     
@@ -41,7 +41,7 @@ private extension AlarmClockViewController {
     
     func createCellRegistration() -> CustomCellRegistrationType {
         return CustomCellRegistrationType() { cell, indexPath, item in
-            
+
             cell.configure(with: item)
         }
     }

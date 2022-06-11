@@ -31,7 +31,6 @@ class ClockFaceView: UIView {
     
     private let secondCenterCircle: UIView = {
         let view = UIView()
-        view.backgroundColor = .black
         view.layer.borderColor = UIColor.systemOrange.cgColor
         view.layer.borderWidth = 2.5
         
@@ -96,7 +95,6 @@ class ClockFaceView: UIView {
 private extension ClockFaceView {
     
     func setupView() {
-        backgroundColor = .black
         [secondImageView,
          secondCenterCircle,
          minuteImageView,
@@ -169,7 +167,7 @@ private extension ClockFaceView {
         drawLine(onView: lapHandImageView,
                  from: CGPoint(x: lapHandImageView.bounds.width / 2, y: lapHandImageView.bounds.height / 1.64),
                  to: CGPoint(x: lapHandImageView.bounds.width / 2, y: 0),
-                 colorLine: K.Color.lapHand,
+                 colorLine: .customBlue,
                  widthLine: 2.2)
     }
     

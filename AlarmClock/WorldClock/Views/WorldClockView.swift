@@ -1,24 +1,19 @@
 //
-//  AlarmClockView.swift
+//  WorldClockView.swift
 //  AlarmClock
 //
 //  Created by Кирилл  Геллерт on 07.02.2022.
 //
 
 import UIKit
+import SnapKit
 
-protocol AlarmClockViewDelegate: AnyObject {
-    func deleteAlarm(at indexPath: IndexPath)
-}
-
-class AlarmClockView: UIView {
-    
-    weak var delegate: AlarmClockViewDelegate?
+class WorldClockView: UIView {
     
     lazy var collectionView: UICollectionView = {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: createCompositionalLayout())
-        collectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        collectionView.showsVerticalScrollIndicator = false
+        collectionView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
+        collectionView.allowsSelection = false
 
         return collectionView
     }()
@@ -26,26 +21,18 @@ class AlarmClockView: UIView {
     private func createCompositionalLayout() -> UICollectionViewCompositionalLayout {
 
         let layout = UICollectionViewCompositionalLayout() { sectionIndex, layoutEnvironment in
-            var config = UICollectionLayoutListConfiguration(appearance: .grouped)
-            config.headerMode = .supplementary
+            var config = UICollectionLayoutListConfiguration(appearance: .plain)
 
             config.trailingSwipeActionsConfigurationProvider = { indexPath in
                 
-                guard indexPath != IndexPath(row: 0, section: 0) else {
-                    
-                    return nil
-                }
-                
-                let delete = UIContextualAction(style: .destructive, title: "Удалить") {
-                    [weak self] action, view, completion in
-                    
-                    self?.delegate?.deleteAlarm(at: indexPath)
+                let delete = UIContextualAction(style: .destructive, title: "Удалить") { [weak self] action, view, completion in
+                    //self?.delegate?.deleteAlarm(at: indexPath)
                     completion(true)
                 }
                 
                 return UISwipeActionsConfiguration(actions: [delete])
             }
-
+            
             config.itemSeparatorHandler = { (indexPath, sectionSeparatorConfiguration) in
                 var configuration = sectionSeparatorConfiguration
                 
@@ -56,7 +43,7 @@ class AlarmClockView: UIView {
                 
                 return configuration
             }
-            
+                        
             let section = NSCollectionLayoutSection.list(using: config, layoutEnvironment: layoutEnvironment)
 
             return section
@@ -64,18 +51,19 @@ class AlarmClockView: UIView {
         
         return layout
     }
-    
+
     override init(frame: CGRect) {
-        super.init(frame: frame)
+        super.init(frame: .zero)
         setupView()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+
 }
 
-private extension AlarmClockView {
+private extension WorldClockView {
     
     func setupView() {
         addSubview(collectionView)

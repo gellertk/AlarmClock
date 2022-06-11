@@ -41,7 +41,7 @@ class AlarmSectionHeaderReusableView: UICollectionReusableView {
 
 private extension AlarmSectionHeaderReusableView {
     
-    func setupView() {
+    func setupView() {        
         addSubview(titleLabel)
         
         titleLabel.snp.makeConstraints {

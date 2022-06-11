@@ -12,10 +12,8 @@ class SettingsView: UIView {
     private let timeDatePicker: UIDatePicker = {
         let datePicker = UIDatePicker()
         datePicker.datePickerMode = .time
-        datePicker.overrideUserInterfaceStyle = .dark
         datePicker.preferredDatePickerStyle = .wheels
         datePicker.locale = Locale(identifier: "ru_RU")
-        datePicker.backgroundColor = K.Color.disabledBackground
         
         return datePicker
     }()
@@ -60,10 +58,9 @@ class SettingsView: UIView {
 }
 
 private extension SettingsView {
-    
+     
     func setupView() {
-        overrideUserInterfaceStyle = .dark
-        backgroundColor = K.Color.disabledBackground
+        backgroundColor = .customBlack
         [timeDatePicker,
          collectionView
         ].forEach {
