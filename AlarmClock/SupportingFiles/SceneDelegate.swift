@@ -20,10 +20,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         self.window?.makeKeyAndVisible()
     }
 
-    func sceneDidEnterBackground(_ scene: UIScene) {
-        CoreDataManager.shared.save()
-        //CoreDataManager.sharedAlarms.save()
-    }
+//    func sceneDidEnterBackground(_ scene: UIScene) {
+//        CoreDataManager.shared.save()
+//    }
 
 }
 

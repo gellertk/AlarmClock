@@ -55,8 +55,6 @@
 		CBC5BD0D2820625D003832B7 /* AlarmListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBC5BD0C2820625D003832B7 /* AlarmListCell.swift */; };
 		CBC7772127B4FF860072EE40 /* UserDefaults+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBC7772027B4FF860072EE40 /* UserDefaults+Extension.swift */; };
 		CBC7772327B503F60072EE40 /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBC7772227B503F60072EE40 /* Date+Extension.swift */; };
-		CBCA7F5027BAC18000116516 /* WorldClock+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBCA7F4E27BAC18000116516 /* WorldClock+CoreDataClass.swift */; };
-		CBCA7F5127BAC18000116516 /* WorldClock+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBCA7F4F27BAC18000116516 /* WorldClock+CoreDataProperties.swift */; };
 		CBD20059282D9333005D12F4 /* CellData.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBD20058282D9333005D12F4 /* CellData.swift */; };
 		CBD57A5B2839762600DA8F2F /* ClassicMelodyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBD57A5A2839762600DA8F2F /* ClassicMelodyViewController.swift */; };
 		CBD57A5E2839767000DA8F2F /* ClassicMelodyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBD57A5D2839767000DA8F2F /* ClassicMelodyView.swift */; };
@@ -75,6 +73,8 @@
 		CBF6CE0727BD63EE00843FBA /* TimeZoneTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBF6CE0627BD63EE00843FBA /* TimeZoneTableViewCell.swift */; };
 		CBFB4CD4281D4FDB00A1B189 /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBFB4CD3281D4FDB00A1B189 /* UIColor+Extension.swift */; };
 		CBFB4CD6281DBD1C00A1B189 /* CALayer+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBFB4CD5281DBD1C00A1B189 /* CALayer+Extension.swift */; };
+		CBFD09C7285654BD00F8E41F /* WorldClock+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBFD09C6285654B800F8E41F /* WorldClock+CoreDataClass.swift */; };
+		CBFD09C8285654BD00F8E41F /* WorldClock+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBFD09C5285654B300F8E41F /* WorldClock+CoreDataProperties.swift */; };
 		E89254EF71FFA46623AE25A1 /* Pods_AlarmClock.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A58B681C33DFFE0BC1AFD14F /* Pods_AlarmClock.framework */; };
 /* End PBXBuildFile section */
 
@@ -131,8 +131,6 @@
 		CBC5BD0C2820625D003832B7 /* AlarmListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmListCell.swift; sourceTree = "<group>"; };
 		CBC7772027B4FF860072EE40 /* UserDefaults+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserDefaults+Extension.swift"; sourceTree = "<group>"; };
 		CBC7772227B503F60072EE40 /* Date+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extension.swift"; sourceTree = "<group>"; };
-		CBCA7F4E27BAC18000116516 /* WorldClock+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WorldClock+CoreDataClass.swift"; sourceTree = "<group>"; };
-		CBCA7F4F27BAC18000116516 /* WorldClock+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WorldClock+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		CBD20058282D9333005D12F4 /* CellData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellData.swift; sourceTree = "<group>"; };
 		CBD3FB0227BE9FD200F718E3 /* AlarmClock.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AlarmClock.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CBD57A5A2839762600DA8F2F /* ClassicMelodyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassicMelodyViewController.swift; sourceTree = "<group>"; };
@@ -152,6 +150,9 @@
 		CBF6CE0627BD63EE00843FBA /* TimeZoneTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeZoneTableViewCell.swift; sourceTree = "<group>"; };
 		CBFB4CD3281D4FDB00A1B189 /* UIColor+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
 		CBFB4CD5281DBD1C00A1B189 /* CALayer+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CALayer+Extension.swift"; sourceTree = "<group>"; };
+		CBFD09C02856476700F8E41F /* AlarmClock 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "AlarmClock 2.xcdatamodel"; sourceTree = "<group>"; };
+		CBFD09C5285654B300F8E41F /* WorldClock+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "WorldClock+CoreDataProperties.swift"; path = "../../../WorldClock+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		CBFD09C6285654B800F8E41F /* WorldClock+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "WorldClock+CoreDataClass.swift"; path = "../../../WorldClock+CoreDataClass.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -276,9 +277,9 @@
 		CB0CC82F27B3F955002C1FEA /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				CBCA7F4E27BAC18000116516 /* WorldClock+CoreDataClass.swift */,
-				CBCA7F4F27BAC18000116516 /* WorldClock+CoreDataProperties.swift */,
 				CB0CC82527B3DA50002C1FEA /* CoreDataManager.swift */,
+				CBFD09C6285654B800F8E41F /* WorldClock+CoreDataClass.swift */,
+				CBFD09C5285654B300F8E41F /* WorldClock+CoreDataProperties.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -627,7 +628,6 @@
 				CBAACF3227B272D200A35A7F /* MainTabBarController.swift in Sources */,
 				CB0C192027B119430074976D /* WorldClock.xcdatamodeld in Sources */,
 				CB0CC82627B3DA51002C1FEA /* CoreDataManager.swift in Sources */,
-				CBCA7F5127BAC18000116516 /* WorldClock+CoreDataProperties.swift in Sources */,
 				CB682F08282979A200EFA3EE /* Melody.swift in Sources */,
 				CBE22FAA283A32260034CBF6 /* LeadingCheckmarkListCell.swift in Sources */,
 				CB2BE1D127F0E4B300137F6C /* TimerPickerViewLabel.swift in Sources */,
@@ -641,10 +641,11 @@
 				CBF6CE0727BD63EE00843FBA /* TimeZoneTableViewCell.swift in Sources */,
 				CB98012228254FA70087F2A9 /* Int+Extension.swift in Sources */,
 				CB980118282457AF0087F2A9 /* WeekDaysView.swift in Sources */,
-				CBCA7F5027BAC18000116516 /* WorldClock+CoreDataClass.swift in Sources */,
 				CB682F012829416000EFA3EE /* CustomTextField.swift in Sources */,
 				CB06E2942832403400FEDBE6 /* EmptyHeaderView.swift in Sources */,
+				CBFD09C7285654BD00F8E41F /* WorldClock+CoreDataClass.swift in Sources */,
 				CB0C191627B119430074976D /* AppDelegate.swift in Sources */,
+				CBFD09C8285654BD00F8E41F /* WorldClock+CoreDataProperties.swift in Sources */,
 				CBE22FA8283A2FDB0034CBF6 /* Vibration.swift in Sources */,
 				CBC5BD0B28205FA6003832B7 /* String+Extension.swift in Sources */,
 				CB7ABE4A27B3FFA800CD04B1 /* WorldClockListCell.swift in Sources */,
@@ -891,9 +892,10 @@
 		CB0C191E27B119430074976D /* WorldClock.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				CBFD09C02856476700F8E41F /* AlarmClock 2.xcdatamodel */,
 				CB0C191F27B119430074976D /* AlarmClock.xcdatamodel */,
 			);
-			currentVersion = CB0C191F27B119430074976D /* AlarmClock.xcdatamodel */;
+			currentVersion = CBFD09C02856476700F8E41F /* AlarmClock 2.xcdatamodel */;
 			path = WorldClock.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

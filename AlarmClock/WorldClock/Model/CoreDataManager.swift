@@ -11,10 +11,9 @@ import CoreData
 class CoreDataManager {
     
     static let shared = CoreDataManager(modelName: "WorldClock")
-    //static let sharedAlarms = CoreDataManager(modelName: "Alarm")
     
-    let persistentContainer: NSPersistentContainer
-    var viewContext: NSManagedObjectContext {
+    private let persistentContainer: NSPersistentContainer
+    private var viewContext: NSManagedObjectContext {
         
         return persistentContainer.viewContext
     }
@@ -49,19 +48,40 @@ extension CoreDataManager {
         let newClock = WorldClock(context: viewContext)
         newClock.dateAdded = Date()
         newClock.city = city
+        newClock.hourDifference = Int16(Int.random(in: -12...12))
         save()
         
         return newClock
     }
-
+    
+    func loadWorldClock(_ city: String) {
+        let newClock = WorldClock(context: viewContext)
+        newClock.dateAdded = Date()
+        newClock.city = city
+        newClock.hourDifference = Int16(Int.random(in: -12...12))
+        save()
+    }
+    
     func fetchWorldClocks() -> [WorldClock] {
+        if UserDefaults.isFirstLaunch() {
+            for city in WorldClock.defaultCities {
+                loadWorldClock(city)
+            }
+        }
+        
         let request: NSFetchRequest<WorldClock> = WorldClock.fetchRequest()
-        let sortDescriptor = NSSortDescriptor(keyPath: \WorldClock.dateAdded, ascending: false)
+        let sortDescriptor = NSSortDescriptor(keyPath: \WorldClock.dateAdded,
+                                              ascending: true)
         request.sortDescriptors = [sortDescriptor]
         
-        return (try? viewContext.fetch(request)) ?? []
+        do {
+            return try viewContext.fetch(request)
+        } catch {
+            print(error.localizedDescription)
+            return []
+        }
     }
-
+    
     func deleteWorldClock(_ worldClock: WorldClock) {
         viewContext.delete(worldClock)
         save()

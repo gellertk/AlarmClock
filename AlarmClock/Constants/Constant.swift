@@ -10,12 +10,6 @@ import UIKit
 struct K {
     
     struct Collection {
-        static let worldClockCities = [
-            "Москва",
-            "Калининград",
-            "Омск",
-            "Екатеринбург"
-        ]
         static let numbersOfRowsAndLabelTexts: KeyValuePairs = [24: "ч",
                                                                 60: "мин",
                                                                 60: "с"]

@@ -27,7 +27,7 @@ class AlarmClockViewController: UIViewController {
         super.viewDidLoad()
         title = "Будильник"
         setupDataSource()
-        setupNavigationBarItems()
+        setupNavigationBar()
     }
     
     override func setEditing(_ editing: Bool, animated: Bool) {
@@ -109,7 +109,7 @@ private extension AlarmClockViewController {
         alarmClockView.delegate = self
     }
     
-    func setupNavigationBarItems() {
+    func setupNavigationBar() {
         navigationItem.leftBarButtonItem = editButtonItem
         navigationItem.leftBarButtonItem?.primaryAction = UIAction(title: "Править") { [unowned self] _ in
             setEditing(!isEditing, animated: true)

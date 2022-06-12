@@ -55,7 +55,7 @@ class SettingsViewController: UIViewController {
         title = "Добавление"
         fillCellsData()
         setupDataSource()
-        setupNavigationBarItems()
+        setupNavigationBar()
     }
     
 }
@@ -126,7 +126,7 @@ private extension SettingsViewController {
         }
     }
     
-    func setupNavigationBarItems() {
+    func setupNavigationBar() {
         navigationItem.setLeftBarButton(UIBarButtonItem(title: "Отменить",
                                                         style: .plain,
                                                         target: self,

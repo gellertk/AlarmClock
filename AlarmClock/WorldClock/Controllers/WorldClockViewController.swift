@@ -20,7 +20,7 @@ class WorldClockViewController: UIViewController {
     private let mainView = WorldClockView()
     
     private var dataSource: DataSourceType?
-    private var worldClocks = CoreDataManager.shared.fetchWorldClocks()
+    private var worldClocks: [WorldClock] = []
     
     override func loadView() {
         view = mainView
@@ -29,9 +29,10 @@ class WorldClockViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Мировые часы"
+        fetchWorldClocks()
         setupDataSource()
-        setupDelegates()
-        setupNavigationBarItems()
+        applySnapshot()
+        setupNavigationBar()
     }
     
     override func setEditing(_ editing: Bool, animated: Bool) {
@@ -43,10 +44,18 @@ class WorldClockViewController: UIViewController {
 
 private extension WorldClockViewController {
     
+    func fetchWorldClocks() {
+        worldClocks = CoreDataManager.shared.fetchWorldClocks()
+    }
+    
     func createCellRegistration() -> CustomCellRegistrationType {
         return CustomCellRegistrationType() { cell, indexPath, item in
             
-            cell.configure(timeDifference: "Сегодня, +0 Ч", city: item.city!, time: item.time)
+            let hourDifference = item.hourDifference > 0 ? "Сегодня, +\(item.hourDifference) Ч" : "Сегодня, \(item.hourDifference) Ч"
+            
+            cell.configure(timeDifference: hourDifference,
+                           city: item.city ?? "",
+                           time: item.time)
         }
     }
     
@@ -61,9 +70,7 @@ private extension WorldClockViewController {
                                                                 item: item)
         }
         
-        dataSource?.reorderingHandlers.canReorderItem = { item in return true }
-        
-        applySnapshot()
+        dataSource?.reorderingHandlers.canReorderItem = { _ in return true }
     }
     
     func applySnapshot() {
@@ -85,12 +92,7 @@ private extension WorldClockViewController {
         dataSource.apply(snapshot)
     }
     
-    func setupDelegates() {
-        //mainView.collectionView.delegate = self
-        //mainView.delegate = self
-    }
-    
-    func setupNavigationBarItems() {
+    func setupNavigationBar() {
         navigationItem.leftBarButtonItem = editButtonItem
         navigationItem.leftBarButtonItem?.primaryAction = UIAction(title: "Править") { [unowned self] _ in
             setEditing(!isEditing, animated: true)
@@ -121,13 +123,13 @@ extension WorldClockViewController: AlarmClockViewDelegate {
 extension WorldClockViewController: AlarmUpdateDelegate {
     
     func update(with alarm: Alarm) {
-//        alarms.append(alarm)
-//        guard let dataSource = dataSource else {
-//            return
-//        }
-//        var snapshot = dataSource.snapshot()
-//        snapshot.appendItems([alarm], toSection: .other)
-//        dataSource.apply(snapshot)
+        //        alarms.append(alarm)
+        //        guard let dataSource = dataSource else {
+        //            return
+        //        }
+        //        var snapshot = dataSource.snapshot()
+        //        snapshot.appendItems([alarm], toSection: .other)
+        //        dataSource.apply(snapshot)
     }
     
 }
