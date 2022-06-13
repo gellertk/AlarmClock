@@ -8,7 +8,13 @@
 import UIKit
 import SnapKit
 
+protocol WorldClockViewDelegate: AnyObject {
+    func deleteWorldClock(at indexPath: IndexPath)
+}
+
 class WorldClockView: UIView {
+    
+    weak var delegate: WorldClockViewDelegate?
     
     lazy var collectionView: UICollectionView = {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: createCompositionalLayout())
@@ -26,7 +32,7 @@ class WorldClockView: UIView {
             config.trailingSwipeActionsConfigurationProvider = { indexPath in
                 
                 let delete = UIContextualAction(style: .destructive, title: "Удалить") { [weak self] action, view, completion in
-                    //self?.delegate?.deleteAlarm(at: indexPath)
+                    self?.delegate?.deleteWorldClock(at: indexPath)
                     completion(true)
                 }
                 

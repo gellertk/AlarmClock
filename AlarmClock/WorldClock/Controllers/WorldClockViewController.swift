@@ -31,6 +31,7 @@ class WorldClockViewController: UIViewController {
         title = "Мировые часы"
         fetchWorldClocks()
         setupDataSource()
+        setupDelegates()
         applySnapshot()
         setupNavigationBar()
     }
@@ -73,6 +74,10 @@ private extension WorldClockViewController {
         dataSource?.reorderingHandlers.canReorderItem = { _ in return true }
     }
     
+    func setupDelegates() {
+        mainView.delegate = self
+    }
+    
     func applySnapshot() {
         var snapshot = SnapshotType()
         snapshot.appendSections([.main])
@@ -112,9 +117,9 @@ private extension WorldClockViewController {
     
 }
 
-extension WorldClockViewController: AlarmClockViewDelegate {
+extension WorldClockViewController: WorldClockViewDelegate {
     
-    func deleteAlarm(at indexPath: IndexPath) {
+    func deleteWorldClock(at indexPath: IndexPath) {
         delete(at: indexPath)
     }
     
@@ -123,13 +128,7 @@ extension WorldClockViewController: AlarmClockViewDelegate {
 extension WorldClockViewController: AlarmUpdateDelegate {
     
     func update(with alarm: Alarm) {
-        //        alarms.append(alarm)
-        //        guard let dataSource = dataSource else {
-        //            return
-        //        }
-        //        var snapshot = dataSource.snapshot()
-        //        snapshot.appendItems([alarm], toSection: .other)
-        //        dataSource.apply(snapshot)
+ 
     }
     
 }

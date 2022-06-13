@@ -26,8 +26,8 @@ class TimeZoneViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "Выбрать город"
         setupDataSource()
+        setupDelegates()
         applySnapshot()
         setupNavigationBar()
     }
@@ -40,7 +40,6 @@ extension TimeZoneViewController {
         return CustomCellRegistrationType() { cell, indexPath, item in
             
             cell.configure(text: item)
-            cell.contentView.backgroundColor = .customBlack
         }
     }
     
@@ -71,10 +70,17 @@ extension TimeZoneViewController {
         
     }
     
+    func setupDelegates() {
+        mainView.searchBar.delegate = self
+    }
+    
     func applySnapshot() {
-        var snapshot = SnapshotType()
+        systemWorldClock.removeValue(forKey: "M")
+        systemWorldClock.removeValue(forKey: "G")
+
         systemWorldClockKeys = Array(systemWorldClock.map({ $0.key })).sorted()
         
+        var snapshot = SnapshotType()
         for item in systemWorldClock.sorted(by: { $0.key < $1.key }) {
             snapshot.appendSections([item.key])
             snapshot.appendItems(item.value)
@@ -84,23 +90,20 @@ extension TimeZoneViewController {
     }
     
     func setupNavigationBar() {
-        let label = UILabel()
-        label.text = "Выбрать город"
-        let navigationView = UIView()
-        navigationView.addSubview(mainView.searchBar)
-        navigationView.addSubview(label)
-        navigationItem.titleView = navigationView
-//        let leftNavBarButton = UIBarButtonItem(customView: mainView.searchBar)
-//        navigationItem.leftBarButtonItem = leftNavBarButton
-
-//        navigationItem.titleView = label
-//        navigationItem.title = "Выбрать город"
+        navigationItem.titleView = mainView.searchBar
+        navigationItem.prompt = "Выбрать город"
     }
     
 }
 
-extension TimeZoneViewController: UISearchBarDelegate, UISearchControllerDelegate {
+extension TimeZoneViewController: UISearchBarDelegate {
     
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        dismiss(animated: true)
+    }
     
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        print(searchText)
+    }
     
 }

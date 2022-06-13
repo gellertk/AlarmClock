@@ -13,8 +13,16 @@ import CoreData
 public class WorldClock: NSManagedObject {
 
     var time: String {
+        guard let dateAdded = dateAdded else {
+            return ""
+        }
         
-        return dateAdded?.toHoursMinutes() ?? ""
+        let currentDate = Calendar.current.date(
+          byAdding: .hour,
+          value: Int.random(in: -5...5),
+          to: dateAdded)
+        
+        return currentDate?.toHoursMinutes() ?? ""
     }
     
     static let defaultCities = [
@@ -33,7 +41,7 @@ public class WorldClock: NSManagedObject {
                                                                             locale: Locale(identifier: "ru_RU")),
                let citySubstring = timeZone.split(separator: "/").last {
                 
-                let city = String(citySubstring) + ", "
+                let city = String(citySubstring) + ", США"
                 let firstLetter = String(city.prefix(1))
                 if systemWorldClock[firstLetter] != nil {
                     if systemWorldClock[firstLetter]?.contains(city) == false {
